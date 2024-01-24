@@ -71,7 +71,8 @@ CREATE TABLE `pacientes` (
   `Direccion` varchar(255) DEFAULT NULL,
   `FechaDeNacimiento` date DEFAULT NULL,
   `Nombre` varchar(255) DEFAULT NULL,
-  `telefono` varchar(15) DEFAULT NULL
+  `telefono` varchar(15) DEFAULT NULL,
+  `password` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
