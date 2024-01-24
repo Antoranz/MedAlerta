@@ -10,10 +10,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Executor;
 
-public class ObtenerDoctoresAsync {
+public class GetDataAsync {
 
-    // Método para realizar la tarea en segundo plano
-    public static void obtenerDoctoresAsync(String url, Executor executor, OnTaskCompleted listener) {
+
+    public static void getDataAsync(String url, Executor executor, OnTaskCompleted listener) {
         executor.execute(() -> {
             String result = doInBackground(url);
             if (listener != null) {
@@ -22,7 +22,6 @@ public class ObtenerDoctoresAsync {
         });
     }
 
-    // Método para obtener datos en segundo plano
     private static String doInBackground(String urlString) {
         try {
             URL url = new URL(urlString);
@@ -44,12 +43,11 @@ public class ObtenerDoctoresAsync {
                 urlConnection.disconnect();
             }
         } catch (IOException e) {
-            Log.e("ObtenerDoctoresTask", "Error al obtener doctores", e);
+            Log.e("ObtenerDataTask", "Error al obtener data", e);
             return null;
         }
     }
 
-    // Método para manejar el resultado en el hilo principal
     public interface OnTaskCompleted {
         void onTaskCompleted(String result);
     }

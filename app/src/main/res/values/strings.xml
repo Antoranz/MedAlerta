@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">MedAlerta</string>
+    <string name="prefix_number">+34</string>
+    <string name="informaci_n_de_login">Información de Login</string>
+    <string name="email">Email</string>
+    <string name="nombre">Nombre</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="repetir_contrase_a">Repetir Contraseña</string>
+    <string name="datos_personales">Datos Personales</string>
+    <string name="fecha_de_nacimiento">Fecha de Nacimiento</string>
+    <string name="c_digo_postal">Código Postal</string>
+    <string name="registrar">Registrar</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="crear_una_cuenta"><u>Crear cuenta</u></string>
+    <string name="change_password"><u>Cambiar contraseña</u></string>
+    <string name="question_password"><u>¿Has olvidado la contraseña?</u></string>
+    <string name="todo">TODO</string>
 </resources>
