@@ -93,6 +93,17 @@
             android:minHeight="48dp"
             android:textSize="16sp"
             tools:ignore="HardcodedText" />
+        <EditText
+            android:id="@+id/idDNI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:height="48dp"
+            android:hint="@string/dni"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
 
         <EditText
             android:id="@+id/editTextDate"

@@ -34,20 +34,20 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
 
         <activity
             android:name=".IniciarSesionActivity"
             android:exported="true">
+
         </activity>
-        <!--
         <activity
             android:name=".RegistrarActivity"
             android:exported="true">
         </activity>
 
-        -->
     </application>
 
 </manifest>

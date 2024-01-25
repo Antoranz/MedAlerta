@@ -50,8 +50,8 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
                 JSONObject postData = new JSONObject();
                 try {
-                    postData.put("email", email);
-                    postData.put("password", password);
+                    postData.put("email", email.getText().toString());
+                    postData.put("password", password.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -69,7 +69,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
                             sessionManager.createSession(dni, email);
 
-                            Intent intent = new Intent(this, IniciarSesionActivity.class);
+                            Intent intent = new Intent(this, ConfirmationActivity.class);
                             startActivity(intent);
                         } else {
                             Log.d(TAG, "Error: No data found in the JSON array");
@@ -87,13 +87,13 @@ public class IniciarSesionActivity extends AppCompatActivity {
             }
         });
 
-        /*
+
         logIn = findViewById(R.id.crearCuentaId);
         logIn.setOnClickListener(v -> {
             Intent intent = new Intent(this, RegistrarActivity.class);
             startActivity(intent);
         });
-        */
+
 
         changePassword = findViewById(R.id.changePasswordId);
         changePassword.setOnClickListener(v -> {

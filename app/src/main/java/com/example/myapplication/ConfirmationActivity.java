@@ -25,7 +25,7 @@ import java.util.concurrent.Executors;
 
 public class ConfirmationActivity extends AppCompatActivity {
 
-    SessionManager sessionManager = new SessionManager(this);
+    SessionManager sessionManager ;
     Button reenvioButton, checKButton;
     EditText codigoText;
     Integer numeroAleatorio = generarNumeroAleatorio();
@@ -35,10 +35,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmacion);
 
-
-
-
-
+        sessionManager = new SessionManager(this);
         codigoText = findViewById(R.id.editTextNumber);
         reenvioButton = findViewById(R.id.idReenvio);
         checKButton = findViewById(R.id.idComprobar);
@@ -51,10 +48,9 @@ public class ConfirmationActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }else{
-                makeTextToast("codigo introducido incorrecto");
+                Toast.makeText(this,"codigo introducido incorrecto",Toast.LENGTH_LONG).show();
+
             }
-
-
 
         });
 
@@ -66,23 +62,25 @@ public class ConfirmationActivity extends AppCompatActivity {
 
             JSONObject postData = new JSONObject();
             try {
-                postData.put("codigo", codigoText);
+                postData.put("codigo", numeroAleatorio.toString());
                 postData.put("email", sessionManager.getEmail());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             // Realizar la solicitud POST para validar el email del paciente
-            postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
-                if (result != null) {
-                    Log.d(TAG, "Correo enviado");
-                    makeTextToast("Correo enviado");
-
-                }else{
-                    Log.d(TAG, "Error al enviar correo");
-                    makeTextToast("Error al enviar correo");
-                }
+            postDataAsync(urlServidor, executor, result -> {
+                runOnUiThread(() -> {
+                    if (result != null) {
+                        Log.d(TAG, "Correo enviado");
+                        Toast.makeText(this, "Correo enviado a " + sessionManager.getEmail(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Log.d(TAG, "Error al enviar correo");
+                        Toast.makeText(this, "Error al enviar correo", Toast.LENGTH_LONG).show();
+                    }
+                });
             }, "POST", postData.toString());
+
         });
 
         if (sessionManager.isVerificated()) {
@@ -95,23 +93,25 @@ public class ConfirmationActivity extends AppCompatActivity {
 
             JSONObject postData = new JSONObject();
             try {
-                postData.put("codigo", codigoText);
+                postData.put("codigo", numeroAleatorio.toString());
                 postData.put("email", sessionManager.getEmail());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             // Realizar la solicitud POST para validar el email del paciente
-            postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
-                if (result != null) {
-                    Log.d(TAG, "Correo enviado");
-                    makeTextToast("Correo enviado");
-
-                }else{
-                    Log.d(TAG, "Error al enviar correo");
-                    makeTextToast("Error al enviar correo");
-                }
+            postDataAsync(urlServidor, executor, result -> {
+                runOnUiThread(() -> {
+                    if (result != null) {
+                        Log.d(TAG, "Correo enviado");
+                        Toast.makeText(this, "Correo enviado a " + sessionManager.getEmail(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Log.d(TAG, "Error al enviar correo");
+                        Toast.makeText(this, "Error al enviar correo", Toast.LENGTH_LONG).show();
+                    }
+                });
             }, "POST", postData.toString());
+
 
         }
 

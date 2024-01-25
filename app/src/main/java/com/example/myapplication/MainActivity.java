@@ -43,19 +43,28 @@ public class MainActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
 
 
+
         if (sessionManager.isLoggedIn()) {
 
-            String username = sessionManager.getEmail();
+            if(sessionManager.isVerificated()){
 
-            Toolbar toolbar = findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
+                String username = sessionManager.getEmail();
 
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayShowTitleEnabled(false);
+                Toolbar toolbar = findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setDisplayShowTitleEnabled(false);
+                }
+
+                userText = findViewById(R.id.name);
+                userText.setText(username);
+            }else {
+                Intent intent = new Intent(this, ConfirmationActivity.class);
+                startActivity(intent);
             }
 
-            userText = findViewById(R.id.name);
-            userText.setText(username);
+
 
         } else {
             Intent intent = new Intent(this, IniciarSesionActivity.class);
