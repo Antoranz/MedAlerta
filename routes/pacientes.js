@@ -1,12 +1,15 @@
 var express = require('express');
 var router = express.Router();
+const nodemailer = require("nodemailer");
 const DAOPaciente = require("../DAOPacientes")
+const {sendVerificationEmail} = require('../mailer.js');
 
+const crypto = require('crypto');
 /* GET home page. */
 const mysql = require('mysql');
 
 // Configuración de la conexión a la base de datos MySQL en XAMPP
-const pool = mysql.createConnection({
+const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: '',
@@ -16,13 +19,49 @@ const pool = mysql.createConnection({
 
 const dao = new DAOPaciente(pool);
 
+
 router.post('/validarPaciente', async function(req, res, next) {
 
+    console.log(req.body.email);
     console.log(req.body.codigo);
+
+    sendVerificationEmail(req.body.email,req.body.codigo)
+
     res.json(true)
 
    
 });
+
+router.post('/registrarPaciente', async function(req, res, next) {
+
+    const {Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,password} = req.body;
+
+    try {
+
+        var hashedPassword = cifrarContrasena(password,email);
+
+        await dao.registrarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,hashedPassword);
+
+        res.json(true)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+        
+    }
+    
+
+});
+
+function cifrarContrasena(contrasena, salt) {
+    // Crea un nuevo objeto Hash
+    const hash = crypto.createHash('sha256');
+  
+    // Actualiza el hash con la contraseña y el salt
+    hash.update(contrasena + salt);
+  
+    // Devuelve el hash en formato hexadecimal
+    return hash.digest('hex');
+  }
 
 router.post('/bajaPaciente', async function(req, res, next) {
 
@@ -42,12 +81,17 @@ router.post('/checkPaciente', async function(req, res, next) {
     try {
 
         
+        
 
         var email=req.body.email;
         var password=req.body.password;
 
-        var paciente = await dao.checkPaciente(email,password);
+        var hashedPassword = cifrarContrasena(password,email);
 
+        var paciente = await dao.checkPaciente(email,hashedPassword);
+
+        console.log(email)
+        console.log(password)
         console.log(paciente)
         res.json(paciente)
     } catch (error) {
