@@ -86,17 +86,19 @@ public class RegistrarActivity extends AppCompatActivity  {
                }
 
                postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
-                   if (result != null) {
+                   runOnUiThread(() -> {
+                       if (result != null) {
 
-                       Log.d(TAG, "Registro finalizado correctamente");
-                       makeTextToast("Registro finalizado correctamente");
-                       Intent intent = new Intent(this, IniciarSesionActivity.class);
-                       startActivity(intent);
+                           Log.d(TAG, "Registro finalizado correctamente");
+                           makeTextToast("Registro finalizado correctamente");
+                           Intent intent = new Intent(this, IniciarSesionActivity.class);
+                           startActivity(intent);
 
-                   }else{
-                       Log.d(TAG, "Error al registrar");
-                       makeTextToast("Error al registrar");
-                   }
+                       }else{
+                           Log.d(TAG, "Error al registrar");
+                           makeTextToast("Error al registrar");
+                       }
+                   });
                }, "POST", postData.toString());
 
            }

@@ -57,29 +57,37 @@ public class IniciarSesionActivity extends AppCompatActivity {
                 }
 
                 postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
-                    if (result != null) {
-                        JSONArray jsonArray = new JSONArray(result);
+                    runOnUiThread(() -> {
+                        if (result != null) {
+                            try {
+                                JSONArray jsonArray = new JSONArray(result);
 
-                        if (jsonArray.length() > 0) {
+                                if (jsonArray.length() > 0) {
 
-                            JSONObject firstObject = jsonArray.getJSONObject(0);
+                                    JSONObject firstObject = jsonArray.getJSONObject(0);
 
-                            String dni = firstObject.getString("DNI");
-                            String email = firstObject.getString("email");
+                                    String dni = firstObject.getString("DNI");
+                                    String email = firstObject.getString("email");
 
-                            sessionManager.createSession(dni, email);
+                                    sessionManager.createSession(dni, email);
 
-                            Intent intent = new Intent(this, ConfirmationActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Log.d(TAG, "Error: No data found in the JSON array");
-                            makeTextToast("Credenciales incorrectas");
+                                    Intent intent = new Intent(this, ConfirmationActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Log.d(TAG, "Error: No data found in the JSON array");
+                                    makeTextToast("Credenciales incorrectas");
+                                }
+                            }catch (Exception e){
+                                Log.d(TAG, e.getMessage());
+                            }
+
+
+                        }else{
+                            Log.d(TAG, "Error deleting account");
+                            makeTextToast("Error interno en el servidor");
                         }
+                    });
 
-                    }else{
-                        Log.d(TAG, "Error deleting account");
-                        makeTextToast("Error interno en el servidor");
-                    }
                 }, "POST", postData.toString());
 
             }else{

@@ -84,10 +84,10 @@ public class MainActivity extends AppCompatActivity {
         final int id = item.getItemId();
 
         if (id == R.id.action_edit) {
-            /*
+
             Intent intent = new Intent(this, EditarActivity.class);
             startActivity(intent);
-            */
+
             finish();
             return true;
         } else if (id == R.id.action_delete) {
