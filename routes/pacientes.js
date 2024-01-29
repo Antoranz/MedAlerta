@@ -32,6 +32,8 @@ router.post('/validarPaciente', async function(req, res, next) {
    
 });
 
+
+
 router.post('/registrarPaciente', async function(req, res, next) {
 
     const {Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,password} = req.body;
@@ -61,7 +63,7 @@ function cifrarContrasena(contrasena, salt) {
   
     // Devuelve el hash en formato hexadecimal
     return hash.digest('hex');
-  }
+}
 
 router.post('/bajaPaciente', async function(req, res, next) {
 
@@ -81,12 +83,12 @@ router.post('/checkPaciente', async function(req, res, next) {
     try {
 
         
-        
-
         var email=req.body.email;
         var password=req.body.password;
 
         var hashedPassword = cifrarContrasena(password,email);
+
+        console.log(hashedPassword)
 
         var paciente = await dao.checkPaciente(email,hashedPassword);
 
@@ -101,5 +103,72 @@ router.post('/checkPaciente', async function(req, res, next) {
       }
    
 });
+
+router.get('/obtenerPaciente/:dni', async function(req, res, next) {
+
+    try {
+
+       
+        var dni=req.params.dni;
+
+        var paciente = await dao.obtenerPaciente(dni);
+
+       
+        console.log(paciente)
+        res.json(paciente)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+        
+      }
+   
+});
+
+router.post('/editarPaciente/:dni', async function(req, res, next) {
+
+    try {
+
+        var dni=req.params.dni;
+
+        const {Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono} = req.body;
+
+
+        await dao.editarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,dni);
+
+        res.json(true)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+        
+      }
+   
+});
+
+
+router.post('/editarPassword', async function(req, res, next) {
+
+    try {
+
+        const {password,email} = req.body;
+
+        var hashedPassword = cifrarContrasena(password,email);
+
+        console.log(hashedPassword)
+
+        console.log(password)
+        console.log(email)
+
+        await dao.editarPassword(hashedPassword,email);
+
+        res.json(true)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+        
+      }
+   
+});
+
+
 
 module.exports = router;
