@@ -42,7 +42,11 @@ router.post('/registrarPaciente', async function(req, res, next) {
 
         var hashedPassword = cifrarContrasena(password,email);
 
+        
         await dao.registrarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,hashedPassword);
+
+
+        
 
         res.json(true)
     } catch (error) {
@@ -113,7 +117,7 @@ router.get('/obtenerPaciente/:dni', async function(req, res, next) {
 
         var paciente = await dao.obtenerPaciente(dni);
 
-       
+
         console.log(paciente)
         res.json(paciente)
     } catch (error) {

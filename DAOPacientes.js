@@ -126,7 +126,7 @@ class DAOPaciente{
     }
 
     
-    bajaPaciente(idPaciente){
+    bajaPaciente(DNI){
         
         return new Promise((resolve, reject) => {
             this.pool.getConnection((err, connection) => {
@@ -135,8 +135,8 @@ class DAOPaciente{
                     reject(err);
                 }else{
                     console.log("Exito al conectar a la base de datos");
-                    var querybajaPaciente ="DELETE FROM pacientes WHERE idPaciente = ?"
-                    connection.query(querybajaPaciente,[idPaciente], (err, res) => {
+                    var querybajaPaciente ="DELETE FROM pacientes WHERE DNI = ?"
+                    connection.query(querybajaPaciente,[DNI], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);
