@@ -4,6 +4,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import static com.example.myapplication.PostDataAsync.postDataAsync;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,14 +21,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class RegistrarActivity extends AppCompatActivity  {
 
-    private EditText emailText,passwordText,repitPasswordText,nameText,surnameText,dateText,domicilioText,postalAddressText,phoneText,dniText;
+    private EditText emailText,passwordText,repitPasswordText,nameText,surnameText,editTextDate,domicilioText,postalAddressText,phoneText,dniText;
     private Button registerButton;
 
     @Override
@@ -45,7 +52,9 @@ public class RegistrarActivity extends AppCompatActivity  {
         repitPasswordText = findViewById(R.id.idRepitPassword);
         nameText = findViewById(R.id.idName);
         surnameText = findViewById(R.id.idSurname);
-        dateText = findViewById(R.id.editTextDate);
+        editTextDate = findViewById(R.id.editTextDate);
+        editTextDate.setOnClickListener(v -> openDatePicker());
+
         domicilioText = findViewById(R.id.idDomicilio);
         postalAddressText = findViewById(R.id.editTextTextPostalAddress);
         phoneText = findViewById(R.id.editTextPhone);
@@ -71,9 +80,19 @@ public class RegistrarActivity extends AppCompatActivity  {
 
                JSONObject postData = new JSONObject();
                try {
+
+                   DateFormat formatoEntrada = new SimpleDateFormat("dd/MM/yyyy");
+
+                   DateFormat formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
+
+                   Date fecha = formatoEntrada.parse(editTextDate.getText().toString());
+
+                   // Formatear la fecha en el formato de salida
+                   String fechaFormateada = formatoSalida.format(fecha);
+
                    postData.put("Nombre", nameText.getText().toString());
                    postData.put("Apellidos",surnameText.getText().toString());
-                   postData.put("FechaDeNacimiento", dateText.getText().toString());
+                   postData.put("FechaDeNacimiento", fechaFormateada);
                    postData.put("Direccion", domicilioText.getText().toString());
                    postData.put("CodigoPostal", postalAddressText.getText().toString());
                    postData.put("telefono", phoneText.getText().toString());
@@ -83,6 +102,8 @@ public class RegistrarActivity extends AppCompatActivity  {
 
                } catch (JSONException e) {
                    e.printStackTrace();
+               } catch (ParseException e) {
+                   throw new RuntimeException(e);
                }
 
                postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
@@ -125,6 +146,29 @@ public class RegistrarActivity extends AppCompatActivity  {
 
             return false;
         }
+    }
+
+    private void openDatePicker() {
+        // Obtener la fecha actual
+        Calendar calendar = Calendar.getInstance();
+
+        // Crear un DatePickerDialog y mostrarlo
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    // Crear un objeto Calendar con la fecha seleccionada
+                    Calendar selectedDateCalendar = Calendar.getInstance();
+                    selectedDateCalendar.set(selectedYear, selectedMonth, selectedDay);
+
+                    // Formatear la fecha seleccionada en el formato deseado
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String selectedDateFormatted = sdf.format(selectedDateCalendar.getTime());
+
+                    // Actualizar el campo de texto con la fecha seleccionada en el formato deseado
+                    editTextDate.setText(selectedDateFormatted);
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        // Mostrar el DatePickerDialog
+        datePickerDialog.show();
     }
 
     private static char calcularLetraDni(int numero) {

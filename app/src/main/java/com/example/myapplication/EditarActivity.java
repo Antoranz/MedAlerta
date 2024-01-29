@@ -5,6 +5,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static com.example.myapplication.GetDataAsync.getDataAsync;
 import static com.example.myapplication.PostDataAsync.postDataAsync;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,13 +24,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class EditarActivity extends AppCompatActivity {
 
-    private EditText nameText,surnameText,dateText,domicilioText,postalAddressText,phoneText;
+    private EditText nameText,surnameText,editTextDate,domicilioText,postalAddressText,phoneText;
     private TextView changePassword;
     private Button editButton;
     SessionManager sessionManager;
@@ -48,7 +55,8 @@ public class EditarActivity extends AppCompatActivity {
 
         nameText = findViewById(R.id.idName);
         surnameText = findViewById(R.id.idSurname);
-        dateText = findViewById(R.id.editTextDate);
+        editTextDate = findViewById(R.id.editTextDate);
+        editTextDate.setOnClickListener(v -> openDatePicker());
         domicilioText = findViewById(R.id.idDomicilio);
         postalAddressText = findViewById(R.id.editTextTextPostalAddress);
         phoneText = findViewById(R.id.editTextPhone);
@@ -73,12 +81,23 @@ public class EditarActivity extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(result);
                     if (jsonArray.length() > 0) {
 
-
                         JSONObject firstObject = jsonArray.getJSONObject(0);
 
                         nameText.setText(firstObject.getString("Nombre"));
                         surnameText.setText(firstObject.getString("Apellidos"));
-                        dateText.setText(firstObject.getString("FechaDeNacimiento"));
+
+                        String fechaString = firstObject.getString("FechaDeNacimiento");
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+                        Date fecha = sdf.parse(fechaString);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(fecha);
+                        calendar.add(Calendar.DAY_OF_MONTH, 1);
+                        Date nuevaFecha = calendar.getTime();
+                        SimpleDateFormat sdfFormateada = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        String nuevaFechaFormateada = sdfFormateada.format(nuevaFecha);
+
+                        editTextDate.setText(nuevaFechaFormateada);
+
                         domicilioText.setText(firstObject.getString("Direccion"));
                         postalAddressText.setText(firstObject.getString("CodigoPostal"));
                         phoneText.setText(firstObject.getString("telefono"));
@@ -93,6 +112,8 @@ public class EditarActivity extends AppCompatActivity {
                     Log.i("DOCTORES",jsonArray.toString());
                 } catch (JSONException e) {
                     Log.e("ObtenerDoctoresTask", "Error al procesar JSON", e);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -108,7 +129,7 @@ public class EditarActivity extends AppCompatActivity {
             try {
                 postData.put("Nombre", nameText.getText().toString());
                 postData.put("Apellidos",surnameText.getText().toString());
-                postData.put("FechaDeNacimiento", dateText.getText().toString());
+                postData.put("FechaDeNacimiento", editTextDate.getText().toString());
                 postData.put("Direccion", domicilioText.getText().toString());
                 postData.put("CodigoPostal", postalAddressText.getText().toString());
                 postData.put("telefono", phoneText.getText().toString());
@@ -135,6 +156,31 @@ public class EditarActivity extends AppCompatActivity {
 
         });
     }
+
+    private void openDatePicker() {
+        // Obtener la fecha actual
+        Calendar calendar = Calendar.getInstance();
+
+        // Crear un DatePickerDialog y mostrarlo
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    // Crear un objeto Calendar con la fecha seleccionada
+                    Calendar selectedDateCalendar = Calendar.getInstance();
+                    selectedDateCalendar.set(selectedYear, selectedMonth, selectedDay);
+
+                    // Formatear la fecha seleccionada en el formato deseado
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String selectedDateFormatted = sdf.format(selectedDateCalendar.getTime());
+
+                    // Actualizar el campo de texto con la fecha seleccionada en el formato deseado
+                    editTextDate.setText(selectedDateFormatted);
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        // Mostrar el DatePickerDialog
+        datePickerDialog.show();
+    }
+
+
 
     private Integer generarNumeroAleatorio() {
         // Crear un objeto Random

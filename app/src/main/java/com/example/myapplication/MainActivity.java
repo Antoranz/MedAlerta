@@ -120,17 +120,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Realizar la solicitud POST para borrar la cuenta de un paciente
         postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
-            if (result != null) {
-                Log.d(TAG, "Account deleted successfully");
-                makeTextToast("Account deleted successfully");
-                sessionManager.logout();
-                Intent intent = new Intent(this, IniciarSesionActivity.class);
-                startActivity(intent);
+            runOnUiThread(() -> {
+                if (result != null) {
 
-            }else{
-                Log.d(TAG, "Error deleting account");
-                makeTextToast("Error deleting account");
-            }
+                    Log.d(TAG, "Account deleted successfully");
+                    makeTextToast("Account deleted successfully");
+                    sessionManager.logout();
+                    Intent intent = new Intent(this, IniciarSesionActivity.class);
+                    startActivity(intent);
+
+                }else{
+                    Log.d(TAG, "Error deleting account");
+                    makeTextToast("Error deleting account");
+                }
+
+            });
+
         }, "POST", postData.toString());
 
     }
@@ -141,8 +146,11 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         borrarDatos();
+
                     }
+
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override

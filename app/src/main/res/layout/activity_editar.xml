@@ -59,12 +59,14 @@
             android:id="@+id/editTextDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Seleccionar fecha"
             android:layout_marginBottom="5dp"
-            android:ems="10"
-            android:hint="@string/fecha_de_nacimiento"
-            android:inputType="date"
+            android:focusable="false"
+            android:clickable="true"
             android:minHeight="48dp"
-            android:autofillHints="" />
+            android:textSize="16sp"
+            android:focusableInTouchMode="false" />
+
 
         <EditText
             android:id="@+id/idDomicilio"
