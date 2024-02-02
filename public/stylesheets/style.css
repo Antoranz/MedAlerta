@@ -1,8 +1,43 @@
+*{
+  margin:0;
+}
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+.message-container-error {
+  padding: 10px;
+  margin-top: 10px;
+  background-color: red;
+}
+
+.message-container-validated {
+  padding: 10px;
+  margin-top: 10px;
+  background-color: green;
+}
+
+.btn-secondary.custom-dropdown-toggle::after {
+  display: none !important;
+}
+
+.message {
+  color: white;
+  text-decoration: none;
+}
+
+#olvidarContrasena {
+  cursor: pointer;
+  text-decoration: underline; /* Esto es opcional, pero puede ser útil para indicar que es un enlace */
+  color: blue; /* Esto es opcional, pero puede ser útil para indicar que es un enlace */
+}
+
+.imagenIcono {
+  margin-bottom: 2px;
+  width: 100px; 
+  height: 100px;
 }

@@ -77,6 +77,30 @@ class DAOPaciente{
         }); 
     }
 
+    obtenerPaciente_email(email){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryObtenerPaciente_email ="SELECT * FROM pacientes WHERE email = ?"
+                    connection.query(queryObtenerPaciente_email,[email], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
     editarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,DNI){
         
         return new Promise((resolve, reject) => {

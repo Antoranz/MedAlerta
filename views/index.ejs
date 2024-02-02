@@ -1,11 +1,60 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    
+    <!-- Enlaces a Bootstrap (CSS y JS) -->
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <!-- Fin de enlaces a Bootstrap -->
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6 text-center">
+                <img src="/images/ic_launcher.webp" alt="Logo" class="img-fluid mb-3">
+                <h2>Iniciar Sesión</h2>
+
+                <form action="/doctor/signin/" method="post">
+                    <div class="form-group">
+                        <label for="dni">DNI</label>
+                        <input type="dni" class="form-control" id="dni" name="dni" placeholder="DNI" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="idPassword">Contraseña</label>
+                        <input type="password" class="form-control" id="idPassword" name="password" placeholder="Contraseña" required>
+                    </div>
+
+                    <div class="form-group">
+                        <a href="/users/register" id="crearCuentaId" class="text-blue">Crear una cuenta</a>
+                    </div>
+                    <div class="form-group">
+                        <a href="/users/recuperacion" id="olvidarContrasena" class="text-blue"><u>¿Has olvidado la contraseña?</u></a>
+                    </div>       
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" id="editButton">Iniciar Sesión</button>
+                    </div>
+                <% if (typeof error !== 'undefined' && error !== '') { %>
+                    <div class="message-container-error">
+                      <label for="exampleInputEmail1" class="form-label message"><%= error %></label>
+                    </div>
+                  <% } else if (typeof confirmacion !== 'undefined' && confirmacion !== '') { %>
+                    <div class="message-container-validated">
+                      <label for="exampleInputEmail1" class="form-label message"><%= confirmacion %></label>
+                    </div>
+                  <% } %>
+            </div>
+        </div>
+    </div>
+
+</body>
+
 </html>

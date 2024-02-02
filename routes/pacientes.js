@@ -86,7 +86,6 @@ router.post('/checkPaciente', async function(req, res, next) {
 
     try {
 
-        
         var email=req.body.email;
         var password=req.body.password;
 

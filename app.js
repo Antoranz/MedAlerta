@@ -9,7 +9,26 @@ var pacientesRouter = require('./routes/pacientes');
 var usersRouter = require('./routes/users');
 var doctorRouter = require('./routes/doctor');
 
+const session = require('express-session');
+const mysqlSession = require("express-mysql-session");
+const MySQLStore = mysqlSession(session);
+const sessionStore = new MySQLStore({
+  host:"localhost",
+  user:"root",
+  password:"",
+  database:"medalerta"
+});
+
 var app = express();
+
+const middlewareSession = session({
+  saveUninitialized: false,
+  secret: "foobar34",
+  resave: false,
+  store: sessionStore
+});
+
+app.use(middlewareSession);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

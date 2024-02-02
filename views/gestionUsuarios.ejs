@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Usuarios</title>
+    
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
+      
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+     <style>
+        .custom-dropdown-toggle::after {
+            display: none; 
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <style>               
+                #perfilImage {
+                    max-width: 5%;
+                    height: auto;
+                }
+            </style>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <img id="perfilImage" src="/images/logoUsuario.png" alt="Perfil" class="img-fluid">
+                            <span id="email" name = "email" class="ml-2"> <%= email %></span>
+                            
+                        </a>
+                    </li>
+                </ul>
+    
+                <div class="btn-group dropstart">
+                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="/users/editarperfil/<%= email %>">Editar perfil</a></li>
+                      <li><a class="dropdown-item" href="/users/signout">Cerrar sesión</a></li>
+                      <li><a class="dropdown-item" href="/users/deleteaccount/<%= email %>">Eliminar cuenta</a></li>
+                    </ul>
+                  </div>
+                
+                
+            </div>
+        </nav>
+        
+    </header>
+    <main>
+
+        <div id="filtrado" style="display: flex;" class="container mt-5" >
+          <div id="buscador"></div>
+          <div id="drop"></div>
+        </div>
+        <div id="Contenedor" class="container mt-5">  
+            <div style="display: flex; gap: 1%; margin-bottom: 2%">  
+            <h4>Lista de Usuarios </h4>
+            <button onclick="modalAniadirUsuario()" class="btn btn-primary">Añadir Usuario</button>
+            <div class="modal fade" id="modalAniadirUsuario" tabindex="-1" role="dialog" aria-labelledby="modalAniadirUsuario" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Añadir Usuario</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body text-center">
+                      <form action="/doctor/aniadirUsuario" method="post">
+                        <input type="text" name="dni" placeholder="DNI o correo" required>
+                        <button type="submit" class="btn btn-primary">Añadir</button>  
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> 
+
+
+            <table class="table table-responsive">
+              <thead>
+                <tr>
+                  <th> </th>
+                  <th>Nombre</th>
+                  <th>Apellidos</th>
+                  <th>Correo</th>
+                  <th>DNI</th>
+                </tr>
+              </thead>
+              <tbody id="tablaHistorial">
+              </tbody>
+            </table>
+          </div>
+
+    </main>
+
+
+    <div id="contenedorPDF"></div>
+
+    
+    <script>
+        function modalAniadirUsuario() {
+            $('#modalAniadirUsuario').modal('show');
+        }
+    </script>
+    <script src="/scripts/gestionUsuarios.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>   
+</body>
+</html>
