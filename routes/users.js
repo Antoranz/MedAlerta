@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/registrar', function(req, res, next) {
-  res.render("registrar",{error:""});
+router.get('/register', function(req, res, next) {
+  res.render("register",{error:""});
 });
 const mysql = require('mysql');
 
@@ -23,6 +23,7 @@ conexion.connect((error) => {
         console.log('Conexión a la base de datos exitosa');
     }
 });
+
 router.get('/obtener-doctores', (req, res) => {
   const sql = 'SELECT * FROM doctores';
 
@@ -35,23 +36,38 @@ router.get('/obtener-doctores', (req, res) => {
       }
   });
 });
+
 router.post('/registrando', function(req, res, next) {
   const {dni,email,password,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono} = req.body;
-
+  var hashedPassword = cifrarContrasena(password,dni);
   // Sentencia SQL para insertar un nuevo doctor
   const sql = `INSERT INTO doctores 
               (dni, email, password, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   // Parámetros para la sentencia SQL
-  const params = [dni,email,password,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono];
+  const params = [dni,email,hashedPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono];
   conexion.query(sql, params, (error, resultados) => {
     if(error){
-      console.log("Error interno del servidor");
+      console.log("Error interno del servidor" + error);
     }else{
-      console.log(resultados);
+      res.render('gestionUsuarios',{email : req.session.currentUser.email})
     }
   });
   console.log(req.body);
 });
+
+const crypto = require('crypto');
+
+function cifrarContrasena(contrasena, salt) {
+  // Crea un nuevo objeto Hash
+  const hash = crypto.createHash('sha256');
+
+  // Actualiza el hash con la contraseña y el salt
+  hash.update(contrasena + salt);
+
+  // Devuelve el hash en formato hexadecimal
+  return hash.digest('hex');
+}
+
 module.exports = router;

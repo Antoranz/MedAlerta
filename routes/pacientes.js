@@ -16,20 +16,15 @@ const pool = mysql.createPool({
     database: 'medalerta'
 });
 
-
 const dao = new DAOPaciente(pool);
 
-
 router.post('/validarPaciente', async function(req, res, next) {
-
     console.log(req.body.email);
     console.log(req.body.codigo);
 
     sendVerificationEmail(req.body.email,req.body.codigo)
 
     res.json(true)
-
-   
 });
 
 
@@ -39,23 +34,15 @@ router.post('/registrarPaciente', async function(req, res, next) {
     const {Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,password} = req.body;
 
     try {
-
         var hashedPassword = cifrarContrasena(password,email);
 
-        
         await dao.registrarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,hashedPassword);
-
-
-        
 
         res.json(true)
     } catch (error) {
         console.error("Error durante la operación:", error);
         res.json(null)
-        
     }
-    
-
 });
 
 function cifrarContrasena(contrasena, salt) {
@@ -110,12 +97,10 @@ router.post('/checkPaciente', async function(req, res, next) {
 router.get('/obtenerPaciente/:dni', async function(req, res, next) {
 
     try {
-
-       
+        
         var dni=req.params.dni;
 
         var paciente = await dao.obtenerPaciente(dni);
-
 
         console.log(paciente)
         res.json(paciente)

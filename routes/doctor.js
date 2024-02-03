@@ -37,12 +37,12 @@ router.post('/signin' , async function(req,res,next){
 
     var hashedPassword = cifrarContrasena(password,dni);
 
-    console.log(hashedPassword)
+    console.log("Contraseña inicio de sesion: " + hashedPassword);
 
     var doctor = await dao.checkDoctor(dni,hashedPassword);
 
     if(doctor.length===0){
-
+      console.log("aaaaaaaaaaaa "+doctor);
       res.render('index', {error: 'Las credenciales son incorrectas', confirmacion: ''});
 
     }else{
@@ -57,7 +57,6 @@ router.post('/signin' , async function(req,res,next){
     
 } catch (error) {
     console.error("Error durante la operación:", error);
-    
   }
 
 });
@@ -99,7 +98,6 @@ router.post("/aniadirUsuario", async function(req, res, next) {
   }
 
   res.render('gestionUsuarios',{email : req.session.currentUser.email});
-
 
 });
 
