@@ -61,6 +61,43 @@ router.post('/signin' , async function(req,res,next){
 
 });
 
+router.get('/obtener-doctores', (req, res) => {
+  const sql = 'SELECT * FROM doctores';
+
+  conexion.query(sql, (err, result) => {
+      if (err) {
+          console.error('Error al obtener doctores: ' + err.message);
+          res.status(500).send('Error interno del servidor');
+      } else {
+          res.json(result);
+      }
+  });
+});
+
+router.get('/register', function(req, res, next) {
+  res.render("register",{error:""});
+});
+
+router.post('/registrando', function(req, res, next) {
+  const {dni,email,password,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono} = req.body;
+  var hashedPassword = cifrarContrasena(password,dni);
+  // Sentencia SQL para insertar un nuevo doctor
+  const sql = `INSERT INTO doctores 
+              (dni, email, password, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  // Parámetros para la sentencia SQL
+  const params = [dni,email,hashedPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono];
+  conexion.query(sql, params, (error, resultados) => {
+    if(error){
+      console.log("Error interno del servidor" + error);
+    }else{
+      res.render('gestionUsuarios',{email : req.session.currentUser.email})
+    }
+  });
+  console.log(req.body);
+});
+
 function cifrarContrasena(contrasena, salt) {
   // Crea un nuevo objeto Hash
   const hash = crypto.createHash('sha256');
