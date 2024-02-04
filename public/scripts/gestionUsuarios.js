@@ -92,6 +92,10 @@ $(document).ready(function () {
                 window.location.href = '/doctor/verHistorial/' + usuario.DNI + '/' + usuario.id;
             });
 
+            var $buttonTratamiento = $('<button class="btn btn-primary" type="button">Iniciar Tratamiento</button>');
+            $buttonTratamiento.on('click', function(){
+                $('#modalIniciarTratamiento').modal('show');
+            });
             
             var $buttonMostrar = $('<button class="btn btn-primary" type="button">Mostrar historial médico</button>');
             $buttonMostrar.on('click', async function(){
@@ -134,6 +138,7 @@ $(document).ready(function () {
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
         </tr>`);
         
         $fila.find('td').eq(0).append(usuario.Nombre);
@@ -143,6 +148,7 @@ $(document).ready(function () {
         $fila.find('td').eq(4).append($buttonEliminar);
         $fila.find('td').eq(5).append($buttonCrearHistorial);
         $fila.find('td').eq(6).append($buttonMostrar);
+        $fila.find('td').eq(7).append($buttonTratamiento);
         
         $('#tablaHistorial').append($fila);
         
@@ -223,5 +229,16 @@ $(document).ready(function () {
     });
     $contenedor.append($button);
     getUsuarios();
+
+    $("#btnAgregarFila").click(function() {
+        var nuevaFila = $("<tr><td><input type='text' class='form-control' name='medicamento[]'></td><td><input type='text' class='form-control' name='dosis[]'></td><td><input type='text' class='form-control' name='hora_primera_toma[]'></td><td><input type='text' class='form-control' name='tomas_al_dia[]'></td><td><input type='date' class='form-control' name='fecha_inicio[]'></td><td><input type='date' class='form-control' name='fecha_fin[]'></td><td><button type='button' class='btn btn-danger btnEliminarFila'>-</button></td></tr>");
+        $("#tablaTratamiento tbody").append(nuevaFila); // Usa el identificador único
+    });
+  
+  
+    // Cambia la línea que elimina una fila dentro de la función click
+    $(".table").on("click", ".btnEliminarFila", function() {
+        $(this).closest("tr").remove();
+    });
     
 });

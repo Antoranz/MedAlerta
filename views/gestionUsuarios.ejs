@@ -105,7 +105,58 @@
               </tbody>
             </table>
           </div>
-
+          <!-- modal Iniciar Tratamiento-->
+          <div class="modal fade" id="modalIniciarTratamiento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document"> <!-- Utilizamos modal-xl para un modal extra grande -->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Formulario de Tratamiento</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="formTratamiento" method="post" action="/ruta-de-tu-router">
+                    <div class="form-group">
+                      <label for="descripcion">Descripción:</label>
+                      <textarea class="form-control" id="descripcion" name="descripcion" placeholder="Síntomas o razón de la consulta"></textarea>
+                    </div>
+          
+                    <div class="table-responsive"> <!-- Agregamos el contenedor responsive a la tabla -->
+                      <table class="table" id="tablaTratamiento">
+                        <thead>
+                          <tr>
+                            <th>Medicamento</th>
+                            <th>Dosis</th>
+                            <th>Hora 1ra Toma</th>
+                            <th>Tomas al Día</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th></th> <!-- Columna para el botón de eliminar fila -->
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><input type="text" class="form-control" name="medicamento[]"></td>
+                            <td><input type="text" class="form-control" name="dosis[]"></td>
+                            <td><input type="text" class="form-control" name="hora_primera_toma[]"></td>
+                            <td><input type="text" class="form-control" name="tomas_al_dia[]"></td>
+                            <td><input type="date" class="form-control" name="fecha_inicio[]"></td>
+                            <td><input type="date" class="form-control" name="fecha_fin[]"></td>
+                            <td><button type="button" class="btn btn-danger btnEliminarFila">-</button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+          
+                    <button type="button" class="btn btn-success" id="btnAgregarFila">+</button>
+          
+                    <button type="submit" class="btn btn-primary">Guardar Tratamiento</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
     </main>
 
 
