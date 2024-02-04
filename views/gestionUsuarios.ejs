@@ -116,10 +116,12 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <form id="formTratamiento" method="post" action="/ruta-de-tu-router">
+                  <form id="formTratamiento" method="post" action="/doctor/guardarTratamiento">
                     <div class="form-group">
                       <label for="descripcion">Descripción:</label>
-                      <textarea class="form-control" id="descripcion" name="descripcion" placeholder="Síntomas o razón de la consulta"></textarea>
+                      <textarea class="form-control" id="descripcion" name="descripcion" placeholder="Síntomas o razón de la consulta" required></textarea>
+                      <input type="hidden" id="dniPacienteInput" name="dniPaciente">
+                      <input type="hidden" id="contadorFilas" name="contadorFilas">
                     </div>
           
                     <div class="table-responsive"> <!-- Agregamos el contenedor responsive a la tabla -->
@@ -137,12 +139,12 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td><input type="text" class="form-control" name="medicamento[]"></td>
-                            <td><input type="text" class="form-control" name="dosis[]"></td>
-                            <td><input type="text" class="form-control" name="hora_primera_toma[]"></td>
-                            <td><input type="text" class="form-control" name="tomas_al_dia[]"></td>
-                            <td><input type="date" class="form-control" name="fecha_inicio[]"></td>
-                            <td><input type="date" class="form-control" name="fecha_fin[]"></td>
+                            <td><input type="text" class="form-control" name="medicamento[]" required></td>
+                            <td><input type="text" class="form-control" name="dosis[]" required></td>
+                            <td><input type="time" class="form-control" name="hora_primera_toma[]" required></td>
+                            <td><input type="number" class="form-control" name="tomas_al_dia[]" required></td>
+                            <td><input type="date" class="form-control" name="fecha_inicio[]" required></td>
+                            <td><input type="date" class="form-control" name="fecha_fin[]" required></td>
                             <td><button type="button" class="btn btn-danger btnEliminarFila">-</button></td>
                           </tr>
                         </tbody>

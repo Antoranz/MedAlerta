@@ -138,6 +138,64 @@ router.post("/aniadirUsuario", async function(req, res, next) {
 
 });
 
+router.post("/guardarTratamiento", async function(req, res, next) {
+
+  
+  const dniPaciente = req.body.dniPaciente;
+  const descripcion = req.body.descripcion;
+  
+  
+
+  const result = await dao.guardarTratamiento(req.session.currentUser.dni,dniPaciente,descripcion)
+
+  
+  console.log(dniPaciente);
+  console.log(result.insertId)
+
+
+   // varios meidcamentos en forma de array
+   if (Array.isArray(req.body['medicamento[]'])) {
+    for (let i = 0; i < req.body['medicamento[]'].length; i++) {
+        const medicamento = req.body['medicamento[]'][i];
+        const dosis = req.body['dosis[]'][i];
+        const horaPrimeraToma = req.body['hora_primera_toma[]'][i];
+        const tomasAlDia = req.body['tomas_al_dia[]'][i];
+        const fechaInicio = req.body['fecha_inicio[]'][i];
+        const fechaFin = req.body['fecha_fin[]'][i];
+
+        console.log(medicamento);
+        console.log(dosis);
+        console.log(horaPrimeraToma);
+        console.log(tomasAlDia);
+        console.log(fechaInicio);
+        console.log(fechaFin);
+
+        await dao.guardarAlarma(result.insertId, medicamento, dosis, horaPrimeraToma, tomasAlDia, fechaInicio, fechaFin);
+    }
+} else { //Sólo un medicamento
+    const medicamento = req.body['medicamento[]'];
+    const dosis = req.body['dosis[]'];
+    const horaPrimeraToma = req.body['hora_primera_toma[]'];
+    const tomasAlDia = req.body['tomas_al_dia[]'];
+    const fechaInicio = req.body['fecha_inicio[]'];
+    const fechaFin = req.body['fecha_fin[]'];
+
+    console.log(medicamento);
+    console.log(dosis);
+    console.log(horaPrimeraToma);
+    console.log(tomasAlDia);
+    console.log(fechaInicio);
+    console.log(fechaFin);
+
+    await dao.guardarAlarma(result.insertId, medicamento, dosis, horaPrimeraToma, tomasAlDia, fechaInicio, fechaFin);
+}
+
+
+  
+  res.render('gestionUsuarios',{email : req.session.currentUser.email});
+
+});
+
 router.get('/getUsuarios/', async function(req, res, next) {
   try {
 

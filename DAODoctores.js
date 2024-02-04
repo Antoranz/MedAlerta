@@ -30,6 +30,54 @@ class DAODoctor{
         }); 
     }
 
+    guardarTratamiento(id_doctor,id_paciente,diagnostico){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryGuardarTratamiento ="INSERT INTO tratamiento (id_paciente, id_doctor, diagnostico) VALUES (?, ?, ?)"
+                    connection.query(queryGuardarTratamiento,[id_paciente,id_doctor,diagnostico], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    guardarAlarma(id_tratamiento,medicamento,dosis,hora_primera_toma,tomas_al_dia,fecha_inicio,fecha_fin){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryGuardarAlarma ="INSERT INTO alarma (id_tratamiento,medicamento,dosis,hora_primera_toma,tomas_al_dia,fecha_inicio,fecha_fin) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                    connection.query(queryGuardarAlarma,[id_tratamiento,medicamento,dosis,hora_primera_toma,tomas_al_dia,fecha_inicio,fecha_fin], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
     obtenerPacientes_doctor(DNIDoctor){
         
         return new Promise((resolve, reject) => {

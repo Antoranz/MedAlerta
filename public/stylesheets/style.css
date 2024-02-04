@@ -21,6 +21,12 @@ a {
   background-color: green;
 }
 
+.btn-standard {
+  width: 120px; /* ajusta el ancho según tus preferencias */
+  height: 90px; /* ajusta la altura según tus preferencias */
+  /* Puedes agregar otros estilos comunes aquí, como colores de fondo, bordes, etc. */
+}
+
 .btn-secondary.custom-dropdown-toggle::after {
   display: none !important;
 }

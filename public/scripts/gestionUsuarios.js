@@ -71,7 +71,7 @@ $(document).ready(function () {
         var $tabla = $('#tablaHistorial');
         $tabla.empty();
         usuariosFiltrados.forEach(function(usuario, index) {          
-            var $buttonEliminar = $('<button class="btn btn-primary" type="button">Eliminar</button>');
+            var $buttonEliminar = $('<button class="btn btn-standard btn-primary" type="button">Eliminar</button>');
             $buttonEliminar.on('click', function(){
                 $.ajax({
                     url: `/doctor/eliminarAsociacion/${usuario.DNI}/${correo}`,
@@ -87,17 +87,23 @@ $(document).ready(function () {
                     }
                 });
             });
-            var $buttonCrearHistorial = $('<button class="btn btn-primary" type="button">Crear historial médico</button>');
+            var $buttonCrearHistorial = $('<button class="btn btn-standard btn-primary" type="button">Crear historial médico</button>');
             $buttonCrearHistorial.on('click', function(){
                 window.location.href = '/doctor/verHistorial/' + usuario.DNI + '/' + usuario.id;
             });
 
-            var $buttonTratamiento = $('<button class="btn btn-primary" type="button">Iniciar Tratamiento</button>');
-            $buttonTratamiento.on('click', function(){
+            var $buttonTratamiento = $('<button class="btn btn-standard btn-primary" type="button">Iniciar Tratamiento</button>');
+                $buttonTratamiento.data('usuario', usuario);
+                $buttonTratamiento.on('click', function(){
+                // Obtener los datos del paciente asociados al botón de tratamiento
+                var paciente = $(this).data('usuario');
+                $('#dniPacienteInput').val(paciente.dni);
+
+                console.log("Tratamiento para el paciente:", paciente.dni);
                 $('#modalIniciarTratamiento').modal('show');
             });
-            
-            var $buttonMostrar = $('<button class="btn btn-primary" type="button">Mostrar historial médico</button>');
+
+            var $buttonMostrar = $('<button class="btn btn-standard btn-primary" type="button">Mostrar historial médico</button>');
             $buttonMostrar.on('click', async function(){
                 $.ajax({
                     url: '/doctor/obtenerURLPDF', // Cambia esto con la ruta correcta en tu servidor
@@ -231,14 +237,16 @@ $(document).ready(function () {
     getUsuarios();
 
     $("#btnAgregarFila").click(function() {
-        var nuevaFila = $("<tr><td><input type='text' class='form-control' name='medicamento[]'></td><td><input type='text' class='form-control' name='dosis[]'></td><td><input type='text' class='form-control' name='hora_primera_toma[]'></td><td><input type='text' class='form-control' name='tomas_al_dia[]'></td><td><input type='date' class='form-control' name='fecha_inicio[]'></td><td><input type='date' class='form-control' name='fecha_fin[]'></td><td><button type='button' class='btn btn-danger btnEliminarFila'>-</button></td></tr>");
+        var nuevaFila = $("<tr><td><input type='text' class='form-control' name='medicamento[]'></td><td><input type='text' class='form-control' name='dosis[]'></td><td><input type='time' class='form-control' name='hora_primera_toma[]'></td><td><input type='number' class='form-control' name='tomas_al_dia[]'></td><td><input type='date' class='form-control' name='fecha_inicio[]'></td><td><input type='date' class='form-control' name='fecha_fin[]'></td><td><button type='button' class='btn btn-danger btnEliminarFila'>-</button></td></tr>");
         $("#tablaTratamiento tbody").append(nuevaFila); // Usa el identificador único
+       
     });
   
   
     // Cambia la línea que elimina una fila dentro de la función click
     $(".table").on("click", ".btnEliminarFila", function() {
         $(this).closest("tr").remove();
+        
     });
     
 });
