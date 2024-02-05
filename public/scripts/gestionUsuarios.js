@@ -89,7 +89,7 @@ $(document).ready(function () {
             });
             var $buttonCrearHistorial = $('<button class="btn btn-standard btn-primary" type="button">Crear historial médico</button>');
             $buttonCrearHistorial.on('click', function(){
-                window.location.href = '/doctor/verHistorial/' + usuario.DNI + '/' + usuario.id;
+                window.location.href = '/doctor/CrearHistorial/';
             });
 
             var $buttonTratamiento = $('<button class="btn btn-standard btn-primary" type="button">Iniciar Tratamiento</button>');

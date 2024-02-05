@@ -113,13 +113,12 @@ router.post("/aniadirUsuario", async function(req, res, next) {
   
   const usuarioP = req.body.dni;
 
-  if(usuarioP.includes("@")){
+  if(usuarioP.includes("@")){ //
     
     var paciente = await dao2.obtenerPaciente_email(usuarioP);
-
     
     if(paciente.length!==0){
-
+      console.log("aniado paciente con dni:" + paciente[0].dni + " al doctor con dni: "+ req.session.currentUser.dni);
       dao.aniadirUsuario(req.session.currentUser.dni, paciente[0].dni);
 
     }
@@ -127,8 +126,8 @@ router.post("/aniadirUsuario", async function(req, res, next) {
   }else{
 
     var paciente = await dao2.obtenerPaciente(usuarioP);
-  
     if(paciente.length !==0){
+      console.log("aniado paciente con dni:" + paciente[0].dni + " al doctor con dni: "+ req.session.currentUser.dni);
       dao.aniadirUsuario(req.session.currentUser.dni,usuarioP)
     }
    
@@ -210,32 +209,151 @@ router.get('/getUsuarios/', async function(req, res, next) {
   }
 });
 
-router.get('/historial', function(req, res, next) {
+router.get('/CrearHistorial', function(req, res, next) {
     res.render('historialMedico', { title: 'Express' ,userData: ""});
   });
   
   router.post('/guardarHistorial', function(req, res){
     // Creamos un nuevo documento PDF
     const doc = new PDFDocument();
+    
+    
+    function obtenerFechaActual() {
+      const fecha = new Date();
+      const dia = fecha.getDate();
+      const mes = fecha.getMonth() + 1;
+      const anio = fecha.getFullYear();
+      return `${dia}/${mes}/${anio}`;
+    }
 
-    // Creamos el contenido del PDF con los datos del formulario
-    doc.text(`Nombre: ${req.body.nombre}`);
-    doc.text(`Apellido: ${req.body.apellido}`);
-    doc.text(`Sexo: ${req.body.sexo}`);
-    doc.text(`Fecha de Nacimiento: ${req.body.fechaNacimiento}`);
-    doc.text(`Edad: ${req.body.edad}`);
-    doc.text(`Peso (kg): ${req.body.peso}`);
-    doc.text(`Altura (cm): ${req.body.altura}`);
-    doc.text(`Alergias: ${req.body.alergias}`);
-    doc.text(`Notas: ${req.body.notas}`);
+    // Definir coordenadas y dimensiones del rectángulo del título
+    const tituloRectX = 50;
+    const tituloRectY = 50;
+    const tituloRectWidth = 500;
+    const tituloRectHeight = 80;
+    const tituloRectBorderWidth = 2;
+
+    // Dibujar el rectángulo del título con borde negro y fondo gris
+    doc.rect(tituloRectX, tituloRectY, tituloRectWidth, tituloRectHeight)
+        .lineWidth(tituloRectBorderWidth)
+        .fillColor('#CCCCCC') // Color de fondo gris
+        .strokeColor('#000000') // Color de borde negro
+        .stroke()
+        .fill();
+
+    // Título del documento
+    doc.font('Helvetica-Bold').fontSize(24)
+        .fillColor('#000000') // Cambiar color de texto a negro
+        .text('Historial Médico', { align: 'center', lineGap: 10 });
+
+    // Fecha actual
+    doc.font('Helvetica').fontSize(16)
+        .text(obtenerFechaActual(), { align: 'center' });
+
+    // Ruta de la imagen a añadir
+    const rutaImagen = './public/images/logoMedAlerta.png';
+
+    // Coordenadas de la imagen en el PDF
+    const imagenX = 70;
+    const imagenY = 50;
+    const imagenAncho = 80;
+    const imagenAlto = 80;
+
+    // Añadir la imagen al PDF
+    doc.image(rutaImagen, imagenX, imagenY, { width: imagenAncho, height: imagenAlto });
+
+
+    
+    doc.moveDown(1.5);
+
+
+    // Definir coordenadas y dimensiones del rectángulo del título
+    const datosRectX = 50;
+    const datosRectY = 140;
+    const datosRectWidth = 500;
+    const datosRectHeight = 600;
+    const datosRectBorderWidth = 2;
+
+    // Dibujar el rectángulo del título con borde negro y fondo gris
+    doc.rect(datosRectX, datosRectY, datosRectWidth, datosRectHeight)
+        .lineWidth(datosRectBorderWidth)
+        .fillColor('#000000') // Color de fondo gris
+        .strokeColor('#787878') // Color de borde negro
+        .stroke()
+        .fill();
+
+    // Datos del formulario
+    const campos = [
+      { titulo: 'Nombre', valor: req.body.nombre },
+      { titulo: 'Apellido', valor: req.body.apellido },
+      { titulo: 'Sexo', valor: req.body.sexo },
+      { titulo: 'Fecha de Nacimiento', valor: req.body.fechaNacimiento },
+      { titulo: 'Edad', valor: req.body.edad },
+      { titulo: 'Peso (kg)', valor: req.body.peso },
+      { titulo: 'Altura (cm)', valor: req.body.altura },
+      { titulo: 'Alergias', valor: req.body.alergias },
+      { titulo: 'Notas', valor: req.body.notas },
+      { titulo: 'Fecha Actual', valor: obtenerFechaActual() }
+    ];
+
+    doc.fontSize(12);
+    doc.strokeColor('#787878');
+    let actual = 0;
+    // Agregar campos al documento con separación
+    campos.forEach((campo, index) => {
+      const yPos = 100 + index * 20;
+      doc.text(`${campo.titulo}: `, { align: 'left', continued: true })
+          .text(campo.valor, { align: 'left', continued: false, indent: 100 });
+      doc.moveDown(0.3).lineWidth(1).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+      doc.moveDown();
+      actual = yPos;
+    });
+
+    const enfermedades = Object.keys(req.body).filter(key => key !== "_csrf").slice(7);
+    const enfermedadesMarcadas = enfermedades.slice(0,enfermedades.length-2);
+    console.log(enfermedadesMarcadas);
+    // Posición inicial
+    let xPos = 70;
+    let yPos = actual+ 196;
+    const spaceBetweenElements = 5;
+    const maxPosX = 500; // Posición X máxima antes de un salto de línea
+
+    doc.text(`Enfermedades: `, { align: 'left', continued: true });
+
+    let firstElement = true; // Variable para controlar el primer elemento
+
+    enfermedadesMarcadas.forEach((enfermedad, index) => {
+      // Verificar si la enfermedad excede el espacio disponible en la línea actual
+      if (xPos + doc.widthOfString(enfermedad) > maxPosX) {
+        xPos = 110; // Reiniciar la posición X para el inicio de la nueva línea
+        yPos += 20; // Aumentar la posición Y para el salto de línea
+      }
+      if (index == 1){
+        xPos += doc.widthOfString(enfermedad);
+      }
+        xPos += spaceBetweenElements; // Añadir espacio entre las enfermedades
+  
+      // Agregar la enfermedad al PDF
+      doc.text(enfermedad, xPos, yPos);
+  
+      // Actualizar la posición X para el próximo elemento
+      xPos += doc.widthOfString(enfermedad); 
+  });
+    
+  
+    
+    
+    //doc.rect(10, 50, 600, 800).fill('lightgrey');
+
+    
 
     // Creamos un flujo de escritura para guardar el PDF en un archivo local
-    const filePath = "../MedAlerta/public/historiales/historial_medico.pdf"
+    const filePath = "../MedAlerta/public/historiales/HM"+req.body.nombre+ ".pdf";
     const writeStream = fs.createWriteStream(filePath);
 
     // Manejamos eventos de error y finalización del flujo de escritura
     writeStream.on('finish', () => {
-        res.send('PDF guardado en ./historiales/historial_medico.pdf');
+      res.render('gestionUsuarios',{email : req.session.currentUser.email});
     });
 
     writeStream.on('error', (err) => {
