@@ -16,4 +16,7 @@
     <string name="change_password"><u>Cambiar contraseña</u></string>
     <string name="question_password"><u>¿Has olvidado la contraseña?</u></string>
     <string name="todo">TODO</string>
+    <string name="channel_id">canal_id</string>
+    <string name="channel_name">Nombre del canal</string>
+    <string name="channel_description">Descripción del canal</string>
 </resources>

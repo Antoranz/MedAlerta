@@ -2,7 +2,7 @@ package com.example.myapplication;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import static com.example.myapplication.GetDataAsync.getDataAsync;
+
 import static com.example.myapplication.PostDataAsync.postDataAsync;
 
 import android.content.Intent;
@@ -48,6 +48,8 @@ public class IniciarSesionActivity extends AppCompatActivity {
                 Executor executor = Executors.newSingleThreadExecutor();
                 String urlServidor = "http://10.0.2.2:3000/pacientes/checkPaciente";
 
+
+
                 JSONObject postData = new JSONObject();
                 try {
                     postData.put("email", email.getText().toString());
@@ -66,7 +68,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
                                     JSONObject firstObject = jsonArray.getJSONObject(0);
 
-                                    String dni = firstObject.getString("DNI");
+                                    String dni = firstObject.getString("dni");
                                     String email = firstObject.getString("email");
 
                                     sessionManager.createSession(dni, email);
@@ -80,8 +82,6 @@ public class IniciarSesionActivity extends AppCompatActivity {
                             }catch (Exception e){
                                 Log.d(TAG, e.getMessage());
                             }
-
-
                         }else{
                             Log.d(TAG, "Error deleting account");
                             makeTextToast("Error interno en el servidor");

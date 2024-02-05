@@ -8,8 +8,15 @@ import static com.example.myapplication.PostDataAsync.postDataAsync;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -20,12 +27,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.SessionManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -35,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     TextView userText;
     SessionManager sessionManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,35 +52,22 @@ public class MainActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
 
 
+        String username = sessionManager.getEmail();
 
-        if (sessionManager.isLoggedIn()) {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-            if(sessionManager.isVerificated()){
-
-                String username = sessionManager.getEmail();
-
-                Toolbar toolbar = findViewById(R.id.toolbar);
-                setSupportActionBar(toolbar);
-
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setDisplayShowTitleEnabled(false);
-                }
-
-                userText = findViewById(R.id.name);
-                userText.setText(username);
-            }else {
-                Intent intent = new Intent(this, ConfirmationActivity.class);
-                startActivity(intent);
-            }
-
-
-
-        } else {
-            Intent intent = new Intent(this, IniciarSesionActivity.class);
-            startActivity(intent);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
+        userText = findViewById(R.id.name);
+        userText.setText(username);
+
     }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -160,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
     private void makeTextToast(String text){
         Toast.makeText(this,text,Toast.LENGTH_LONG).show();
     }
