@@ -83,8 +83,8 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
 
                         progressBar.setProgress(progressStatus);
 
-
                     }
+
                 });
 
                 try {
