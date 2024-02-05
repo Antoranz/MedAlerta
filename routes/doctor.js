@@ -209,6 +209,27 @@ router.get('/getUsuarios/', async function(req, res, next) {
   }
 });
 
+router.get('/eliminarAsociacion/:dni', async function(req, res, next) {
+  try {
+
+    const dniUsuario = req.params.dni;
+
+    console.log(dniUsuario)
+
+
+    dao.eliminarAsociacion(req.session.currentUser.dni,dniUsuario)
+
+
+    res.render('gestionUsuarios',{email : req.session.currentUser.email});
+
+
+
+  } catch (error) {
+    
+    console.error("Error al obtener usuarios:", error);
+  }
+});
+
 router.get('/CrearHistorial', function(req, res, next) {
     res.render('historialMedico', { title: 'Express' ,userData: ""});
   });

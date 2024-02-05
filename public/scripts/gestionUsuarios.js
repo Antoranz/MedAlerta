@@ -72,20 +72,10 @@ $(document).ready(function () {
         $tabla.empty();
         usuariosFiltrados.forEach(function(usuario, index) {          
             var $buttonEliminar = $('<button class="btn btn-standard btn-primary" type="button">Eliminar</button>');
+            $buttonEliminar.data('usuario', usuario);
             $buttonEliminar.on('click', function(){
-                $.ajax({
-                    url: `/doctor/eliminarAsociacion/${usuario.DNI}/${correo}`,
-                    type: 'POST',
-                    success:function(data){
-                        getUsuarios();
-                        cargarBuscador();
-                        mostrarUsuarios();
-                        console.info("ok");
-                    }, error: function(error){
-                        mostrarUsuarios();
-                        console.info("error");
-                    }
-                });
+                //para pasar datos por url usar comillas invertidas en vez de las normales
+                window.location.href = `/doctor/eliminarAsociacion/${usuario.dni}`;
             });
             var $buttonCrearHistorial = $('<button class="btn btn-standard btn-primary" type="button">Crear historial médico</button>');
             $buttonCrearHistorial.on('click', function(){

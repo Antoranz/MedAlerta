@@ -77,6 +77,30 @@ class DAOPaciente{
         }); 
     }
 
+    obtenerAlarmas(dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryObtenerAlarmas ="SELECT a.* FROM tratamiento t JOIN alarma a ON t.id_tratamiento = a.id_tratamiento JOIN pacientes p ON t.id_paciente = p.dni WHERE p.dni = ? "
+                    connection.query(queryObtenerAlarmas,[dni], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
     obtenerPaciente_email(email){
         
         return new Promise((resolve, reject) => {

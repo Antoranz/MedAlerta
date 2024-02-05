@@ -30,6 +30,30 @@ class DAODoctor{
         }); 
     }
 
+    eliminarAsociacion(DNIDoctor,DNIPaciente){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryeliminarAsociacion ="DELETE FROM asignaciones WHERE DNIDoctor = ? AND DNIPaciente = ?"
+                    connection.query(queryeliminarAsociacion,[DNIDoctor,DNIPaciente], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
     guardarTratamiento(id_doctor,id_paciente,diagnostico){
         
         return new Promise((resolve, reject) => {
