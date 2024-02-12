@@ -64,7 +64,7 @@ router.post('/signin' , async function(req,res,next){
 router.get('/obtener-doctores', (req, res) => {
   const sql = 'SELECT * FROM doctores';
 
-  conexion.query(sql, (err, result) => {
+  pool.query(sql, (err, result) => {
       if (err) {
           console.error('Error al obtener doctores: ' + err.message);
           res.status(500).send('Error interno del servidor');
@@ -88,10 +88,11 @@ router.post('/registrando', function(req, res, next) {
 
   // Parámetros para la sentencia SQL
   const params = [dni,email,hashedPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono];
-  conexion.query(sql, params, (error, resultados) => {
+  pool.query(sql, params, (error, resultados) => {
     if(error){
       console.log("Error interno del servidor" + error);
     }else{
+      req.session.currentUser = {dni,email,nombre,apellidos};
       res.render('gestionUsuarios',{email : req.session.currentUser.email})
     }
   });
@@ -361,15 +362,10 @@ router.get('/CrearHistorial', function(req, res, next) {
       xPos += doc.widthOfString(enfermedad); 
   });
     
-  
-    
-    
     //doc.rect(10, 50, 600, 800).fill('lightgrey');
 
-    
-
     // Creamos un flujo de escritura para guardar el PDF en un archivo local
-    const filePath = "../MedAlerta/public/historiales/HM"+req.body.nombre+ ".pdf";
+    const filePath = "../MedAlerta/public/historiales/HM"+req.session.currentUser.dni + "-" + req.body.dni + ".pdf";
     const writeStream = fs.createWriteStream(filePath);
 
     // Manejamos eventos de error y finalización del flujo de escritura
@@ -387,6 +383,13 @@ router.get('/CrearHistorial', function(req, res, next) {
 
     // Finalizamos el documento PDF
     doc.end();
+});
+
+router.get('/obtenerURLPDF', (req, res) => {
+  const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + req.query.dni + ".pdf";
+
+  // Responde con la URL del PDF
+  res.json({ downloadURL: pdfURL });
 });
 
 module.exports = router;

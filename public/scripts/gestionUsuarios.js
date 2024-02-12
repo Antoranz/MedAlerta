@@ -95,18 +95,23 @@ $(document).ready(function () {
 
             var $buttonMostrar = $('<button class="btn btn-standard btn-primary" type="button">Mostrar historial médico</button>');
             $buttonMostrar.on('click', async function(){
+                var paciente = {dni: usuariosFiltrados[index].dni};
                 $.ajax({
-                    url: '/doctor/obtenerURLPDF', // Cambia esto con la ruta correcta en tu servidor
+                    url: '/doctor/obtenerURLPDF', // Debes cambiar esto con la ruta correcta en tu servidor
                     type: 'GET',
+                    data: paciente,
                     success: function(response) {
-                      // Cuando la solicitud AJAX sea exitosa, muestra el PDF en el contenedor
-                      mostrarPDF(response.downloadURL);
+                        // Cuando la solicitud AJAX sea exitosa, muestra el PDF en una pestaña nueva
+                        console.log("Cargado el pdfFFFFFFFFFFFF")
+                        var win = window.open(response.downloadURL, '_blank');
+                        win.focus();
                     },
                     error: function() {
-                      console.error('Error al obtener la URL del PDF');
-                      alert('Error al cargar el PDF');
+                        console.error('Error al obtener la URL del PDF');
+                        console.log(error);
+                        alert('Error al cargar el PDF');
                     }
-                  });
+                });
             });
 
             function mostrarPDF(downloadURL) {
