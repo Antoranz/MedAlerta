@@ -7,8 +7,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.example.myapplication.AlarmReceiverActivity;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class Controller {
     static Controller instance;
@@ -29,6 +34,13 @@ public class Controller {
         pendingIntent = PendingIntent.getBroadcast(ctx, i, alarmIntent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         alarmIntent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
         alarmManager.set(AlarmManager.RTC_WAKEUP, timestamp, pendingIntent);
+
+        // Convertir el timestamp a una fecha y hora legibles
+        Date date = new Date(timestamp);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String formattedDateTime = sdf.format(date);
+
+        Log.i("ALARMAS", "Alarma creada: ID " + i + ", timestamp " + formattedDateTime);
 
     }
 

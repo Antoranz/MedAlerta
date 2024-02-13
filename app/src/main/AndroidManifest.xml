@@ -49,6 +49,18 @@
 
         </activity>
 
+        <service
+            android:name=".NotificationServiceActivity"
+            android:exported="true">
+        </service>
+
+        <receiver
+            android:name=".AlarmReceiverActivity"
+            android:exported="true">
+
+        </receiver>
+
+
 
         <activity
             android:name=".IniciarSesionActivity"
