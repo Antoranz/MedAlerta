@@ -14,68 +14,66 @@
 </head>
 
 <body>
-
     <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
+        <div class="row justify-content-center pt-3">
+            <div class="col-md-7">
 
                 <form action="/doctor/registrando" method="post">
 
-                    <h4 class="text-center mb-4">Información de Registro</h4>
+                    <h1 class="text-center mb-4 tituloFont">Información de Registro</h1>
 
                     <div class="form-group">
                         <label for="idEmail">Email</label>
-                        <input type="email" class="form-control" id="idEmail" name="email" placeholder="Correo electrónico" required>
+                        <input type="email" class="form-control" id="idEmail" name="email" value="<%=usuario.email%>" placeholder="Correo electrónico" required>
                     </div>
 
                     <div class="form-group">
                         <label for="idPassword">Contraseña</label>
-                        <input type="password" class="form-control" id="idPassword" name="password" placeholder="Contraseña" required>
+                        <input type="password" class="form-control" id="idPassword" name="password" value="<%=usuario.password%>" placeholder="Contraseña" required>
                     </div>
 
                     <div class="form-group">
                         <label for="idRepitPassword">Repetir Contraseña</label>
-                        <input type="password" class="form-control" id="idRepitPassword" name="repeatPassword" placeholder="Repetir Contraseña" required>
+                        <input type="password" class="form-control" id="idRepitPassword" name="repeatPassword" value="<%=usuario.repeatPassword%>" placeholder="Repetir Contraseña" required>
                     </div>
 
-                    <h4 class="text-center mb-4">Datos Personales</h4>
+                    <hr>
+                    <h1 class="text-center mb-4 tituloFont">Datos Personales</h1>
 
                     <div class="form-group">
                         <label for="idName">Nombre</label>
-                        <input type="text" class="form-control" id="idName" name="nombre" placeholder="Nombre" required>
+                        <input type="text" class="form-control" id="idName" name="nombre" value="<%=usuario.nombre%>" placeholder="Nombre" required>
                     </div>
 
                     <div class="form-group">
                         <label for="idSurname">Apellidos</label>
-                        <input type="text" class="form-control" id="idSurname" name="apellidos" placeholder="Apellidos" required>
+                        <input type="text" class="form-control" id="idSurname" name="apellidos" value="<%=usuario.apellidos%>" placeholder="Apellidos" required>
                     </div>
                     <div class="form-group">
                         <label for="idDNI">DNI</label>
-                        <input type="text" class="form-control" id="idDNI" name="dni" placeholder="DNI" required>
+                        <input type="text" class="form-control" id="idDNI" name="dni" value="<%=usuario.dni%>" placeholder="DNI" required>
                     </div>
                     <div class="form-group">
                         <label for="editTextDate">Fecha de Nacimiento</label>
-                        <input type="date" class="form-control" id="editTextDate" name="fecha_nacimiento" required>
+                        <input type="date" class="form-control" id="editTextDate" name="fecha_nacimiento" value="<%=usuario.fecha_nacimiento%>" required>
                     </div>
 
                     <div class="form-group">
                         <label for="idDomicilio">Domicilio</label>
-                        <input type="text" class="form-control" id="idDomicilio" name="domicilio" placeholder="Calle, Portal, Piso, Número o Letra" required>
+                        <input type="text" class="form-control" id="idDomicilio" name="domicilio" value="<%=usuario.domicilio%>" placeholder="Calle, Portal, Piso, Número o Letra" required>
                     </div>
 
                     <div class="form-group">
                         <label for="editTextTextPostalAddress">Código Postal</label>
-                        <input type="text" class="form-control" id="editTextTextPostalAddress" name="codigo_postal" placeholder="Código Postal" required>
+                        <input type="text" class="form-control" id="editTextTextPostalAddress" name="codigo_postal" value="<%=usuario.codigo_postal%>" placeholder="Código Postal" required>
                     </div>
 
                     <div class="form-group">
                         <label for="editTextPhone">Número de Teléfono</label>
-                        <input type="tel" class="form-control" id="editTextPhone" name="numero_telefono" placeholder="Número de Teléfono" required>
+                        <input type="tel" class="form-control" id="editTextPhone" name="numero_telefono" value="<%=usuario.numero_telefono%>" placeholder="Número de Teléfono" required>
                     </div>
-
-
+                    
                     <button type="submit" class="btn btn-primary btn-block">Registrar</button>
-
                    
                 </form>
 

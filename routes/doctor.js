@@ -42,7 +42,6 @@ router.post('/signin' , async function(req,res,next){
     var doctor = await dao.checkDoctor(dni,hashedPassword);
 
     if(doctor.length===0){
-      console.log("aaaaaaaaaaaa "+doctor);
       res.render('index', {error: 'Las credenciales son incorrectas', confirmacion: ''});
 
     }else{
@@ -75,28 +74,60 @@ router.get('/obtener-doctores', (req, res) => {
 });
 
 router.get('/register', function(req, res, next) {
-  res.render("register",{error:""});
+  res.render("register",{error:"", usuario: ""});
 });
 
-router.post('/registrando', function(req, res, next) {
-  const {dni,email,password,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono} = req.body;
-  var hashedPassword = cifrarContrasena(password,dni);
-  // Sentencia SQL para insertar un nuevo doctor
-  const sql = `INSERT INTO doctores 
-              (dni, email, password, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-  // Parámetros para la sentencia SQL
-  const params = [dni,email,hashedPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono];
-  pool.query(sql, params, (error, resultados) => {
-    if(error){
-      console.log("Error interno del servidor" + error);
-    }else{
-      req.session.currentUser = {dni,email,nombre,apellidos};
-      res.render('gestionUsuarios',{email : req.session.currentUser.email})
-    }
-  });
-  console.log(req.body);
+router.post('/registrando', function(req, res, next) {
+  const {dni,email,password,repeatPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono} = req.body;
+  var usuario = {dni: dni,email: email,password: password,repeatPassword: repeatPassword,nombre: nombre,apellidos: apellidos,fecha_nacimiento: fecha_nacimiento,domicilio: domicilio,codigo_postal: codigo_postal,numero_telefono: numero_telefono};
+  console.log(usuario);
+  var valido = true;
+  if (password !== repeatPassword) {
+    valido = false;
+    usuario.password = "";
+    usuario.repeatPassword = "";
+    res.render("register",{error:"Las contraseñas no coinciden", usuario: usuario});
+  }
+
+  if (!/^\d{8}[a-zA-Z]$/.test(dni)) {
+    valido = false;
+    usuario.dni = "";
+    res.render("register",{error:"El DNI no es válido", usuario: usuario});
+  }
+
+  const fechaNacimiento = new Date(fecha_nacimiento);
+  const fechaActual = new Date();
+  if (fechaNacimiento >= fechaActual) {
+    valido = false;
+    usuario.fecha_nacimiento = "";
+    res.render("register",{error:"La fecha de nacimiento debe ser anterior a la fecha actual", usuario: usuario});
+  }
+
+  if (!/^\d{9}$/.test(numero_telefono)) {
+    valido = false;
+    usuario.numero_telefono = "";
+    res.render("register",{error:"El número de teléfono no es válido", usuario: usuario});
+  }
+
+  if(valido){
+    var hashedPassword = cifrarContrasena(password,dni);
+    // Sentencia SQL para insertar un nuevo doctor
+    const sql = `INSERT INTO doctores 
+                (dni, email, password, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  
+    // Parámetros para la sentencia SQL
+    const params = [dni,email,hashedPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono];
+    pool.query(sql, params, (error, resultados) => {
+      if(error){
+        console.log("Error interno del servidor" + error);
+      }else{
+        req.session.currentUser = {dni,email,nombre,apellidos};
+        res.render('gestionUsuarios',{email : req.session.currentUser.email})
+      }});
+  }
+
 });
 
 function cifrarContrasena(contrasena, salt) {

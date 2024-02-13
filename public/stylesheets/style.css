@@ -47,3 +47,8 @@ a {
   width: 100px; 
   height: 100px;
 }
+
+.tituloFont{
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: xx-large;
+}
