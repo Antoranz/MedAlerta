@@ -31,8 +31,9 @@ public class Controller {
         AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(ctx, AlarmReceiverActivity.class);
         PendingIntent pendingIntent;
-        pendingIntent = PendingIntent.getBroadcast(ctx, i, alarmIntent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
-        alarmIntent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
+        pendingIntent = PendingIntent.getBroadcast(ctx, i, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+
         alarmManager.set(AlarmManager.RTC_WAKEUP, timestamp, pendingIntent);
 
         // Convertir el timestamp a una fecha y hora legibles
