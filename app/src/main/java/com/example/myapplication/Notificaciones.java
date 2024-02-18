@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -68,28 +69,41 @@ public class Notificaciones {
 
     }
 
-    public static Notification crearNotificacionSegundoPlano(Context context){
-        Notification segundo_plano = null;
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        NotificationCompat.Builder nb = null;
+    public static void notificacionComprobandoAlarmas(Context context){
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel nc = crearCanalNotificaciones(context,NOTIFICATION_CHANNEL_ID,CHANNEL_NAME);
-            notificationManager.createNotificationChannel(nc);
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        NotificationChannel notificationChannel =null;
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+
+            notificationChannel = crearCanalNotificaciones(context,NOMBRE_CANAL,ID_CANAL);
+            notificationManager.createNotificationChannel(notificationChannel);
         }
-        nb = new NotificationCompat.Builder(context,NOTIFICATION_CHANNEL_ID);
+
+        NotificationCompat.Builder nb = new NotificationCompat.Builder(context,ID_CANAL);
+        nb.setDefaults(Notification.DEFAULT_ALL);
         nb.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         nb.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         nb.setSmallIcon(android.R.drawable.ic_dialog_info);
-        nb.setContentTitle("Comprobando si hay alarmas");
+
+        nb.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher_round));
+        nb.setContentTitle("Configurando las alarmas");
+        nb.setSubText("aviso de alarma");
         nb.setAutoCancel(true);
-        nb.setDefaults(Notification.DEFAULT_ALL);
-        nb.setTimeoutAfter(5000);
 
-        segundo_plano = nb.build();
 
-        Log.i("ComprobandoMensajes", "notificacion en segundo plano");
+        Notification notification = nb.build();
 
-        return segundo_plano;
+        notificationManager.notify(56,notification);
+
+        // Cancelar la notificación después de 5 segundos
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                notificationManager.cancel(56);
+            }
+        }, 5000); // 5000 milisegundos equivalen a 5 segundos
+
     }
 }

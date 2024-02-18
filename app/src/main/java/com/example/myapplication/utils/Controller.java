@@ -26,13 +26,14 @@ public class Controller {
         return instance;
     }
 
+
+
     public void creacionAlarma(int i, Long timestamp, Context ctx) {
 
         AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(ctx, AlarmReceiverActivity.class);
         PendingIntent pendingIntent;
         pendingIntent = PendingIntent.getBroadcast(ctx, i, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, timestamp, pendingIntent);
 
