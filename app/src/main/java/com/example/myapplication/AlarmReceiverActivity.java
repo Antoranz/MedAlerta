@@ -19,6 +19,7 @@ import com.example.myapplication.utils.SessionManager;
 public class AlarmReceiverActivity extends BroadcastReceiver {
 
     SessionManager sessionManager;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
