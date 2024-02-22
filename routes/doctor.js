@@ -59,7 +59,10 @@ router.post('/signin' , async function(req,res,next){
   }
 
 });
-
+router.get('/funciones-paciente/:dni', (req, res) => {
+  const dniUsuario = req.params.dni;
+  res.render("funcionesUsuario",{"email":req.session.currentUser.email,"dni":dniUsuario});
+});
 router.get('/obtener-doctores', (req, res) => {
   const sql = 'SELECT * FROM doctores';
 

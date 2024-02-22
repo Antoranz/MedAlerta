@@ -71,69 +71,20 @@ $(document).ready(function () {
         var $tabla = $('#tablaHistorial');
         $tabla.empty();
         usuariosFiltrados.forEach(function(usuario, index) {          
-            var $buttonEliminar = $('<button class="btn btn-standard btn-primary" type="button">Eliminar</button>');
+            var $buttonEliminar = $('<button class="btn btn-primary" type="button">Eliminar</button>');
             $buttonEliminar.data('usuario', usuario);
             $buttonEliminar.on('click', function(){
                 //para pasar datos por url usar comillas invertidas en vez de las normales
                 window.location.href = `/doctor/eliminarAsociacion/${usuario.dni}`;
             });
-            var $buttonCrearHistorial = $('<button class="btn btn-standard btn-primary" type="button">Crear historial médico</button>');
-            $buttonCrearHistorial.on('click', function(){
-                window.location.href = '/doctor/CrearHistorial/';
+            var $buttonFuncionesPaciente = $('<button class="btn btn-primary" type="button">Funciones Paciente</button>');
+            $buttonFuncionesPaciente.on('click', async function(){
+                var paciente = {dni: usuario.dni};
+                window.location.href = `/doctor/funciones-paciente/${paciente.dni}`;
             });
-
-            var $buttonTratamiento = $('<button class="btn btn-standard btn-primary" type="button">Iniciar Tratamiento</button>');
-                $buttonTratamiento.data('usuario', usuario);
-                $buttonTratamiento.on('click', function(){
-                // Obtener los datos del paciente asociados al botón de tratamiento
-                var paciente = $(this).data('usuario');
-                $('#dniPacienteInput').val(paciente.dni);
-
-                console.log("Tratamiento para el paciente:", paciente.dni);
-                $('#modalIniciarTratamiento').modal('show');
-            });
-
-            var $buttonMostrar = $('<button class="btn btn-standard btn-primary" type="button">Mostrar historial médico</button>');
-            $buttonMostrar.on('click', async function(){
-                var paciente = {dni: usuariosFiltrados[index].dni};
-                $.ajax({
-                    url: '/doctor/obtenerURLPDF', // Debes cambiar esto con la ruta correcta en tu servidor
-                    type: 'GET',
-                    data: paciente,
-                    success: function(response) {
-                        // Cuando la solicitud AJAX sea exitosa, muestra el PDF en una pestaña nueva
-                        console.log("Cargado el pdfFFFFFFFFFFFF")
-                        var win = window.open(response.downloadURL, '_blank');
-                        win.focus();
-                    },
-                    error: function() {
-                        console.error('Error al obtener la URL del PDF');
-                        console.log(error);
-                        alert('Error al cargar el PDF');
-                    }
-                });
-            });
-
-            function mostrarPDF(downloadURL) {
-                // Crea un elemento <iframe> para mostrar el PDF
-                var $iframe = $('<iframe></iframe>');
-                $iframe.attr('src', downloadURL);
-                $iframe.css({
-                  width: '100%',
-                  height: '600px'  // Ajusta la altura según tus necesidades
-                });
-              
-                // Limpia cualquier contenido anterior en el contenedor y agrega el <iframe>
-                var $contenedorPDF = $('#contenedorPDF');
-                $contenedorPDF.empty();
-                $contenedorPDF.append($iframe);
-              }
-            
 
             const $fila = $(`<tr>
             <th scope="row">${index + 1}</th>
-            <td></td>
-            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -147,9 +98,7 @@ $(document).ready(function () {
         $fila.find('td').eq(2).append(usuario.email);
         $fila.find('td').eq(3).append(usuario.dni);
         $fila.find('td').eq(4).append($buttonEliminar);
-        $fila.find('td').eq(5).append($buttonCrearHistorial);
-        $fila.find('td').eq(6).append($buttonMostrar);
-        $fila.find('td').eq(7).append($buttonTratamiento);
+        $fila.find('td').eq(5).append($buttonFuncionesPaciente);
         
         $('#tablaHistorial').append($fila);
         
@@ -229,19 +178,5 @@ $(document).ready(function () {
         mostrarUsuarios();
     });
     $contenedor.append($button);
-    getUsuarios();
-
-    $("#btnAgregarFila").click(function() {
-        var nuevaFila = $("<tr><td><input type='text' class='form-control' name='medicamento[]'></td><td><input type='text' class='form-control' name='dosis[]'></td><td><input type='time' class='form-control' name='hora_primera_toma[]'></td><td><input type='number' class='form-control' name='tomas_al_dia[]'></td><td><input type='date' class='form-control' name='fecha_inicio[]'></td><td><input type='date' class='form-control' name='fecha_fin[]'></td><td><button type='button' class='btn btn-danger btnEliminarFila'>-</button></td></tr>");
-        $("#tablaTratamiento tbody").append(nuevaFila); // Usa el identificador único
-       
-    });
-  
-  
-    // Cambia la línea que elimina una fila dentro de la función click
-    $(".table").on("click", ".btnEliminarFila", function() {
-        $(this).closest("tr").remove();
-        
-    });
-    
+    getUsuarios();    
 });

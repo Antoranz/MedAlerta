@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Usuarios</title>
+    
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
+      
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+     <style>
+        .custom-dropdown-toggle::after {
+            display: none; 
+        }
+    </style>
+</head>
+
+<body>
+    <input id="paciente" type="hidden" value="<%= dni %>">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <style>               
+                #perfilImage {
+                    max-width: 5%;
+                    height: auto;
+                }
+            </style>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <img id="perfilImage" src="/images/logoUsuario.png" alt="Perfil" class="img-fluid">
+                            <span id="email" name = "email" class="ml-2"> <%= email %></span>
+                            
+                        </a>
+                    </li>
+                </ul>
+    
+                <div class="btn-group dropstart">
+                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="/doctor/editarperfil/<%= email %>">Editar perfil</a></li>
+                      <li><a class="dropdown-item" href="/doctor/signout">Cerrar sesión</a></li>
+                      <li><a class="dropdown-item" href="/doctor/deleteaccount/<%= email %>">Eliminar cuenta</a></li>
+                    </ul>
+                  </div>
+                
+                
+            </div>
+        </nav>
+        
+    </header>
+    <main>
+        <div class="container mt-2">
+            <div class="row">
+                <div class="col-4">
+                    <div class="card p-2 text-center">
+                        <img class="card-img-top" src="../../images/historial.png" alt="Historial Médico">
+                        <div class="card-body">
+                          <p class="card-text"><button id="crearHistorial" class="btn  btn-primary" type="button">Crear historial médico</button></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card p-2 text-center">
+                        <img class="card-img-top" src="../../images/tratamiento.png" alt="Iniciar tratamiento imagen">
+                        <div class="card-body">
+                          <p class="card-text"><button id="iniciarTratamiento" class="btn btn-primary" type="button">Iniciar tratamiento</button></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card p-2 text-center">
+                        <img class="card-img-top" src="../../images/historial.png" alt="Mostrar Historial">
+                        <div class="card-body">
+                          <p class="card-text"><button id="mostrarHistorial" class="btn btn-primary" type="button">Mostrar historial médico</button></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    <div class="modal fade" id="modalIniciarTratamiento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document"> <!-- Utilizamos modal-xl para un modal extra grande -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Formulario de Tratamiento</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="formTratamiento" method="post" action="/doctor/guardarTratamiento">
+                <div class="form-group">
+                  <label for="descripcion">Descripción:</label>
+                  <textarea class="form-control" id="descripcion" name="descripcion" placeholder="Síntomas o razón de la consulta" required></textarea>
+                  <input type="hidden" id="dniPacienteInput" name="dniPaciente" value="<%= dni %>">
+                  <input type="hidden" id="contadorFilas" name="contadorFilas">
+                </div>
+      
+                <div class="table-responsive"> <!-- Agregamos el contenedor responsive a la tabla -->
+                  <table class="table" id="tablaTratamiento">
+                    <thead>
+                      <tr>
+                        <th>Medicamento</th>
+                        <th>Dosis</th>
+                        <th>Hora 1ra Toma</th>
+                        <th>Tomas al Día</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th></th> <!-- Columna para el botón de eliminar fila -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><input type="text" class="form-control" name="medicamento[]" required></td>
+                        <td><input type="text" class="form-control" name="dosis[]" required></td>
+                        <td><input type="time" class="form-control" name="hora_primera_toma[]" required></td>
+                        <td><input type="number" class="form-control" name="tomas_al_dia[]" required></td>
+                        <td><input type="date" class="form-control" name="fecha_inicio[]" required></td>
+                        <td><input type="date" class="form-control" name="fecha_fin[]" required></td>
+                        <td><button type="button" class="btn btn-danger btnEliminarFila">-</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+      
+                <button type="button" class="btn btn-success" id="btnAgregarFila">+</button>
+      
+                <button type="submit" class="btn btn-primary">Guardar Tratamiento</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>   
+    <script>
+        $("#crearHistorial").on('click', function(){
+            window.location.href = '/doctor/CrearHistorial/';
+        });
+
+        $("#iniciarTratamiento").on('click', function(){               
+            $('#modalIniciarTratamiento').modal('show');
+        });
+        $("#mostrarHistorial").on('click', async function(){
+            $.ajax({
+                url: '/doctor/obtenerURLPDF', // Debes cambiar esto con la ruta correcta en tu servidor
+                type: 'GET',
+                data: $("#paciente").val(),
+                success: function(response) {
+                    // Cuando la solicitud AJAX sea exitosa, muestra el PDF en una pestaña nueva
+                    console.log("Cargado el pdfFFFFFFFFFFFF")
+                    var win = window.open(response.downloadURL, '_blank');
+                    win.focus();
+                },
+                error: function() {
+                    console.error('Error al obtener la URL del PDF');
+                    console.log(error);
+                    alert('Error al cargar el PDF');
+                }
+            });
+        });
+        $("#btnAgregarFila").click(function() {
+            var nuevaFila = $("<tr><td><input type='text' class='form-control' name='medicamento[]'></td><td><input type='text' class='form-control' name='dosis[]'></td><td><input type='time' class='form-control' name='hora_primera_toma[]'></td><td><input type='number' class='form-control' name='tomas_al_dia[]'></td><td><input type='date' class='form-control' name='fecha_inicio[]'></td><td><input type='date' class='form-control' name='fecha_fin[]'></td><td><button type='button' class='btn btn-danger btnEliminarFila'>-</button></td></tr>");
+            $("#tablaTratamiento tbody").append(nuevaFila); // Usa el identificador único
+        
+        });
+
+        // Cambia la línea que elimina una fila dentro de la función click
+        $(".table").on("click", ".btnEliminarFila", function() {
+            $(this).closest("tr").remove();        
+        });
+    </script>
+</body>
+</html>
