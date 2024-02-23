@@ -17,7 +17,11 @@
 <body>
     <% include nav.ejs %>
     <div style="display: flex; justify-content: center; align-items: center;">
-        <img src="/images/imagenFondo.png" alt="" style="width: 100%; height: auto;" ></div>
+        <% if(email =="") {%>
+            <img src="/images/imagenFondo.png" alt="" style="width: 100%; height: auto;" ></div>
+        <%} else{  %>
+            <img src="/images/fondoAlternativo.png" alt="" style="width: 100%; height: auto;" ></div>
+        <% } %>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
