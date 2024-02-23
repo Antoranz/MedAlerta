@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion Usuarios</title>
     
-    <link rel="stylesheet" href="/stylesheets/style.css">
+    
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
       
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
 
      <style>
         .custom-dropdown-toggle::after {
@@ -21,46 +22,8 @@
 </head>
 
 <body>
+    <% include nav.ejs %>
     <input id="paciente" type="hidden" value="<%= dni %>">
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <style>               
-                #perfilImage {
-                    max-width: 5%;
-                    height: auto;
-                }
-            </style>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <img id="perfilImage" src="/images/logoUsuario.png" alt="Perfil" class="img-fluid">
-                            <span id="email" name = "email" class="ml-2"> <%= email %></span>
-                            
-                        </a>
-                    </li>
-                </ul>
-    
-                <div class="btn-group dropstart">
-                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" href="/doctor/editarperfil/<%= email %>">Editar perfil</a></li>
-                      <li><a class="dropdown-item" href="/doctor/signout">Cerrar sesión</a></li>
-                      <li><a class="dropdown-item" href="/doctor/deleteaccount/<%= email %>">Eliminar cuenta</a></li>
-                    </ul>
-                  </div>
-                
-                
-            </div>
-        </nav>
-        
-    </header>
     <main>
         <div class="container mt-2">
             <div class="row">

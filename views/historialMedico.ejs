@@ -7,9 +7,10 @@
     <!-- Asegúrate de tener Bootstrap enlazado correctamente -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
-
+    <% include nav.ejs %>
     <div class="container mt-5">
 
         <form id="miFormulario" action="/doctor/guardarHistorial" method="post">

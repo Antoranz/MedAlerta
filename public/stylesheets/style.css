@@ -1,8 +1,15 @@
 *{
   margin:0;
 }
+
+.table td,
+.table th {
+    background-color: rgb(235, 243, 243);
+}
+
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color:  rgb(235,243,243)
 }
 
 a {

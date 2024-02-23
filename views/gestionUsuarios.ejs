@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion Usuarios</title>
     
-    <link rel="stylesheet" href="/stylesheets/style.css">
+    
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
       
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
 
      <style>
         .custom-dropdown-toggle::after {
@@ -21,45 +22,7 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <style>               
-                #perfilImage {
-                    max-width: 5%;
-                    height: auto;
-                }
-            </style>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <img id="perfilImage" src="/images/logoUsuario.png" alt="Perfil" class="img-fluid">
-                            <span id="email" name = "email" class="ml-2"> <%= email %></span>
-                            
-                        </a>
-                    </li>
-                </ul>
-    
-                <div class="btn-group dropstart">
-                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" href="/doctor/editarperfil/<%= email %>">Editar perfil</a></li>
-                      <li><a class="dropdown-item" href="/doctor/signout">Cerrar sesión</a></li>
-                      <li><a class="dropdown-item" href="/doctor/deleteaccount/<%= email %>">Eliminar cuenta</a></li>
-                    </ul>
-                  </div>
-                
-                
-            </div>
-        </nav>
-        
-    </header>
+    <% include nav.ejs %>
     <main>
 
         <div id="filtrado" style="display: flex;" class="container mt-5" >
@@ -91,7 +54,7 @@
             </div> 
 
 
-            <table class="table table-responsive">
+            <table class="table table-responsive" style="background-color:  rgb(235,243,243)">
               <thead>
                 <tr>
                   <th> </th>
@@ -170,8 +133,11 @@
             $('#modalAniadirUsuario').modal('show');
         }
     </script>
-    <script src="/scripts/gestionUsuarios.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <script src="/scripts/gestionUsuarios.js"></script>
+       
 </body>
 </html>

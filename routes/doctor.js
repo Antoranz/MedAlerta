@@ -25,7 +25,18 @@ const dao2 = new DAOPaciente(pool);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+    res.render('index', { email:"" });
+  }else{
+    res.render('main', { email: req.session.currentUser.email });
+  }
+});
+router.get('/gestion-usuarios', function(req, res, next) {
+  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+    res.render('index', { email:"" });
+  }else{
+    res.render('gestionUsuarios', { email: req.session.currentUser.email });
+  }
 });
 
 router.post('/signin' , async function(req,res,next){
@@ -42,7 +53,7 @@ router.post('/signin' , async function(req,res,next){
     var doctor = await dao.checkDoctor(dni,hashedPassword);
 
     if(doctor.length===0){
-      res.render('index', {error: 'Las credenciales son incorrectas', confirmacion: ''});
+      res.render('index', {error: 'Las credenciales son incorrectas', confirmacion: '',email:""});
 
     }else{
 
@@ -50,18 +61,22 @@ router.post('/signin' , async function(req,res,next){
       req.session.currentUser = doctor[0]
       console.log(doctor[0])
       console.log(req.session.currentUser)
-      res.render('gestionUsuarios',{email : req.session.currentUser.email});
+      res.redirect('/');
     }
     
     
-} catch (error) {
+  } catch (error) {
     console.error("Error durante la operación:", error);
   }
 
 });
 router.get('/funciones-paciente/:dni', (req, res) => {
-  const dniUsuario = req.params.dni;
-  res.render("funcionesUsuario",{"email":req.session.currentUser.email,"dni":dniUsuario});
+  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+    res.render('index', { email:"" });
+  }else{
+    const dniUsuario = req.params.dni;
+    res.render("funcionesUsuario",{"email":req.session.currentUser.email,"dni":dniUsuario});
+  }
 });
 router.get('/obtener-doctores', (req, res) => {
   const sql = 'SELECT * FROM doctores';
@@ -77,7 +92,7 @@ router.get('/obtener-doctores', (req, res) => {
 });
 
 router.get('/register', function(req, res, next) {
-  res.render("register",{error:"", usuario: ""});
+  res.render("register",{error:"", usuario: "",email:""});
 });
 
 
@@ -90,13 +105,13 @@ router.post('/registrando', function(req, res, next) {
     valido = false;
     usuario.password = "";
     usuario.repeatPassword = "";
-    res.render("register",{error:"Las contraseñas no coinciden", usuario: usuario});
+    res.render("register",{error:"Las contraseñas no coinciden", usuario: usuario,email:""});
   }
 
   if (!/^\d{8}[a-zA-Z]$/.test(dni)) {
     valido = false;
     usuario.dni = "";
-    res.render("register",{error:"El DNI no es válido", usuario: usuario});
+    res.render("register",{error:"El DNI no es válido", usuario: usuario,email:""});
   }
 
   const fechaNacimiento = new Date(fecha_nacimiento);
@@ -104,13 +119,13 @@ router.post('/registrando', function(req, res, next) {
   if (fechaNacimiento >= fechaActual) {
     valido = false;
     usuario.fecha_nacimiento = "";
-    res.render("register",{error:"La fecha de nacimiento debe ser anterior a la fecha actual", usuario: usuario});
+    res.render("register",{error:"La fecha de nacimiento debe ser anterior a la fecha actual", usuario: usuario,email:""});
   }
 
   if (!/^\d{9}$/.test(numero_telefono)) {
     valido = false;
     usuario.numero_telefono = "";
-    res.render("register",{error:"El número de teléfono no es válido", usuario: usuario});
+    res.render("register",{error:"El número de teléfono no es válido", usuario: usuario,email:""});
   }
 
   if(valido){
@@ -127,7 +142,7 @@ router.post('/registrando', function(req, res, next) {
         console.log("Error interno del servidor" + error);
       }else{
         req.session.currentUser = {dni,email,nombre,apellidos};
-        res.render('gestionUsuarios',{email : req.session.currentUser.email})
+        res.render('index',{email : ""})
       }});
   }
 
@@ -263,7 +278,7 @@ router.get('/eliminarAsociacion/:dni', async function(req, res, next) {
 });
 
 router.get('/CrearHistorial', function(req, res, next) {
-    res.render('historialMedico', { title: 'Express' ,userData: ""});
+    res.render('historialMedico', { title: 'Express' ,userData: "",email:""});
   });
   
   router.post('/guardarHistorial', function(req, res){

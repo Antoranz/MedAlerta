@@ -1,0 +1,44 @@
+<header style="background-color: rgb(189, 209, 211);">
+    <div class="row" style="width: 100%; height: 3%; display: flex; justify-content: center; align-items: center;">
+        <img src="/images/logoMedAlerta.png" alt="Imagen Logo" style="max-height: 100px; width: auto;">
+        <img src="/images/textoMedAlerta.png" alt="Texto Med Alerta" style="max-height: 100px; width: auto;">
+    </div>     
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(18,70,85);">
+        <div class="container-fluid">
+            <!-- Logo y nombre de usuario a la izquierda -->
+            <% if(email!="") {%>
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img id="perfilImage" src="/images/logoUsuario.png" alt="Perfil" class="img-fluid" style="max-width: 30px; height: auto;">
+                    <span id="email" name="email" class="ml-2"> <%= email %></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Menú de navegación -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto"> <!-- Despliega a la derecha -->
+                        <!-- Opciones del menú desplegable -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/doctor//gestion-usuarios/">Gestión Pacientes</a>
+                                <a class="dropdown-item" href="/doctor/editarperfil/<%= email %>">Editar perfil</a>
+                                <a class="dropdown-item" href="/signout">Cerrar sesión</a>
+                                <a class="dropdown-item" href="/doctor/deleteaccount/<%= email %>">Eliminar cuenta</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            <% }else{ %>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="/iniciar-sesion" class="nav-link">Iniciar sesión</a>
+                    </li>
+                </ul>
+            <% } %>           
+        </div>
+    </nav>
+</header>
