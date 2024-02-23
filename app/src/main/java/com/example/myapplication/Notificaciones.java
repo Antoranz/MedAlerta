@@ -55,7 +55,7 @@ public class Notificaciones {
 
         nb.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher_round));
         nb.setContentTitle("PERRACO LA PASTILLITA");
-        nb.setSubText("aviso de alarma");
+        nb.setSubText("PERRACO LA PASTILLITA");
         nb.setContentTitle("Ereh un crack");
 
         Intent actividad_destino = new Intent(context,MainActivity.class);
@@ -89,7 +89,7 @@ public class Notificaciones {
 
         nb.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher_round));
         nb.setContentTitle("Configurando las alarmas");
-        nb.setSubText("aviso de alarma");
+        nb.setSubText("configurando alarmas inicio movil");
         nb.setAutoCancel(true);
 
 

@@ -81,19 +81,20 @@ public class RegistrarActivity extends AppCompatActivity  {
                JSONObject postData = new JSONObject();
                try {
 
-                   DateFormat formatoEntrada = new SimpleDateFormat("dd/MM/yyyy");
-
+                   String fechaString = editTextDate.getText().toString();
                    DateFormat formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
+                   DateFormat formatoBD = new SimpleDateFormat("yyyy-MM-dd");
 
 
-                   Date fecha = formatoEntrada.parse(editTextDate.getText().toString());
+                   Date fecha = formatoSalida.parse(fechaString);
 
-                   // Formatear la fecha en el formato de salida
-                   String fechaFormateada = formatoSalida.format(fecha);
+                   String fechaFormateadaBD = formatoBD.format(fecha);
+
+
 
                    postData.put("Nombre", nameText.getText().toString());
                    postData.put("Apellidos",surnameText.getText().toString());
-                   postData.put("FechaDeNacimiento", fechaFormateada);
+                   postData.put("FechaDeNacimiento", fechaFormateadaBD);
                    postData.put("Direccion", domicilioText.getText().toString());
                    postData.put("CodigoPostal", postalAddressText.getText().toString());
                    postData.put("telefono", phoneText.getText().toString());

@@ -123,6 +123,7 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
                             // Crea una instancia de Calendar y establece la hora de la primera toma
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(dateInicio);
+                            calendar.add(Calendar.DAY_OF_MONTH, 1); // Suma un día al día que has recogido de la base de datos
                             String[] horaArray = horaPrimeraToma.split(":");
                             calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(horaArray[0]));
                             calendar.set(Calendar.MINUTE, Integer.parseInt(horaArray[1]));

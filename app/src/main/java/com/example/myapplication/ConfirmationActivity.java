@@ -43,10 +43,13 @@ public class ConfirmationActivity extends AppCompatActivity {
         checKButton.setOnClickListener(v -> {
             //TODO
 
+
+
             if(codigoText.getText().toString().equals(numeroAleatorio.toString())){
                 sessionManager.verificateEmail();
                 Intent intent = new Intent(this, CargandoConfiguracionActivity.class);
                 startActivity(intent);
+
             }else{
                 Toast.makeText(this,"codigo introducido incorrecto",Toast.LENGTH_LONG).show();
 
