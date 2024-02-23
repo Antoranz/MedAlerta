@@ -278,8 +278,12 @@ router.get('/eliminarAsociacion/:dni', async function(req, res, next) {
 });
 
 router.get('/CrearHistorial', function(req, res, next) {
-    res.render('historialMedico', { title: 'Express' ,userData: "",email:""});
-  });
+  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+    res.render('index', { email:"" });
+  }else{
+    res.render('historialMedico', { title: 'Express' ,userData: "",email:req.session.currentUser.email});
+  }
+});
   
   router.post('/guardarHistorial', function(req, res){
     // Creamos un nuevo documento PDF
