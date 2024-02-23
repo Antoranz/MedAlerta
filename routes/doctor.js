@@ -178,7 +178,6 @@ router.post("/guardarTratamiento", async function(req, res, next) {
   const dniPaciente = req.body.dniPaciente;
   const descripcion = req.body.descripcion;
   
-  
 
   const result = await dao.guardarTratamiento(req.session.currentUser.dni,dniPaciente,descripcion)
 
@@ -224,8 +223,6 @@ router.post("/guardarTratamiento", async function(req, res, next) {
     await dao.guardarAlarma(result.insertId, medicamento, dosis, horaPrimeraToma, tomasAlDia, fechaInicio, fechaFin);
 }
 
-
-  
   res.render('gestionUsuarios',{email : req.session.currentUser.email});
 
 });

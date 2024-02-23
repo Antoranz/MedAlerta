@@ -7,6 +7,7 @@ const {sendVerificationEmail} = require('../mailer.js');
 const crypto = require('crypto');
 /* GET home page. */
 const mysql = require('mysql');
+const { Console } = require('console');
 
 // Configuración de la conexión a la base de datos MySQL en XAMPP
 const pool = mysql.createPool({
@@ -36,6 +37,9 @@ router.post('/registrarPaciente', async function(req, res, next) {
     try {
         var hashedPassword = cifrarContrasena(password,email);
 
+        console.log("FECHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        console.log(FechaDeNacimiento)
+
         await dao.registrarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,hashedPassword);
 
         res.json(true)
@@ -59,6 +63,10 @@ function cifrarContrasena(contrasena, salt) {
 router.post('/bajaPaciente', async function(req, res, next) {
 
     try {
+
+
+        await dao.bajaPaciente_alarmas(req.body.dniPaciente)
+        await dao.bajaPaciente_tratamientos(req.body.dniPaciente)
         await dao.bajaPaciente(req.body.dniPaciente);
         res.json(true)
     } catch (error) {

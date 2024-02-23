@@ -173,6 +173,54 @@ class DAOPaciente{
         }); 
     }
 
+    bajaPaciente_alarmas(id_paciente){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaPaciente_alarmas ="DELETE a FROM alarma a INNER JOIN tratamiento t ON a.id_tratamiento = t.id_tratamiento WHERE t.id_paciente = ?"
+                    connection.query(querybajaPaciente_alarmas,[id_paciente], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+
+    bajaPaciente_tratamientos(id_paciente){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaPaciente_tratamiento ="DELETE FROM tratamiento WHERE id_paciente = ?"
+                    connection.query(querybajaPaciente_tratamiento,[id_paciente], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
     
     bajaPaciente(DNI){
         
