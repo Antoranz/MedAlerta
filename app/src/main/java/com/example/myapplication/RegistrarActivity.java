@@ -85,6 +85,7 @@ public class RegistrarActivity extends AppCompatActivity  {
 
                    DateFormat formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
 
+
                    Date fecha = formatoEntrada.parse(editTextDate.getText().toString());
 
                    // Formatear la fecha en el formato de salida

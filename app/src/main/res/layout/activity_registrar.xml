@@ -118,16 +118,6 @@
             android:focusableInTouchMode="false" />
 
         <EditText
-            android:id="@+id/editTelefono"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:ems="10"
-            android:hint="@string/prefix_number"
-            android:minHeight="48dp"
-            android:autofillHints="" />
-
-        <EditText
             android:id="@+id/idDomicilio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

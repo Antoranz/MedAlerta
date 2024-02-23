@@ -129,7 +129,9 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
                             calendar.set(Calendar.SECOND, Integer.parseInt(horaArray[2]));
 
                             // Obtén el timestamp
+
                             long timestamp = calendar.getTimeInMillis();
+                            Log.i("TIEMPO", String.valueOf(timestamp));
 
                             // Crea la alarma
                             Controller.getInstance().creacionAlarma(idAlarma, timestamp, this);
