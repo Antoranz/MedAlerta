@@ -45,7 +45,7 @@ $(document).ready(function () {
 
         // Creación del menú desplegable
         var $dropdown = $('<div class="dropdown">' +
-            '<button class="btn btn-secondary dropdown-toggle" id="filtro" type="button" data-bs-toggle="dropdown" aria-expanded="false">' +
+            '<button class="btn dropdown-toggle" id="filtro" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgb(18,70,85); color: white;">' +
             'Filtrado' +
             '</button>' +
             '<ul class="dropdown-menu">' +
@@ -71,13 +71,13 @@ $(document).ready(function () {
         var $tabla = $('#tablaHistorial');
         $tabla.empty();
         usuariosFiltrados.forEach(function(usuario, index) {          
-            var $buttonEliminar = $('<button class="btn btn-primary" type="button">Eliminar</button>');
+            var $buttonEliminar = $('<button class="btn btn-danger" type="button">Eliminar</button>');
             $buttonEliminar.data('usuario', usuario);
             $buttonEliminar.on('click', function(){
                 //para pasar datos por url usar comillas invertidas en vez de las normales
                 window.location.href = `/doctor/eliminarAsociacion/${usuario.dni}`;
             });
-            var $buttonFuncionesPaciente = $('<button class="btn btn-primary" type="button">Funciones Paciente</button>');
+            var $buttonFuncionesPaciente = $('<button class="btn" type="button"style="background-color: rgb(18,70,85); color: white;">Funciones Paciente</button>');
             $buttonFuncionesPaciente.on('click', async function(){
                 var paciente = {dni: usuario.dni};
                 window.location.href = `/doctor/funciones-paciente/${paciente.dni}`;
@@ -171,7 +171,7 @@ $(document).ready(function () {
         mostrarUsuarios();
     }
     var $contenedor = $('#Contenedor');
-    var $button = $('<button type="button" class="btn btn-primary">' + "Refrescar Usuarios" + '</button>');
+    var $button = $('<button type="button" class="btn" style="background-color: rgb(18,70,85); color: white;">' + "Refrescar Usuarios" + '</button>');
     $button.on('click', function(){
         getUsuarios();
         cargarBuscador();
