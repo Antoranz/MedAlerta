@@ -26,16 +26,16 @@ const dao2 = new DAOPaciente(pool);
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
-    res.render('index', { email:"" });
+    res.render('index', { nombre:"" });
   }else{
-    res.render('main', { email: req.session.currentUser.email });
+    res.render('main', { nombre: req.session.currentUser.nombre });
   }
 });
 router.get('/gestion-usuarios', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
-    res.render('index', { email:"" });
+    res.render('index', { nombre:"" });
   }else{
-    res.render('gestionUsuarios', { email: req.session.currentUser.email });
+    res.render('gestionUsuarios', { nombre: req.session.currentUser.nombre });
   }
 });
 
@@ -53,7 +53,7 @@ router.post('/signin' , async function(req,res,next){
     var doctor = await dao.checkDoctor(dni,hashedPassword);
 
     if(doctor.length===0){
-      res.render('index', {error: 'Las credenciales son incorrectas', confirmacion: '',email:""});
+      res.render('index', {error: 'Las credenciales son incorrectas', confirmacion: '',nombre:""});
 
     }else{
 
@@ -72,10 +72,10 @@ router.post('/signin' , async function(req,res,next){
 });
 router.get('/funciones-paciente/:dni', (req, res) => {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
-    res.render('index', { email:"" });
+    res.render('index', { nombre:"" });
   }else{
     const dniUsuario = req.params.dni;
-    res.render("funcionesUsuario",{"email":req.session.currentUser.email,"dni":dniUsuario});
+    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,dni:dniUsuario});
   }
 });
 router.get('/obtener-doctores', (req, res) => {
@@ -183,7 +183,7 @@ router.post("/aniadirUsuario", async function(req, res, next) {
    
   }
 
-  res.render('gestionUsuarios',{email : req.session.currentUser.email});
+  res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
 
 });
 
@@ -238,7 +238,7 @@ router.post("/guardarTratamiento", async function(req, res, next) {
     await dao.guardarAlarma(result.insertId, medicamento, dosis, horaPrimeraToma, tomasAlDia, fechaInicio, fechaFin);
 }
 
-  res.render('gestionUsuarios',{email : req.session.currentUser.email});
+  res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
 
 });
 
@@ -267,7 +267,7 @@ router.get('/eliminarAsociacion/:dni', async function(req, res, next) {
     dao.eliminarAsociacion(req.session.currentUser.dni,dniUsuario)
 
 
-    res.render('gestionUsuarios',{email : req.session.currentUser.email});
+    res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
 
 
 
@@ -279,9 +279,9 @@ router.get('/eliminarAsociacion/:dni', async function(req, res, next) {
 
 router.get('/CrearHistorial', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
-    res.render('index', { email:"" });
+    res.render('index', { nombre:"" });
   }else{
-    res.render('historialMedico', { title: 'Express' ,userData: "",email:req.session.currentUser.email});
+    res.render('historialMedico', { title: 'Express' ,userData: "",nombre:req.session.currentUser.nombre});
   }
 });
   
@@ -420,7 +420,7 @@ router.get('/CrearHistorial', function(req, res, next) {
 
     // Manejamos eventos de error y finalización del flujo de escritura
     writeStream.on('finish', () => {
-      res.render('gestionUsuarios',{email : req.session.currentUser.email});
+      res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
     });
 
     writeStream.on('error', (err) => {

@@ -3,16 +3,18 @@
         <img src="/images/logoMedAlerta.png" alt="Imagen Logo" style="max-height: 100px; width: auto;">
         <img src="/images/textoMedAlerta.png" alt="Texto Med Alerta" style="max-height: 100px; width: auto;">
     </div>
-    
+
+        
+
         <nav class="navbar"style="background-color: rgb(18,70,85);">
             
             <div class="container-fluid" >
-                <% if(email!="") {%>
+                <% if(nombre!="") {%>
                     <a class="navbar-brand d-flex align-items-center" href="#">
                         <img id="perfilImage" src="/images/logoUsuario.png" alt="Perfil" class="img-fluid" style="max-width: 30px; height: auto;">
-                        <span id="email" name="email" class="ml-2"style="color: white;"> <%= email %></span>
+                        <span id="nombre" name="nombre" class="ml-2"style="color: white;"> <%= nombre %></span>
                     </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation" ><span class="navbar-toggler-icon pt-1"><img id="perfilImage" src="/images/navbar-toggler.png" alt="Opciones" class="img-fluid" style="max-width: 30px; height: auto;"></span></button>
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-color: rgb(18,70,85); color: white;">
                         <div class="offcanvas-header">
                             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Opciones</h5>
@@ -24,13 +26,13 @@
                                     <a class="nav-link active" aria-current="page" href="/doctor/gestion-usuarios/" style="color: white;">Gestion Usuarios</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/doctor/doctor/editarperfil/<%= email %>"style="color: white;">Editar Perfil</a>
+                                    <a class="nav-link active" aria-current="page" href="/doctor/doctor/editarperfil/<%= nombre %>"style="color: white;">Editar Perfil</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" href="/signout"style="color: white;">Cerrar sesión</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/doctor/deleteaccount/<%= email %>"style="color: white;">Eliminar cuenta</a>
+                                    <a class="nav-link active" aria-current="page" href="/doctor/deleteaccount/<%= nombre %>"style="color: white;">Eliminar cuenta</a>
                                 </li>
                             </ul>
                         </div>   

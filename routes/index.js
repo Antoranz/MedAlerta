@@ -4,13 +4,13 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
-    res.render('main', { email:"" });
+    res.render('main', { nombre:"" });
   }else{
-    res.render('main', { email: req.session.currentUser.email });
+    res.render('main', { nombre: req.session.currentUser.nombre });
   }
 });
 router.get('/iniciar-sesion', function(req, res, next) {
-  res.render('index', { email:"" });
+  res.render('index', { nombre:"" });
 });
 router.get('/signout', function(req, res, next) {
   req.session.destroy();
