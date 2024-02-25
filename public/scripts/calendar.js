@@ -22,39 +22,87 @@ document.addEventListener('DOMContentLoaded', function() {
             center: 'title', 
             right: 'dayGridMonth,timeGridWeek,timeGridDay' // Botones para alternar vistas
         },
-        eventClick: function(info) {
-            // Manejador de evento clic en un evento
-            alert('Evento: ' + info.event.title);
-        },
         dateClick: function(info) {
             // Manejador de evento clic en una fecha
             calendar.gotoDate(info.dateStr); // Cambiar a la vista del día clickeado
             calendar.changeView('timeGridDay'); // Cambiar la vista al día
         }
     });
-     $.ajax({
-        url: '/doctor/obtener-citas',
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            console.log(response);
-            if (response.length >0) {
-                var eventos = [];
-                response.forEach(function(cita) {
-                    eventos.push({
-                        title: cita.title,
-                        start: cita.start, 
-                        end: cita.end 
-                    });
-                });
-                calendar.addEventSource(eventos);
-            } else {
-                console.error('No se encontraron citas.');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error al obtener citas:', error);
-        }
+    calendar.on('eventClick', function(info) {
+        var evento = info.event;
+        // Crear contenido del modal con información del evento
+        var modalContent = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">${evento.title}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Inicio: ${evento.start}</p>
+                    <p>Fin: ${evento.end}</p>
+                    <!-- Otros detalles del evento aquí -->
+                </div>
+                <div class="modal-footer">
+                    <button id="eliminarCitaBtn" type="button" class="btn btn-danger">Eliminar Cita</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        `;
+        // Mostrar modal con información del evento
+        var modal = new bootstrap.Modal(document.getElementById('myModal'));
+        document.querySelector('.modal-body').innerHTML = modalContent;
+        modal.show();
+        
+        // Agregar manejador de clic para el botón de eliminar cita
+        document.getElementById('eliminarCitaBtn').addEventListener('click', function() {
+            eliminarCita(evento.id); // Llamar a la función para eliminar la cita
+            modal.hide();
+        });
     });
+    cargarCitas();
     calendar.render();
+    function eliminarCita(eventoId) {
+        $.ajax({
+            url: '/doctor/eliminar-cita', // Ruta en el servidor para eliminar la cita
+            type: 'POST', // Método HTTP utilizado
+            data: { id: eventoId }, // Datos a enviar al servidor (el identificador del evento)
+            success: function(response) {
+                calendar.removeAllEvents();
+                cargarCitas();
+                console.log('Cita eliminada con éxito');
+                // Aquí puedes agregar cualquier otra acción que desees después de eliminar la cita
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al eliminar la cita:', error);
+            }
+        });
+    }
+    function cargarCitas(){
+        $.ajax({
+            url: '/doctor/obtener-citas',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+                if (response.length >0) {
+                    var eventos = [];
+                    response.forEach(function(cita) {
+                        eventos.push({
+                            id: cita.id,
+                            title: cita.title,
+                            start: cita.start, 
+                            end: cita.end 
+                        });
+                    });
+                    calendar.addEventSource(eventos);
+                } else {
+                    console.error('No se encontraron citas.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al obtener citas:', error);
+            }
+        });
+    }
 });
+

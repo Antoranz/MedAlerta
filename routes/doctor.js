@@ -46,12 +46,25 @@ router.get("/obtener-citas",async function(req, res,next){
     const fechaHoraObj = new Date(c.fecha_hora); // Crear objeto Date directamente desde c.fecha_hora
     const nuevaFechaHora = new Date(fechaHoraObj.getTime() + c.duracion * 60000); // Sumar duración en milisegundos
     eventos.push({
+      "id":c.id,
       "title": `Cita médica con ${c.nombre_paciente} ${c.apellidos_paciente}`,
       "start": c.fecha_hora,
       "end": nuevaFechaHora
     });
   });
   res.json(eventos);
+});
+router.post("/eliminar-cita",async function(req, res,next){
+  const citaId = req.body.id;
+    try {
+        // Aquí realizas la lógica para eliminar la cita de la base de datos
+        await dao.eliminarCita(citaId);
+        // Si la eliminación fue exitosa, envía una respuesta con el código de estado 200 (Éxito)
+        res.status(200).json({ message: 'La cita se eliminó correctamente.' });
+    } catch (error) {
+        // Si ocurrió algún error durante la eliminación, envía una respuesta con el código de estado 500 (Error del servidor)
+        res.status(500).json({ error: 'Se produjo un error al intentar eliminar la cita.' });
+    }
 });
 router.get('/gestion-usuarios', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){

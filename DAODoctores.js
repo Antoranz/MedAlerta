@@ -53,7 +53,29 @@ class DAODoctor{
             });
         }); 
     }
-
+    eliminarCita(id){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryeliminarCita ="DELETE FROM citas WHERE id = ?"
+                    connection.query(queryeliminarCita,[id], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
     guardarTratamiento(id_doctor,id_paciente,diagnostico){
         
         return new Promise((resolve, reject) => {
