@@ -1,7 +1,10 @@
 *{
   margin:0;
 }
-
+.fc-day:hover {
+  background-color: rgb(189, 209, 211) !important; /* Cambiar el color de fondo al hacer hover */
+  cursor: pointer; /* Cambiar el cursor al hacer hover */
+}
 .table td,
 .table th {
     background-color: rgb(235, 243, 243);

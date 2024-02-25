@@ -102,6 +102,33 @@ class DAODoctor{
         }); 
     }
 
+    checkCitas(DNIDoctor){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryobtenerCitas_doctor =`SELECT citas.*, pacientes.nombre AS nombre_paciente, pacientes.apellidos AS apellidos_paciente
+                    FROM citas
+                    JOIN pacientes ON citas.paciente_dni = pacientes.dni
+                    WHERE citas.doctor_dni = ?;
+                    `;
+                    connection.query(queryobtenerCitas_doctor,[DNIDoctor], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
     obtenerPacientes_doctor(DNIDoctor){
         
         return new Promise((resolve, reject) => {

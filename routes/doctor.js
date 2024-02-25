@@ -31,6 +31,28 @@ router.get('/', function(req, res, next) {
     res.render('main', { nombre: req.session.currentUser.nombre });
   }
 });
+router.get('/calendario', function(req, res, next) {
+  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+    res.render('index', { nombre:"" });
+  }else{
+    res.render('calendario', { nombre: req.session.currentUser.nombre });
+  }
+});
+router.get("/obtener-citas",async function(req, res,next){
+  var citas = await dao.checkCitas(req.session.currentUser.dni);
+  var eventos=[];
+  console.log(citas);
+  citas.forEach(function(c){
+    const fechaHoraObj = new Date(c.fecha_hora); // Crear objeto Date directamente desde c.fecha_hora
+    const nuevaFechaHora = new Date(fechaHoraObj.getTime() + c.duracion * 60000); // Sumar duración en milisegundos
+    eventos.push({
+      "title": `Cita médica con ${c.nombre_paciente} ${c.apellidos_paciente}`,
+      "start": c.fecha_hora,
+      "end": nuevaFechaHora
+    });
+  });
+  res.json(eventos);
+});
 router.get('/gestion-usuarios', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
     res.render('index', { nombre:"" });
