@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-4">
                     <div class="card p-2 text-center">
-                        <img class="card-img-top" src="../../images/historial.png" alt="Historial Médico">
+                        <img class="card-img-top" src="/images/historial.png" alt="Historial Médico">
                         <div class="card-body">
                           <p class="card-text"><button id="crearHistorial" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Crear historial médico</button></p>
                         </div>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-4">
                     <div class="card p-2 text-center">
-                        <img class="card-img-top" src="../../images/tratamiento.png" alt="Iniciar tratamiento imagen">
+                        <img class="card-img-top" src="/images/tratamiento.png" alt="Iniciar tratamiento imagen">
                         <div class="card-body">
                           <p class="card-text"><button id="iniciarTratamiento" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Iniciar tratamiento</button></p>
                         </div>
@@ -40,12 +40,20 @@
                 </div>
                 <div class="col-4">
                     <div class="card p-2 text-center">
-                        <img class="card-img-top" src="../../images/historial.png" alt="Mostrar Historial">
+                        <img class="card-img-top" src="/images/historial.png" alt="Mostrar Historial">
                         <div class="card-body">
                           <p class="card-text"><button id="mostrarHistorial" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Mostrar historial médico</button></p>
                         </div>
                     </div>
                 </div>
+                <div class="col-4 mt-2">
+                  <div class="card p-2 text-center">
+                      <img class="card-img-top" src="/images/cita-medica.jpg" alt="Cita Medica">
+                      <div class="card-body">
+                        <p class="card-text"><button id="Pedir Cita" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;" data-bs-toggle="modal" data-bs-target="#modalAgregarCita">Añadir una cita</button></p>
+                      </div>
+                  </div>
+              </div>
             </div>
             
         </div>
@@ -103,6 +111,41 @@
           </div>
         </div>
       </div>
+      <!-- Modal Pedir Cita -->
+    <div class="modal fade" id="modalAgregarCita" tabindex="-1" aria-labelledby="modalAgregarCitaLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalAgregarCitaLabel">Añadir Cita</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/doctor/asignar-cita" method="post">
+              <div class="mb-3">
+                <label for="nombre" class="form-label">DNI Paciente:</label>
+                <input type="text" name="dni" class="form-control" id="dni" required>
+              </div>
+              <div class="mb-3">
+                <label for="fecha" class="form-label">Fecha:</label>
+                <input type="date" name="fecha" class="form-control" id="fecha" required>
+              </div>
+              <div class="mb-3">
+                <label for="hora" class="form-label">Hora:</label>
+                <input type="time" name="hora" class="form-control" id="hora" required>
+              </div>
+              <div class="mb-3">
+                <label for="duracion" class="form-label">Duración(min):</label>
+                <input type="number" name="duracion" class="form-control" id="duracion" min=0 max=60 required>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+            </form>
+          </div>         
+        </div>
+      </div>
+</div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>   
     <script>

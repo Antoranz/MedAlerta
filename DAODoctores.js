@@ -76,6 +76,29 @@ class DAODoctor{
             });
         }); 
     }
+    asignarCita(id_doctor,id_paciente,fecha,duracion){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryGuardarTratamiento ="INSERT INTO citas (fecha_hora,duracion,doctor_dni,paciente_dni) VALUES (?,?,?,?)"
+                    connection.query(queryGuardarTratamiento,[fecha,duracion,id_doctor,id_paciente], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
     guardarTratamiento(id_doctor,id_paciente,diagnostico){
         
         return new Promise((resolve, reject) => {

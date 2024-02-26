@@ -66,6 +66,44 @@ router.post("/eliminar-cita",async function(req, res,next){
         res.status(500).json({ error: 'Se produjo un error al intentar eliminar la cita.' });
     }
 });
+
+router.post("/asignar-cita", async function(req, res, next) {
+  const dni = req.body.dni;
+  const fecha = req.body.fecha;
+  const hora = req.body.hora;
+  const duracion = req.body.duracion;
+  const fechaHoraString = fecha + 'T' + hora;
+  const nuevoDate = new Date(fechaHoraString);
+  const fechaActual = new Date();
+
+  try {
+    if (!/^\d{8}[a-zA-Z]$/.test(dni)) {
+      throw new Error("Formato de DNI inválido");
+    }
+
+    const paciente = await dao2.obtenerPaciente(dni);
+
+    if (paciente.length === 0) {
+      throw new Error("El paciente no existe");
+    }
+
+    if (duracion <= 0 || duracion > 60) {
+      throw new Error("La duración de la cita debe estar entre 1 y 60 minutos");
+    }
+
+    if (nuevoDate <= fechaActual) {
+      throw new Error("La fecha y hora seleccionadas deben ser posteriores a la fecha y hora actual");
+    }
+
+    await dao.asignarCita(req.session.currentUser.dni, dni, nuevoDate, duracion);
+    
+    res.status(200).send("Cita asignada correctamente");
+  } catch (error) {
+    console.error("Error al asignar cita:", error.message);
+    res.status(400).send(error.message);
+  }
+});
+
 router.get('/gestion-usuarios', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
     res.render('index', { nombre:"" });

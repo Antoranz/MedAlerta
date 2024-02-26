@@ -58,7 +58,11 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error', { nombre: req.session.currentUser.nombre });
+  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+    res.render('error', { nombre:"" });
+  }else{
+    res.render('error', { nombre: req.session.currentUser.nombre });
+  }
 });
 
 module.exports = app;
