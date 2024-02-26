@@ -72,7 +72,7 @@ router.post("/asignar-cita", async function(req, res, next) {
   const fecha = req.body.fecha;
   const hora = req.body.hora;
   const duracion = req.body.duracion;
-  const fechaHoraString = fecha + 'T' + hora;
+  const fechaHoraString = fecha + ' ' + hora; // Combinar fecha y hora en una sola cadena
   const nuevoDate = new Date(fechaHoraString);
   const fechaActual = new Date();
 
@@ -94,7 +94,13 @@ router.post("/asignar-cita", async function(req, res, next) {
     if (nuevoDate <= fechaActual) {
       throw new Error("La fecha y hora seleccionadas deben ser posteriores a la fecha y hora actual");
     }
-
+    const fecha_hora = nuevoDate.toISOString();
+    var citasCoincidentes = await dao.checkearCitasCoincidentes(req.session.currentUser.dni, fecha_hora, duracion);
+    console.log("citas:", citasCoincidentes);
+    if (citasCoincidentes.length > 0) {
+      throw new Error("Ya existe una cita en ese intervalo de tiempo");
+    }
+    
     await dao.asignarCita(req.session.currentUser.dni, dni, nuevoDate, duracion);
     
     res.status(200).send("Cita asignada correctamente");

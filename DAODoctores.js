@@ -99,6 +99,86 @@ class DAODoctor{
             });
         }); 
     }
+    checkearCitasCoincidentes(DNIDoctor, fecha_hora, duracion) {
+        // Obtener los componentes de fecha y hora
+        const fecha = fecha_hora.split(' ')[0]; // Extraer la parte de la fecha (YYYY-MM-DD)
+        const hora = fecha_hora.split(' ')[1]; // Extraer la parte de la hora (HH:MM:SS)
+    
+        // Formatear la fecha y hora para la consulta SQL
+        const fecha_hora_formateada = fecha + ' ' + hora;
+    
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                } else {
+                    console.log("Conexión exitosa a la base de datos");
+                    var query = `SELECT paciente_dni, fecha_hora
+                        FROM citas
+                        WHERE doctor_dni = ? 
+                        AND (
+                            -- Verificar que la fecha y hora de inicio de la cita esté dentro del intervalo de una cita existente
+                            EXISTS (
+                                SELECT *
+                                FROM citas c
+                                WHERE c.doctor_dni = ? 
+                                AND c.fecha_hora <= ?
+                                AND ADDTIME(c.fecha_hora, SEC_TO_TIME(c.duracion * 60)) > ?
+                            )
+                            OR
+                            -- Verificar que la fecha y hora de fin de la cita esté dentro del intervalo de una cita existente
+                            EXISTS (
+                                SELECT *
+                                FROM citas c
+                                WHERE c.doctor_dni = ? 
+                                AND ADDTIME(c.fecha_hora, SEC_TO_TIME(c.duracion * 60)) > ?
+                                AND c.fecha_hora < ?
+                            )
+                            OR
+                            -- Verificar que la fecha y hora de inicio de la cita y la fecha y hora de fin de la cita abarquen una cita existente
+                            EXISTS (
+                                SELECT *
+                                FROM citas c
+                                WHERE c.doctor_dni = ? 
+                                AND c.fecha_hora >= ?
+                                AND ADDTIME(c.fecha_hora, SEC_TO_TIME(c.duracion * 60)) <= ?
+                            )
+                            OR
+                            -- Verificar que la fecha y hora de inicio de la cita esté después del final de la cita actual
+                            EXISTS (
+                                SELECT *
+                                FROM citas c
+                                WHERE c.doctor_dni = ? 
+                                AND c.fecha_hora > ?
+                                AND c.fecha_hora < ADDTIME(?, SEC_TO_TIME(? * 60))
+                            )
+                        )
+                        ORDER BY fecha_hora;`;
+    
+                    connection.query(query, [DNIDoctor, DNIDoctor, fecha_hora_formateada, fecha_hora_formateada, DNIDoctor, fecha_hora_formateada, fecha_hora_formateada, DNIDoctor, fecha_hora_formateada, fecha_hora_formateada, DNIDoctor, fecha_hora_formateada, fecha_hora_formateada, fecha_hora_formateada, duracion], (err, res) => {
+                        connection.release();
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        });
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+     
+    
+    
     guardarTratamiento(id_doctor,id_paciente,diagnostico){
         
         return new Promise((resolve, reject) => {
