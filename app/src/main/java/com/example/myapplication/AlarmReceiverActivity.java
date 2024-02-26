@@ -26,7 +26,11 @@ public class AlarmReceiverActivity extends BroadcastReceiver {
         sessionManager = new SessionManager(context);
 
         if(sessionManager.isLoggedIn()){
-            Notificaciones.lanzarNotificacion(context);
+
+            String medicamento = intent.getStringExtra("MEDICAMENTO");
+            String dosis = intent.getStringExtra("DOSIS");
+
+            Notificaciones.lanzarNotificacion(context,medicamento,dosis);
         }
 
         Log.i("WALKIRIA", " ALARM RECEIVED!!!");

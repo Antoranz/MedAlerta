@@ -28,10 +28,14 @@ public class Controller {
 
 
 
-    public void creacionAlarma(int i, Long timestamp, Context ctx) {
+    public void creacionAlarma(int i, Long timestamp, String medicamento, String dosis, Context ctx) {
 
         AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(ctx, AlarmReceiverActivity.class);
+
+        alarmIntent.putExtra("MEDICAMENTO",medicamento);
+        alarmIntent.putExtra("DOSIS", dosis);
+
         PendingIntent pendingIntent;
         pendingIntent = PendingIntent.getBroadcast(ctx, i, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 

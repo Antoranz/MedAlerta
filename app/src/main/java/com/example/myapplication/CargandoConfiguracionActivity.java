@@ -98,10 +98,13 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
 
             getDataAsync(urlServidor, executor, (GetDataAsync.OnTaskCompleted) result -> {
                 if (result != null) {
+                    int idAlarmaActual=0;
+
                     try {
                         JSONArray jsonArray = new JSONArray(result);
                         Log.i("DOCTORES",jsonArray.toString());
 
+                        long currentTimeMillis = System.currentTimeMillis();
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -132,10 +135,68 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
                             // Obtén el timestamp
 
                             long timestamp = calendar.getTimeInMillis();
-                            Log.i("TIEMPO", String.valueOf(timestamp));
+                            int intervaloHoras = 24 / tomasAlDia;
 
-                            // Crea la alarma
-                            Controller.getInstance().creacionAlarma(idAlarma, timestamp, this);
+                            Calendar calInicio = Calendar.getInstance();
+                            calInicio.setTime(dateInicio);
+
+                            Calendar calFin = Calendar.getInstance();
+                            calFin.setTime(dateFin);
+
+                            long diferenciaEnMillis = calFin.getTimeInMillis() - calInicio.getTimeInMillis();
+                            int diasEntreFechas = (int) (diferenciaEnMillis / (1000 * 60 * 60 * 24)) + 1;
+
+                            Log.i("diasEntreFehcas", "diasentrefechas " + diasEntreFechas);
+
+
+                                for (int k = 0; k < diasEntreFechas; k++) {
+                                    int diaActual = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+                                    for (int j = 0; j < tomasAlDia; j++) {
+
+                                        if(idAlarmaActual <= idAlarma){
+                                            // Crea la alarma
+
+                                            if (timestamp > currentTimeMillis) {
+                                                Controller.getInstance().creacionAlarma(idAlarma, timestamp, medicamento,dosis, this);
+                                            }else {
+                                                Log.i("TIEMPO_PASADO", "La alarma "+ idAlarma+ " ha pasado el tiempo actual");
+                                            }
+
+                                            calendar.add(Calendar.HOUR_OF_DAY, intervaloHoras);
+                                            timestamp = calendar.getTimeInMillis();
+
+                                            idAlarma++;
+                                            idAlarmaActual = idAlarma;
+                                        }else{
+                                            // Crea la alarma
+                                            if (timestamp > currentTimeMillis) {
+                                                Controller.getInstance().creacionAlarma(idAlarmaActual, timestamp,medicamento,dosis, this);
+                                            }else {
+                                                Log.i("TIEMPO_PASADO", "La alarma "+ idAlarmaActual+ " ha pasado el tiempo actual");
+                                            }
+
+                                            // Avanza al siguiente horario de la toma
+                                            calendar.add(Calendar.HOUR_OF_DAY, intervaloHoras);
+                                            timestamp = calendar.getTimeInMillis();
+                                            idAlarmaActual++;
+                                        }
+                                    }
+
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) != diaActual) {
+
+                                        timestamp = calendar.getTimeInMillis();
+                                    }else{
+                                        calendar.add(Calendar.DAY_OF_MONTH, k + 1);
+                                        timestamp = calendar.getTimeInMillis();
+                                    }
+
+
+                                }
+
+
+
                         }
 
                         Intent intent = new Intent(this, MainActivity.class);

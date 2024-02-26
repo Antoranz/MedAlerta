@@ -37,7 +37,7 @@ public class Notificaciones {
         return notificationChannel;
     }
 
-    public static void lanzarNotificacion (Context context){
+    public static void lanzarNotificacion (Context context,String medicamento, String dosis){
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         NotificationChannel notificationChannel =null;
 
@@ -54,9 +54,8 @@ public class Notificaciones {
         nb.setSmallIcon(android.R.drawable.ic_dialog_info);
 
         nb.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher_round));
-        nb.setContentTitle("PERRACO LA PASTILLITA");
-        nb.setSubText("PERRACO LA PASTILLITA");
-        nb.setContentTitle("Ereh un crack");
+
+        nb.setContentTitle(medicamento + ", dosis: " + dosis);
 
         Intent actividad_destino = new Intent(context,MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,actividad_destino,PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
@@ -65,8 +64,6 @@ public class Notificaciones {
         Notification notification = nb.build();
 
         notificationManager.notify(57,notification);
-
-
     }
 
     public static void notificacionComprobandoAlarmas(Context context){
