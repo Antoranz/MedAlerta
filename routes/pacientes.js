@@ -77,6 +77,49 @@ router.post('/bajaPaciente', async function(req, res, next) {
    
 });
 
+router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
+
+    try {
+
+        var dni_paciente=req.params.dni;
+
+        const {tipo,motivo,fecha,hora,duracion} = req.body;
+
+        var dni_doctor = await dao.obtenerDoctorDelPaciente(dni_paciente);
+
+        console.log(tipo);
+        console.log(motivo);
+        console.log(fecha);
+        console.log(hora);
+        console.log(duracion);
+        console.log("Dni Doctor:" + dni_doctor[0].DNIDoctor);
+
+
+        const fechaHoraString = fecha + ' ' + hora; // Combinar fecha y hora en una sola cadena
+        const nuevoDate = new Date(fechaHoraString);
+
+        // Sumar una hora a la fecha
+        nuevoDate.setHours(nuevoDate.getHours() + 1);
+
+        // Convertir la fecha ajustada a una cadena en formato ISO
+        const fecha_hora = nuevoDate.toISOString();
+
+        console.log(fechaHoraString);
+        console.log(fecha_hora);
+
+
+        await dao.crearNotificacionCita(tipo,fecha_hora,dni_doctor[0].DNIDoctor,dni_paciente);
+
+
+        res.json(true)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+        
+      }
+   
+});
+
 router.post('/checkPaciente', async function(req, res, next) {
 
     try {
