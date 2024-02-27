@@ -246,6 +246,54 @@ class DAOPaciente{
         }); 
     }
 
+    obtenerDoctorDelPaciente(DNIPaciente){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryobtenerDoctorDelPaciente ="SELECT * FROM asignaciones WHERE DNIPaciente = ?"
+                    connection.query(queryobtenerDoctorDelPaciente,[DNIPaciente], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    crearNotificacionCita(tipo,fecha_hora,doctor_dni,paciente_dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querycrearNotificacionCita ="INSERT INTO notificaciones (tipo,fecha_hora,doctor_dni,paciente_dni) VALUES (?, ?, ?, ?)"
+                    connection.query(querycrearNotificacionCita,[tipo,fecha_hora,doctor_dni,paciente_dni], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
 }
 
 module.exports = DAOPaciente;
