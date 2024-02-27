@@ -4,12 +4,14 @@
     <string name="informaci_n_de_login">Información de Login</string>
     <string name="email">Email</string>
     <string name="nombre">Nombre</string>
+    <string name="motivoConsulta">Motivo de la consulta</string>
     <string name="dni">DNI</string>
     <string name="contrase_a">Contraseña</string>
     <string name="repetir_contrase_a">Repetir Contraseña</string>
     <string name="datos_personales">Datos Personales</string>
     <string name="fecha_de_nacimiento">Fecha de Nacimiento</string>
     <string name="c_digo_postal">Código Postal</string>
+    <string name="duracionCita">Duracion(min)</string>
     <string name="registrar">Registrar</string>
     <string name="apellidos">Apellidos</string>
     <string name="crear_una_cuenta"><u>Crear cuenta</u></string>

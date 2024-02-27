@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,14 +44,21 @@ public class MainActivity extends AppCompatActivity {
     TextView userText;
     SessionManager sessionManager;
 
+    Button solicitarCita;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sessionManager = new SessionManager(this);
+        initIgui();
 
+    }
+
+    private void initIgui() {
+
+        sessionManager = new SessionManager(this);
 
         String username = sessionManager.getEmail();
 
@@ -61,11 +69,17 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
+
         userText = findViewById(R.id.name);
         userText.setText(username);
 
-    }
+        solicitarCita = findViewById(R.id.botonCita);
 
+        solicitarCita.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CrearCitaActivity.class);
+            startActivity(intent);
+        });
+    }
 
 
     @Override

@@ -76,6 +76,12 @@
         </activity>
 
         <activity
+            android:name=".CrearCitaActivity"
+            android:exported="true">
+
+        </activity>
+
+        <activity
             android:name=".CargandoConfiguracionActivity"
             android:exported="true">
 

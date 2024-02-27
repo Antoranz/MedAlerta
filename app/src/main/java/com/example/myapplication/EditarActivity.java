@@ -40,7 +40,6 @@ public class EditarActivity extends AppCompatActivity {
     private TextView changePassword;
     private Button editButton;
     SessionManager sessionManager;
-    Integer numeroAleatorio = generarNumeroAleatorio();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +62,6 @@ public class EditarActivity extends AppCompatActivity {
         changePassword = findViewById(R.id.changePasswordId);
 
         editButton = findViewById(R.id.editButton);
-
 
         changePassword.setOnClickListener(v -> {
             Intent intent = new Intent(this, ChangePasswordActivity.class);

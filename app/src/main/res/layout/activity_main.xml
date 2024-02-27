@@ -17,28 +17,43 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="400dp"
         android:layout_height="62dp"
+        android:gravity="left"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="left">
+        app:layout_constraintTop_toTopOf="parent">
+
         <ImageButton
             android:id="@+id/perfilImage"
             android:layout_width="56dp"
             android:layout_height="59dp"
-            android:backgroundTint="@color/blue"/>
+            android:backgroundTint="@color/blue" />
+
         <TextView
-            android:layout_marginTop="10dp"
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Anonimo"
             android:textColor="@color/white"
             android:textSize="24sp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/botonCita"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:text="Solicitar una cita"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.147" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
