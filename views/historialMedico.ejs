@@ -61,13 +61,16 @@
                 
                 <br>
                 <br>
+                
+
                 <!-- Añade más campos para la información del paciente (apellidos, sexo, fecha de nacimiento, edad, peso, altura) -->
 
                 <!-- Enfermedades -->
                 <div class="form-group">
                     <p>Marque estas casillas si usted las posee:</p>
-                
-                    <div class="row">
+
+                    <!-- Aquí se agregarán dinámicamente las enfermedades -->
+                    <div id="enfermedadesContainer" class="row">
                         <div class="col-md-3">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="anemia" name="anemia">
@@ -84,175 +87,221 @@
                                 <label class="form-check-label" for="asma">Asma</label>
                             </div>
                     
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="colesterolAlto" name="colesterolAlto">
-                                <label class="form-check-label" for="colesterolAlto">Colesterol Alto</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="dermatitis" name="dermatitis">
-                                <label class="form-check-label" for="diabetes">Dermatitis</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="diabetes" name="diabetes">
-                                <label class="form-check-label" for="diabetes">Diabetes</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="enfermedadAutoinmune" name="enfermedadAutoinmune">
-                                <label class="form-check-label" for="enfermedadAutoinmune">Enfermedad Autoinmune</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="enfermedadCorazon" name="enfermedadCorazon">
-                                <label class="form-check-label" for="enfermedadCorazon">Enfermedad del Corazón</label>
-                            </div>
-                    
-                            
-                    
-                            
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="colesterolAlto" name="colesterolAlto">
+                            <label class="form-check-label" for="colesterolAlto">Colesterol Alto</label>
                         </div>
-                    
-                        
-                        <div class="col-md-3">
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="enfermedadDigestiva" name="enfermedadDigestiva">
-                                <label class="form-check-label" for="enfermedadDigestiva">Enfermedad Digestiva</label>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="enfermedadGastrointestinal" name="enfermedadGastrointestinal">
-                                <label class="form-check-label" for="enfermedadGastrointestinal">Enfermedad Gastrointestinal</label>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="enfermedadHematologica" name="enfermedadHematologica">
-                                <label class="form-check-label" for="enfermedadHematologica">Enfermedad Hematológica</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="enfermedadHepatica" name="enfermedadHepatica">
-                                <label class="form-check-label" for="enfermedadHepatica">Enfermedad Hepática</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="enfermedadNeurologica" name="enfermedadNeurologica">
-                                <label class="form-check-label" for="enfermedadNeurologica">Enfermedad Neurológica</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="enfermedadRenal" name="enfermedadRenal">
-                                <label class="form-check-label" for="enfermedadRenal">Enfermedad Renal</label>
-                            </div>
-                    
-                            
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="enfermedadRespiratoria" name="enfermedadRespiratoria">
-                                <label class="form-check-label" for="enfermedadRespiratoria">Enfermedad Respiratoria</label>
-                            </div>
-                            
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="enfermedadReumatica" name="enfermedadReumatica">
-                                <label class="form-check-label" for="enfermedadReumatica">Enfermedad Reumática</label>
-                            </div>
-                    
-                        
-                            
-                    
-                            
-                        </div>
-                    
-                        <div class="col-md-3">
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="enfermedadTiroidea" name="enfermedadTiroidea">
-                                <label class="form-check-label" for="enfermedadTiroidea">Enfermedad Tiroidea</label>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="fibromialgia" name="fibromialgia">
-                                <label class="form-check-label" for="fibromialgia">Fibromialgia</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="gastritis" name="gastritis">
-                                <label class="form-check-label" for="gastritis">Gastritis</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="hepatitis" name="hepatitis">
-                                <label class="form-check-label" for="hepatitis">Hepatitis</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="hipertension" name="hipertension">
-                                <label class="form-check-label" for="hipertension">Hipertensión</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="hipertensionArterial" name="hipertensionArterial">
-                                <label class="form-check-label" for="hipertensionArterial">Hipertensión Arterial</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="hipotiroidismo" name="hipotiroidismo">
-                                <label class="form-check-label" for="hipotiroidismo">Hipotiroidismo</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="migrania" name="migrania">
-                                <label class="form-check-label" for="migrania">Migraña</label>
-                            </div>
-                            
-                    
-                        
-                    
-                            
-                            
-                        </div>
-                    
-                        <div class="col-md-3">
-                        
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="neumonia" name="neumonia">
-                                <label class="form-check-label" for="neumonia">Neumonía</label>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="osteoporosis" name="osteoporosis">
-                                <label class="form-check-label" for="osteoporosis">Osteoporosis</label>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="osteoartritis" name="osteoartritis">
-                                <label class="form-check-label" for="osteoartritis">Osteoartritis</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sinusitis" name="sinusitis">
-                                <label class="form-check-label" for="sinusitis">Sinusitis</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="trastornoAnsiedad" name="trastornoAnsiedad">
-                                <label class="form-check-label" for="trastornoAnsiedad">Trastorno de Ansiedad</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="trastornoBipolar" name="trastornoBipolar">
-                                <label class="form-check-label" for="trastornoBipolar">Trastorno Bipolar</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="trastornoDepresivo" name="trastornoDepresivo">
-                                <label class="form-check-label" for="trastornoDepresivo">Trastorno Depresivo</label>
-                            </div>
-                    
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="trastornoEating" name="trastornoEating">
-                                <label class="form-check-label" for="trastornoEating">Trastorno de la Alimentación</label>
-                            </div>
                 
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="dermatitis" name="dermatitis">
+                            <label class="form-check-label" for="diabetes">Dermatitis</label>
                         </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="diabetes" name="diabetes">
+                            <label class="form-check-label" for="diabetes">Diabetes</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enfermedadAutoinmune" name="enfermedadAutoinmune">
+                            <label class="form-check-label" for="enfermedadAutoinmune">Enfermedad Autoinmune</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enfermedadCorazon" name="enfermedadCorazon">
+                            <label class="form-check-label" for="enfermedadCorazon">Enfermedad del Corazón</label>
+                        </div>
+                        
+                    </div>
+                
+                    
+                    <div class="col-md-3">
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enfermedadDigestiva" name="enfermedadDigestiva">
+                            <label class="form-check-label" for="enfermedadDigestiva">Enfermedad Digestiva</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enfermedadGastrointestinal" name="enfermedadGastrointestinal">
+                            <label class="form-check-label" for="enfermedadGastrointestinal">Enfermedad Gastrointestinal</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enfermedadHematologica" name="enfermedadHematologica">
+                            <label class="form-check-label" for="enfermedadHematologica">Enfermedad Hematológica</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enfermedadHepatica" name="enfermedadHepatica">
+                            <label class="form-check-label" for="enfermedadHepatica">Enfermedad Hepática</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enfermedadNeurologica" name="enfermedadNeurologica">
+                            <label class="form-check-label" for="enfermedadNeurologica">Enfermedad Neurológica</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enfermedadRenal" name="enfermedadRenal">
+                            <label class="form-check-label" for="enfermedadRenal">Enfermedad Renal</label>
+                        </div>
+                
+                        
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enfermedadRespiratoria" name="enfermedadRespiratoria">
+                            <label class="form-check-label" for="enfermedadRespiratoria">Enfermedad Respiratoria</label>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enfermedadReumatica" name="enfermedadReumatica">
+                            <label class="form-check-label" for="enfermedadReumatica">Enfermedad Reumática</label>
+                        </div>
+                        
+                    </div>
+                
+                    <div class="col-md-3">
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enfermedadTiroidea" name="enfermedadTiroidea">
+                            <label class="form-check-label" for="enfermedadTiroidea">Enfermedad Tiroidea</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="fibromialgia" name="fibromialgia">
+                            <label class="form-check-label" for="fibromialgia">Fibromialgia</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="gastritis" name="gastritis">
+                            <label class="form-check-label" for="gastritis">Gastritis</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="hepatitis" name="hepatitis">
+                            <label class="form-check-label" for="hepatitis">Hepatitis</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="hipertension" name="hipertension">
+                            <label class="form-check-label" for="hipertension">Hipertensión</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="hipertensionArterial" name="hipertensionArterial">
+                            <label class="form-check-label" for="hipertensionArterial">Hipertensión Arterial</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="hipotiroidismo" name="hipotiroidismo">
+                            <label class="form-check-label" for="hipotiroidismo">Hipotiroidismo</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="migrania" name="migrania">
+                            <label class="form-check-label" for="migrania">Migraña</label>
+                        </div>
+                        
+                
+                    
+                
+                        
+                        
+                    </div>
+                
+                    <div class="col-md-3">
+                    
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="neumonia" name="neumonia">
+                            <label class="form-check-label" for="neumonia">Neumonía</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="osteoporosis" name="osteoporosis">
+                            <label class="form-check-label" for="osteoporosis">Osteoporosis</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="osteoartritis" name="osteoartritis">
+                            <label class="form-check-label" for="osteoartritis">Osteoartritis</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="sinusitis" name="sinusitis">
+                            <label class="form-check-label" for="sinusitis">Sinusitis</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="trastornoAnsiedad" name="trastornoAnsiedad">
+                            <label class="form-check-label" for="trastornoAnsiedad">Trastorno de Ansiedad</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="trastornoBipolar" name="trastornoBipolar">
+                            <label class="form-check-label" for="trastornoBipolar">Trastorno Bipolar</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="trastornoDepresivo" name="trastornoDepresivo">
+                            <label class="form-check-label" for="trastornoDepresivo">Trastorno Depresivo</label>
+                        </div>
+                
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="trastornoEating" name="trastornoEating">
+                            <label class="form-check-label" for="trastornoEating">Trastorno de la Alimentación</label>
+                        </div>
+            
+                    </div>
 
                     </div>
+                        <!-- Nuevo campo para insertar enfermedad -->
+                        <div class="form-group row">
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="nuevaEnfermedad" placeholder="Insertar nueva enfermedad">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-primary" id="agregarEnfermedad">Agregar Enfermedad</button>
+                            </div>
+                        </div>
+                </div>
+
+
+                </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Manejador para el botón "Agregar Enfermedad"
+                        document.getElementById('agregarEnfermedad').addEventListener('click', function() {
+                            // Obtener el valor de la nueva enfermedad
+                            var nuevaEnfermedad = document.getElementById('nuevaEnfermedad').value.trim();
+                            
+                            // Validar si la enfermedad no está vacía
+                            if (nuevaEnfermedad !== '') {
+                                // Crear el nuevo checkbox y su etiqueta
+                                var checkbox = document.createElement('input');
+                                checkbox.type = 'checkbox';
+                                checkbox.className = 'form-check-input';
+                                checkbox.id = nuevaEnfermedad.toLowerCase().replace(/\s+/g, '');
+                                checkbox.name = nuevaEnfermedad.toLowerCase().replace(/\s+/g, ''); // Agregar name
+
+                                var label = document.createElement('label');
+                                label.className = 'form-check-label';
+                                label.setAttribute('for', nuevaEnfermedad.toLowerCase().replace(/\s+/g, ''));
+                                label.textContent = nuevaEnfermedad;
+
+                                // Crear el contenedor del nuevo checkbox y etiqueta
+                                var divCheckbox = document.createElement('div');
+                                divCheckbox.className = 'form-check col-md-3'; // Alineación de columnas
+                                divCheckbox.appendChild(checkbox);
+                                divCheckbox.appendChild(label);
+
+                                // Agregar el nuevo checkbox al contenedor dentro del formulario
+                                document.getElementById('enfermedadesContainer').appendChild(divCheckbox);
+
+                                // Limpiar el campo de nueva enfermedad
+                                document.getElementById('nuevaEnfermedad').value = '';
+                            } else {
+                                alert('Por favor, ingrese el nombre de la nueva enfermedad.');
+                            }
+                        });
+                    });
+
+                </script>
                     
                 </div>
                 

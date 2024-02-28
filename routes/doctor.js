@@ -356,7 +356,7 @@ router.get('/eliminarAsociacion/:dni', async function(req, res, next) {
   }
 });
 
-router.get('/CrearHistorial', function(req, res, next) {
+router.get('/CrearHistorial/', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
     res.render('index', { nombre:"" });
   }else{
@@ -464,8 +464,8 @@ router.get('/CrearHistorial', function(req, res, next) {
     const enfermedadesMarcadas = enfermedades.slice(0,enfermedades.length-2);
     console.log(enfermedadesMarcadas);
     // Posición inicial
-    let xPos = 70;
-    let yPos = actual+ 196;
+    let xPos = 80;
+    let yPos = actual+ 210;
     const spaceBetweenElements = 5;
     const maxPosX = 500; // Posición X máxima antes de un salto de línea
 
@@ -474,22 +474,30 @@ router.get('/CrearHistorial', function(req, res, next) {
     let firstElement = true; // Variable para controlar el primer elemento
 
     enfermedadesMarcadas.forEach((enfermedad, index) => {
-      // Verificar si la enfermedad excede el espacio disponible en la línea actual
-      if (xPos + doc.widthOfString(enfermedad) > maxPosX) {
-        xPos = 110; // Reiniciar la posición X para el inicio de la nueva línea
-        yPos += 20; // Aumentar la posición Y para el salto de línea
-      }
-      if (index == 1){
-        xPos += doc.widthOfString(enfermedad);
-      }
-        xPos += spaceBetweenElements; // Añadir espacio entre las enfermedades
+      // Calculamos el ancho de la enfermedad
+
+      console.log(enfermedad, " ")
+      const enfermedadWidth = doc.widthOfString(enfermedad);
   
-      // Agregar la enfermedad al PDF
-      doc.text(enfermedad, xPos, yPos);
+      // Verificamos si la enfermedad excede el espacio disponible en la línea actual
+      if (xPos + enfermedadWidth > maxPosX) {
+          xPos = 80; // Reiniciamos la posición X para iniciar una nueva línea
+          yPos += 20; // Aumentamos la posición Y para el salto de línea
+      }
   
-      // Actualizar la posición X para el próximo elemento
-      xPos += doc.widthOfString(enfermedad); 
+      // Agregamos la enfermedad al PDF
+      console.log("Escribo " + enfermedad + "en x, y: " + xPos + " " + yPos);
+      if(index != 0)doc.text(enfermedad + ",", xPos, yPos);
+      else{
+        doc.text("   ", xPos, yPos);
+        xPos -= (enfermedadWidth + spaceBetweenElements);
+      }
+      // Actualizamos la posición X para el próximo elemento
+      xPos += enfermedadWidth + spaceBetweenElements; // Agregamos espacio entre enfermedades
   });
+  
+  
+  
     
     //doc.rect(10, 50, 600, 800).fill('lightgrey');
 
