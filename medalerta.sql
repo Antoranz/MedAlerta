@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-02-2024 a las 21:25:59
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Tiempo de generación: 28-02-2024 a las 19:44:31
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -43,9 +43,7 @@ CREATE TABLE `alarma` (
 --
 
 INSERT INTO `alarma` (`id_alarma`, `id_tratamiento`, `medicamento`, `dosis`, `hora_primera_toma`, `tomas_al_dia`, `fecha_inicio`, `fecha_fin`) VALUES
-(1, 1, 'Hibuprofeno', '1', '19:52:00', 2, '2024-02-22', '2024-02-29'),
-(2, 2, 'Hibuprofeno', '1', '14:26:00', 2, '2024-02-22', '2024-02-24'),
-(3, 3, 'Hibuprofeno', '1', '13:31:00', 2, '2024-02-24', '2024-02-25');
+(23, 16, 'enantyum', '5 petas', '22:42:00', 3, '2024-02-26', '2024-02-27');
 
 -- --------------------------------------------------------
 
@@ -80,6 +78,13 @@ CREATE TABLE `citas` (
   `paciente_dni` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `citas`
+--
+
+INSERT INTO `citas` (`id`, `fecha_hora`, `duracion`, `doctor_dni`, `paciente_dni`) VALUES
+(6, '2024-02-28 14:26:00', 30, '08366085L', '08366085L');
+
 -- --------------------------------------------------------
 
 --
@@ -104,6 +109,27 @@ CREATE TABLE `doctores` (
 
 INSERT INTO `doctores` (`dni`, `email`, `password`, `nombre`, `apellidos`, `fecha_nacimiento`, `domicilio`, `codigo_postal`, `numero_telefono`) VALUES
 ('08366085L', 'frantora@ucm.es', '10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672', 'Francisco Javier', 'Antoranz Esteban', '2002-01-02', 'Calle Ocaña', '28047', '618495616');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `notificaciones`
+--
+
+CREATE TABLE `notificaciones` (
+  `id` int(11) NOT NULL,
+  `tipo` varchar(255) DEFAULT NULL,
+  `fecha_hora` datetime DEFAULT NULL,
+  `doctor_dni` varchar(20) DEFAULT NULL,
+  `paciente_dni` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `notificaciones`
+--
+
+INSERT INTO `notificaciones` (`id`, `tipo`, `fecha_hora`, `doctor_dni`, `paciente_dni`) VALUES
+(6, 'Cita', '2024-02-28 03:50:00', '08366085L', '08366085L');
 
 -- --------------------------------------------------------
 
@@ -148,9 +174,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('9rLVleauKHMpoNF_9zv-82C5o8Mx_e_o', 1708951430, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"password\":\"10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-01T23:00:00.000Z\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}'),
-('kHhXavN1uPs_ytOrF4_NVXJsMxsfwjVh', 1708976750, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"password\":\"10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-01T23:00:00.000Z\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}'),
-('uefg6Et0vqmiMZWbQkdZrEF8nhqwpfyi', 1708898680, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"password\":\"10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-01T23:00:00.000Z\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}');
+('53X4UnRD4JIuUBnSfnCy4NQvLu9DU2Ky', 1709157402, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"password\":\"10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-01T23:00:00.000Z\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}'),
+('Dw1SalwRJitNQsANvW5d5KugjSI7OKji', 1709232207, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"password\":\"10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-01T23:00:00.000Z\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}');
 
 -- --------------------------------------------------------
 
@@ -170,9 +195,7 @@ CREATE TABLE `tratamiento` (
 --
 
 INSERT INTO `tratamiento` (`id_tratamiento`, `id_paciente`, `id_doctor`, `diagnostico`) VALUES
-(1, '71042723R', '08366085L', 'Dolor de Cabeza'),
-(2, '08366085L', '08366085L', 'Dolor de cabeza'),
-(3, '71042723R', '08366085L', 'Dolor de cojones');
+(16, '08366085L', '08366085L', 'fiebre tochita');
 
 --
 -- Índices para tablas volcadas
@@ -206,6 +229,12 @@ ALTER TABLE `doctores`
   ADD PRIMARY KEY (`dni`);
 
 --
+-- Indices de la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `pacientes`
 --
 ALTER TABLE `pacientes`
@@ -233,19 +262,25 @@ ALTER TABLE `tratamiento`
 -- AUTO_INCREMENT de la tabla `alarma`
 --
 ALTER TABLE `alarma`
-  MODIFY `id_alarma` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_alarma` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `tratamiento`
 --
 ALTER TABLE `tratamiento`
-  MODIFY `id_tratamiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_tratamiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Restricciones para tablas volcadas

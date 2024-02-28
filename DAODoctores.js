@@ -170,15 +170,6 @@ class DAODoctor{
     }
     
     
-    
-    
-    
-    
-    
-    
-     
-    
-    
     guardarTratamiento(id_doctor,id_paciente,diagnostico){
         
         return new Promise((resolve, reject) => {
@@ -265,6 +256,30 @@ class DAODoctor{
                     console.log("Exito al conectar a la base de datos");
                     var queryobtenerPacientes_doctor ="SELECT p.* FROM asignaciones AS a INNER JOIN pacientes AS p ON a.DNIPaciente = p.dni WHERE a.DNIDoctor = ?"
                     connection.query(queryobtenerPacientes_doctor,[DNIDoctor], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    obtenerNotificaciones(doctor_dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryobtenerNotificaciones ="SELECT * FROM notificaciones WHERE doctor_dni = ?"
+                    connection.query(queryobtenerNotificaciones,[doctor_dni], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);

@@ -73,8 +73,38 @@ router.post("/asignar-cita", async function(req, res, next) {
   const hora = req.body.hora;
   const duracion = req.body.duracion;
   const fechaHoraString = fecha + ' ' + hora; // Combinar fecha y hora en una sola cadena
-  const nuevoDate = new Date(fechaHoraString);
+  var nuevoDate = new Date(fechaHoraString);
   const fechaActual = new Date();
+
+  if (nuevoDate == "Invalid Date") {
+
+    const fechaParts = fecha.split('/'); // Divide la cadena de fecha por "/"
+    const horaParts = hora.split(':'); // Divide la cadena de hora por ":"
+
+    // Crea un nuevo objeto Date con los componentes de fecha y hora
+    const nuevaFechaaaaaaaa = new Date(
+        fechaParts[2], // Año
+        parseInt(fechaParts[1]) - 1, // Mes (se resta 1 porque los meses en JavaScript van de 0 a 11)
+        fechaParts[0], // Día
+        horaParts[0], // Hora
+        horaParts[1], // Minuto
+        horaParts[2] // Segundo
+    );
+
+    console.log("Ha entrado en invalid");
+
+    nuevoDate = nuevaFechaaaaaaaa;
+    console.log(nuevaFechaaaaaaaa)
+
+    
+  }
+
+
+  console.log(dni)
+  console.log(fecha)
+  console.log(hora)
+  console.log(duracion)
+  console.log(nuevoDate)
 
   try {
     if (!/^\d{8}[a-zA-Z]$/.test(dni)) {
@@ -117,6 +147,35 @@ router.get('/gestion-usuarios', function(req, res, next) {
     res.render('gestionUsuarios', { nombre: req.session.currentUser.nombre });
   }
 });
+
+
+
+router.get('/gestion-notificaciones', async function(req, res, next) {
+  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+    res.render('index', { nombre:"" });
+  }else{
+
+    var notificaciones = await dao.obtenerNotificaciones(req.session.currentUser.dni);
+
+    
+
+    notificaciones.forEach(notificacion => {
+      const fechaHora = new Date(notificacion.fecha_hora);
+      // Asignar la fecha y la hora por separado a la notificación
+      notificacion.fecha = fechaHora.toLocaleDateString();
+      notificacion.hora = fechaHora.toLocaleTimeString();
+
+      notificacion.id = notificacion.id;
+
+  });
+
+  console.log(notificaciones)
+  
+
+    res.render('gestionNotificaciones', { nombre: req.session.currentUser.nombre, notificaciones:notificaciones });
+  }
+});
+
 
 router.post('/signin' , async function(req,res,next){
 

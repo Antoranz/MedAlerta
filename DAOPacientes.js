@@ -270,7 +270,7 @@ class DAOPaciente{
         }); 
     }
 
-    crearNotificacionCita(tipo,fecha_hora,doctor_dni,paciente_dni){
+    crearNotificacionCita(tipo,motivo,fecha_hora,doctor_dni,paciente_dni){
         
         return new Promise((resolve, reject) => {
             this.pool.getConnection((err, connection) => {
@@ -279,8 +279,8 @@ class DAOPaciente{
                     reject(err);
                 }else{
                     console.log("Exito al conectar a la base de datos");
-                    var querycrearNotificacionCita ="INSERT INTO notificaciones (tipo,fecha_hora,doctor_dni,paciente_dni) VALUES (?, ?, ?, ?)"
-                    connection.query(querycrearNotificacionCita,[tipo,fecha_hora,doctor_dni,paciente_dni], (err, res) => {
+                    var querycrearNotificacionCita ="INSERT INTO notificaciones (tipo,motivo,fecha_hora,doctor_dni,paciente_dni) VALUES (?, ?, ?, ?, ?)"
+                    connection.query(querycrearNotificacionCita,[tipo,motivo,fecha_hora,doctor_dni,paciente_dni], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);

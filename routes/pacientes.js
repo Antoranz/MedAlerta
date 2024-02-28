@@ -108,7 +108,7 @@ router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
         console.log(fecha_hora);
 
 
-        await dao.crearNotificacionCita(tipo,fecha_hora,dni_doctor[0].DNIDoctor,dni_paciente);
+        await dao.crearNotificacionCita(tipo,motivo,fecha_hora,dni_doctor[0].DNIDoctor,dni_paciente);
 
 
         res.json(true)
