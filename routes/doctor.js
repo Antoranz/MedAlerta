@@ -197,6 +197,11 @@ router.post('/signin' , async function(req,res,next){
 
       doctor[0].validado = true;
       req.session.currentUser = doctor[0]
+      delete req.session.currentUser.password;
+      req.session.currentUser.fecha_nacimiento = new Date(req.session.currentUser.fecha_nacimiento);
+      req.session.currentUser.fecha_nacimiento.setDate(req.session.currentUser.fecha_nacimiento.getDate() + 1);//por alguna razon se resta un día a lo que hay en la bbdd
+      req.session.currentUser.fecha_nacimiento =obtenerFecha(req.session.currentUser.fecha_nacimiento);
+        
       console.log(doctor[0])
       console.log(req.session.currentUser)
       res.redirect('/');
@@ -208,6 +213,17 @@ router.post('/signin' , async function(req,res,next){
   }
 
 });
+function obtenerFecha(cadenaFechaHora) {
+  if (typeof cadenaFechaHora === 'string') {
+    var soloFecha = cadenaFechaHora.split("T")[0];
+    return soloFecha;
+  } else if (cadenaFechaHora instanceof Date) {
+    var soloFecha = cadenaFechaHora.toISOString().split("T")[0];
+    return soloFecha;
+  }else {
+      return ""; 
+  }
+}
 router.get('/funciones-paciente/:dni', (req, res) => {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
     res.render('index', { nombre:"" });
@@ -228,9 +244,17 @@ router.get('/obtener-doctores', (req, res) => {
       }
   });
 });
-
+router.get('/editar-perfil', function(req, res, next) {
+  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+    res.render('index', { nombre:"" });
+  }else{
+    usuario = req.session.currentUser;
+    console.log(usuario);
+    res.render("editarPerfil",{error:"", usuario: usuario,nombre: req.session.currentUser.nombre});
+  }
+});
 router.get('/register', function(req, res, next) {
-  res.render("register",{error:"", usuario: "",email:""});
+  res.render("register",{error:"", usuario: "",nombre: ""});
 });
 
 
