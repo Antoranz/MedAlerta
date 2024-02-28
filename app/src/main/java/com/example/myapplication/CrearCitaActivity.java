@@ -55,9 +55,6 @@ public class CrearCitaActivity extends AppCompatActivity {
         tipo = findViewById(R.id.tipoCita);
         duracion = findViewById(R.id.duracionCita);
 
-
-
-
         confirmarCita = findViewById(R.id.botonConfirmarCita);
 
         confirmarCita.setOnClickListener(v -> {
