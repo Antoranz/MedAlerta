@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -21,5 +22,8 @@
     "nodemailer": "^6.9.8",
     "nodemon": "^3.0.3",
     "pdfkit": "^0.14.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

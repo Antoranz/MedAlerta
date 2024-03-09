@@ -6,8 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var pacientesRouter = require('./routes/pacientes');
-var doctorRouter = require('./routes/doctor');
-
+var {router} = require('./routes/doctor');
+var doctorRouter = router;
 const session = require('express-session');
 const mysqlSession = require("express-mysql-session");
 const MySQLStore = mysqlSession(session);

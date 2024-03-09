@@ -258,10 +258,12 @@ router.get('/register', function(req, res, next) {
 });
 
 
-router.post('/registrando', function(req, res, next) {
+router.post('/registrando', registrarUsuario);
+
+function registrarUsuario(req, res, next) {
   const {dni,email,password,repeatPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono} = req.body;
   var usuario = {dni: dni,email: email,password: password,repeatPassword: repeatPassword,nombre: nombre,apellidos: apellidos,fecha_nacimiento: fecha_nacimiento,domicilio: domicilio,codigo_postal: codigo_postal,numero_telefono: numero_telefono};
-  console.log(usuario);
+
   var valido = true;
   if (password !== repeatPassword) {
     valido = false;
@@ -304,11 +306,12 @@ router.post('/registrando', function(req, res, next) {
         console.log("Error interno del servidor" + error);
       }else{
         req.session.currentUser = {dni,email,nombre,apellidos};
-        res.render('index',{email : ""})
+        res.render("index",{nombre : ""});
       }});
   }
 
-});
+};
+
 
 function cifrarContrasena(contrasena, salt) {
   // Crea un nuevo objeto Hash
@@ -612,4 +615,7 @@ router.get('/obtenerURLPDF', (req, res) => {
   res.json({ downloadURL: pdfURL });
 });
 
-module.exports = router;
+module.exports = {
+  router,
+  registrarUsuario
+};
