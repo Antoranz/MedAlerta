@@ -157,8 +157,6 @@ router.get('/gestion-notificaciones', async function(req, res, next) {
 
     var notificaciones = await dao.obtenerNotificaciones(req.session.currentUser.dni);
 
-    
-
     notificaciones.forEach(notificacion => {
       const fechaHora = new Date(notificacion.fecha_hora);
       // Asignar la fecha y la hora por separado a la notificación
@@ -581,11 +579,6 @@ router.get('/CrearHistorial/', function(req, res, next) {
       // Actualizamos la posición X para el próximo elemento
       xPos += enfermedadWidth + spaceBetweenElements; // Agregamos espacio entre enfermedades
   });
-  
-  
-  
-    
-    //doc.rect(10, 50, 600, 800).fill('lightgrey');
 
     // Creamos un flujo de escritura para guardar el PDF en un archivo local
     const filePath = "../MedAlerta/public/historiales/HM"+req.session.currentUser.dni + "-" + req.body.dni + ".pdf";
