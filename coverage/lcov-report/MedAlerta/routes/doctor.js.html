@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.93% </span>
+                <span class="strong">17.85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>46/308</span>
+                <span class='fraction'>55/308</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">6.17% </span>
+                <span class="strong">11.11% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/81</span>
+                <span class='fraction'>9/81</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.08% </span>
+                <span class="strong">18.03% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>46/305</span>
+                <span class='fraction'>55/305</span>
             </div>
         
             
@@ -947,38 +947,38 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1572,31 +1572,31 @@ function registrarUsuario(req, res, next) {
   var usuario = {dni: dni,email: email,password: password,repeatPassword: repeatPassword,nombre: nombre,apellidos: apellidos,fecha_nacimiento: fecha_nacimiento,domicilio: domicilio,codigo_postal: codigo_postal,numero_telefono: numero_telefono};
 &nbsp;
   var valido = true;
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (password !== repeatPassword) {
+  if (password !== repeatPassword) {
     valido = false;
     usuario.password = "";
     usuario.repeatPassword = "";
     res.render("register",{error:"Las contraseñas no coinciden", usuario: usuario,email:""});
   }
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (!/^\d{8}[a-zA-Z]$/.test(dni)) {
-<span class="cstat-no" title="statement not covered" >    valido = false;</span>
-<span class="cstat-no" title="statement not covered" >    usuario.dni = "";</span>
-<span class="cstat-no" title="statement not covered" >    res.render("register",{error:"El DNI no es válido", usuario: usuario,email:""});</span>
+  if (!/^\d{8}[a-zA-Z]$/.test(dni)) {
+    valido = false;
+    usuario.dni = "";
+    res.render("register",{error:"El DNI no es válido", usuario: usuario,email:""});
   }
 &nbsp;
   const fechaNacimiento = new Date(fecha_nacimiento);
   const fechaActual = new Date();
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (fechaNacimiento &gt;= fechaActual) {
-<span class="cstat-no" title="statement not covered" >    valido = false;</span>
-<span class="cstat-no" title="statement not covered" >    usuario.fecha_nacimiento = "";</span>
-<span class="cstat-no" title="statement not covered" >    res.render("register",{error:"La fecha de nacimiento debe ser anterior a la fecha actual", usuario: usuario,email:""});</span>
+  if (fechaNacimiento &gt;= fechaActual) {
+    valido = false;
+    usuario.fecha_nacimiento = "";
+    res.render("register",{error:"La fecha de nacimiento debe ser anterior a la fecha actual", usuario: usuario,email:""});
   }
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (!/^\d{9}$/.test(numero_telefono)) {
-<span class="cstat-no" title="statement not covered" >    valido = false;</span>
-<span class="cstat-no" title="statement not covered" >    usuario.numero_telefono = "";</span>
-<span class="cstat-no" title="statement not covered" >    res.render("register",{error:"El número de teléfono no es válido", usuario: usuario,email:""});</span>
+  if (!/^\d{9}$/.test(numero_telefono)) {
+    valido = false;
+    usuario.numero_telefono = "";
+    res.render("register",{error:"El número de teléfono no es válido", usuario: usuario,email:""});
   }
 &nbsp;
   <span class="missing-if-branch" title="if path not taken" >I</span>if(valido){
@@ -1933,7 +1933,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-09T12:58:42.460Z
+                at 2024-03-09T16:34:20.611Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

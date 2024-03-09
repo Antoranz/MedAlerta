@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1709989122487" clover="3.2.0">
-  <project timestamp="1709989122487" name="All files">
-    <metrics statements="588" coveredstatements="50" conditionals="173" coveredconditionals="5" methods="126" coveredmethods="3" elements="887" coveredelements="58" complexity="0" loc="588" ncloc="588" packages="2" files="3" classes="3"/>
+<coverage generated="1710002060635" clover="3.2.0">
+  <project timestamp="1710002060635" name="All files">
+    <metrics statements="588" coveredstatements="59" conditionals="173" coveredconditionals="9" methods="126" coveredmethods="3" elements="887" coveredelements="71" complexity="0" loc="588" ncloc="588" packages="2" files="3" classes="3"/>
     <package name="MedAlerta">
       <metrics statements="283" coveredstatements="4" conditionals="92" coveredconditionals="0" methods="94" coveredmethods="2"/>
       <file name="DAODoctores.js" path="C:\Users\penap\Documents\TFG\Tests\MedAlerta\DAODoctores.js">
@@ -295,9 +295,9 @@
       </file>
     </package>
     <package name="MedAlerta.routes">
-      <metrics statements="305" coveredstatements="46" conditionals="81" coveredconditionals="5" methods="32" coveredmethods="1"/>
+      <metrics statements="305" coveredstatements="55" conditionals="81" coveredconditionals="9" methods="32" coveredmethods="1"/>
       <file name="doctor.js" path="C:\Users\penap\Documents\TFG\Tests\MedAlerta\routes\doctor.js">
-        <metrics statements="305" coveredstatements="46" conditionals="81" coveredconditionals="5" methods="32" coveredmethods="1"/>
+        <metrics statements="305" coveredstatements="55" conditionals="81" coveredconditionals="9" methods="32" coveredmethods="1"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -433,29 +433,29 @@
         <line num="256" count="1" type="stmt"/>
         <line num="257" count="0" type="stmt"/>
         <line num="261" count="1" type="stmt"/>
-        <line num="264" count="1" type="stmt"/>
-        <line num="265" count="1" type="stmt"/>
-        <line num="267" count="1" type="stmt"/>
-        <line num="268" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="264" count="6" type="stmt"/>
+        <line num="265" count="6" type="stmt"/>
+        <line num="267" count="6" type="stmt"/>
+        <line num="268" count="6" type="cond" truecount="2" falsecount="0"/>
         <line num="269" count="1" type="stmt"/>
         <line num="270" count="1" type="stmt"/>
         <line num="271" count="1" type="stmt"/>
         <line num="272" count="1" type="stmt"/>
-        <line num="275" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="276" count="0" type="stmt"/>
-        <line num="277" count="0" type="stmt"/>
-        <line num="278" count="0" type="stmt"/>
-        <line num="281" count="1" type="stmt"/>
-        <line num="282" count="1" type="stmt"/>
-        <line num="283" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="284" count="0" type="stmt"/>
-        <line num="285" count="0" type="stmt"/>
-        <line num="286" count="0" type="stmt"/>
-        <line num="289" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="290" count="0" type="stmt"/>
-        <line num="291" count="0" type="stmt"/>
-        <line num="292" count="0" type="stmt"/>
-        <line num="295" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="275" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="276" count="2" type="stmt"/>
+        <line num="277" count="2" type="stmt"/>
+        <line num="278" count="2" type="stmt"/>
+        <line num="281" count="6" type="stmt"/>
+        <line num="282" count="6" type="stmt"/>
+        <line num="283" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="284" count="1" type="stmt"/>
+        <line num="285" count="1" type="stmt"/>
+        <line num="286" count="1" type="stmt"/>
+        <line num="289" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="290" count="2" type="stmt"/>
+        <line num="291" count="2" type="stmt"/>
+        <line num="292" count="2" type="stmt"/>
+        <line num="295" count="6" type="cond" truecount="1" falsecount="1"/>
         <line num="296" count="0" type="stmt"/>
         <line num="298" count="0" type="stmt"/>
         <line num="303" count="0" type="stmt"/>
