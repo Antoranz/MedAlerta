@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "jest --coverage"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

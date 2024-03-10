@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1710005313741" clover="3.2.0">
-  <project timestamp="1710005313741" name="All files">
+<coverage generated="1710076151606" clover="3.2.0">
+  <project timestamp="1710076151606" name="All files">
     <metrics statements="588" coveredstatements="59" conditionals="173" coveredconditionals="9" methods="126" coveredmethods="3" elements="887" coveredelements="71" complexity="0" loc="588" ncloc="588" packages="2" files="3" classes="3"/>
     <package name="MedAlerta">
       <metrics statements="283" coveredstatements="4" conditionals="92" coveredconditionals="0" methods="94" coveredmethods="2"/>
-      <file name="DAODoctores.js" path="C:\Users\penap\Documents\TFG\Tests\MedAlerta\DAODoctores.js">
+      <file name="DAODoctores.js" path="C:\Users\penap\Documents\TFG\Test2\MedAlerta\DAODoctores.js">
         <metrics statements="137" coveredstatements="2" conditionals="44" coveredconditionals="0" methods="45" coveredmethods="1"/>
         <line num="5" count="1" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
@@ -144,7 +144,7 @@
         <line num="312" count="0" type="stmt"/>
         <line num="322" count="1" type="stmt"/>
       </file>
-      <file name="DAOPacientes.js" path="C:\Users\penap\Documents\TFG\Tests\MedAlerta\DAOPacientes.js">
+      <file name="DAOPacientes.js" path="C:\Users\penap\Documents\TFG\Test2\MedAlerta\DAOPacientes.js">
         <metrics statements="146" coveredstatements="2" conditionals="48" coveredconditionals="0" methods="49" coveredmethods="1"/>
         <line num="5" count="1" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
@@ -296,7 +296,7 @@
     </package>
     <package name="MedAlerta.routes">
       <metrics statements="305" coveredstatements="55" conditionals="81" coveredconditionals="9" methods="32" coveredmethods="1"/>
-      <file name="doctor.js" path="C:\Users\penap\Documents\TFG\Tests\MedAlerta\routes\doctor.js">
+      <file name="doctor.js" path="C:\Users\penap\Documents\TFG\Test2\MedAlerta\routes\doctor.js">
         <metrics statements="305" coveredstatements="55" conditionals="81" coveredconditionals="9" methods="32" coveredmethods="1"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -442,9 +442,9 @@
         <line num="269" count="1" type="stmt"/>
         <line num="270" count="1" type="stmt"/>
         <line num="273" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="274" count="2" type="stmt"/>
-        <line num="275" count="2" type="stmt"/>
-        <line num="276" count="2" type="stmt"/>
+        <line num="274" count="5" type="stmt"/>
+        <line num="275" count="5" type="stmt"/>
+        <line num="276" count="5" type="stmt"/>
         <line num="279" count="6" type="stmt"/>
         <line num="280" count="6" type="stmt"/>
         <line num="281" count="6" type="cond" truecount="2" falsecount="0"/>

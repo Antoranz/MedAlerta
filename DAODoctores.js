@@ -5,6 +5,27 @@ class DAODoctor{
         this.pool = pool;
     }
 
+    aniadirDoctor(dni,email,hashedPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    reject(err);
+                }else{
+                    var queryAnyadirDoctor ="INSERT INTO doctores (dni,email,password,nombre,apellidos,fecha_nacimiento, domicilio, codigo_postal, numero_telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    connection.query(queryAnyadirDoctor,[dni,email,hashedPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
 
     aniadirUsuario(DNIDoctor,DNIPaciente){
         

@@ -7,7 +7,6 @@ const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const crypto = require('crypto');
 
-
 const mysql = require('mysql');
 
 // Configuración de la conexión a la base de datos MySQL en XAMPP
@@ -168,7 +167,6 @@ router.get('/gestion-notificaciones', async function(req, res, next) {
   });
 
   console.log(notificaciones)
-  
 
     res.render('gestionNotificaciones', { nombre: req.session.currentUser.nombre, notificaciones:notificaciones });
   }
@@ -292,6 +290,19 @@ function registrarUsuario(req, res, next) {
 
   if(valido){
     var hashedPassword = cifrarContrasena(password,dni);
+
+    dao.aniadirDoctor(dni, email, hashedPassword, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
+    .then((resultado) => {
+      req.session.currentUser = {dni,email,nombre,apellidos};
+
+      res.render("index",{nombre : ""});
+    })
+    .catch((error) => {
+        console.error("Error interno del servidor" + error);
+    });
+
+    
+    /*
     // Sentencia SQL para insertar un nuevo doctor
     const sql = `INSERT INTO doctores 
                 (dni, email, password, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
@@ -305,7 +316,7 @@ function registrarUsuario(req, res, next) {
       }else{
         req.session.currentUser = {dni,email,nombre,apellidos};
         res.render("index",{nombre : ""});
-      }});
+      }});*/
   }
 
 };

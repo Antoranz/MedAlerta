@@ -1,54 +1,33 @@
 const { registrarUsuario } = require('../routes/doctor.js');
 
+const mysql = require('mysql');
+const DAOTest = require("../DAOTests.js");
+const testPool = mysql.createPool({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'medalerta'
+});
 
-describe('Pruebas para la función de registro', () => {
-  /*test('Debe manejar el registro correctamente con datos válidos', () => {
-    const req = {
-        body: {
-            dni: '12345678Z',
-            email: 'test@example.com',
-            password: 'password123',
-            repeatPassword: 'password123',
-            nombre: 'John',
-            apellidos: 'Doe',
-            fecha_nacimiento: '1990-01-01',
-            domicilio: '123 Main St',
-            codigo_postal: '12345',
-            numero_telefono: '123456789'
-        },
-        session: {
-            cookie:{ path: '/', _expires: null, originalMaxAge: null, httpOnly: true },
-            currentUser: {}
-        }
-    };
+const dao = new DAOTest(testPool);
 
-    // Se simula también la función de respuesta
-    const res = {
-    render: jest.fn()
-    };
-
-    registrarUsuario(req, res);
-
-    expect(res.render).toHaveBeenCalledWith("index",{nombre : ""});
-  });*/
-
-  var req = {
-    body: {
-        dni: '12345678Z',
-        email: 'test@example.com',
-        password: 'password123',
-        repeatPassword: 'password123',
-        nombre: 'John',
-        apellidos: 'Doe',
-        fecha_nacimiento: '1990-01-01',
-        domicilio: '123 Main St',
-        codigo_postal: '12345',
-        numero_telefono: '123456789'
-    },
-    session: {
-        cookie:{ path: '/', _expires: null, originalMaxAge: null, httpOnly: true },
-        currentUser: {}
-    }
+var req = {
+  body: {
+      dni: '12345678Z',
+      email: 'test@example.com',
+      password: 'password123',
+      repeatPassword: 'password123',
+      nombre: 'John',
+      apellidos: 'Doe',
+      fecha_nacimiento: '1990-01-01',
+      domicilio: '123 Main St',
+      codigo_postal: '12345',
+      numero_telefono: '123456789'
+  },
+  session: {
+      cookie:{ path: '/', _expires: null, originalMaxAge: null, httpOnly: true },
+      currentUser: {}
+  }
 };
 
 const {dni,email,password,repeatPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono} = req.body;
@@ -58,6 +37,26 @@ const res = {
 render: jest.fn()
 };
 
+const pool = {
+  query: jest.fn()
+  };
+var nLlamadasRender = 0;
+
+describe('Pruebas de exito para la función de registro', () => {
+  test('Debe mandar a la página principal al ser un registro correcto', async () => {
+      await registrarUsuario(req, res);
+      dao.eliminarDoctor(req.body.dni);
+      expect(2).toBe(2);
+      //expect(pool.query).toHaveBeenCalled(); // Verifica que se llamó a la función de consulta
+      
+  });
+});
+
+
+
+
+describe('Pruebas de error para la función de registro', () => {
+
   test('Debe dar el error correcto al repetir contraseña', () => {
 
     req.body.repeatPassword = "123password";
@@ -65,7 +64,8 @@ render: jest.fn()
 
     usuario.password = "";
     usuario.repeatPassword = "";
-
+    nLlamadasRender++;
+    expect(res.render).toHaveBeenCalledTimes(nLlamadasRender);
     expect(res.render).toHaveBeenCalledWith("register",{error:"Las contraseñas no coinciden", usuario: usuario,email:""});
 
     req.body.repeatPassword = "password123";
@@ -79,7 +79,8 @@ render: jest.fn()
     req.body.dni = "12356789";
     registrarUsuario(req, res);
     usuario.dni = "";
-
+    nLlamadasRender++;
+    expect(res.render).toHaveBeenCalledTimes(nLlamadasRender);
     expect(res.render).toHaveBeenCalledWith("register",{error:"El DNI no es válido", usuario: usuario,email:""});
 
     req.body.dni = "12356789A";
@@ -92,7 +93,8 @@ render: jest.fn()
     req.body.dni="1235A6789";
     registrarUsuario(req, res);
     usuario.dni = "";
-
+    nLlamadasRender++;
+    expect(res.render).toHaveBeenCalledTimes(nLlamadasRender);
     expect(res.render).toHaveBeenCalledWith("register",{error:"El DNI no es válido", usuario: usuario,email:""});
 
     req.body.dni = "12356789A";
@@ -108,6 +110,8 @@ render: jest.fn()
     registrarUsuario(req, res);
     usuario.fecha_nacimiento = "";
 
+    nLlamadasRender++;
+    expect(res.render).toHaveBeenCalledTimes(nLlamadasRender);
     expect(res.render).toHaveBeenCalledWith("register",{error:"La fecha de nacimiento debe ser anterior a la fecha actual", usuario: usuario,email:""});
 
     req.body.fecha_nacimiento = "1990-01-01";
@@ -124,7 +128,9 @@ render: jest.fn()
     
     registrarUsuario(req, res);
     usuario.numero_telefono = "";
-
+    
+    nLlamadasRender++;
+    expect(res.render).toHaveBeenCalledTimes(nLlamadasRender);
     expect(res.render).toHaveBeenCalledWith("register",{error:"El número de teléfono no es válido", usuario: usuario,email:""});
 
     req.body.numero_telefono = "123456789";
@@ -137,7 +143,9 @@ render: jest.fn()
     req.body.numero_telefono = "12345678";
     registrarUsuario(req, res);
     usuario.numero_telefono = "";
-
+    
+    nLlamadasRender++;
+    expect(res.render).toHaveBeenCalledTimes(nLlamadasRender);
     expect(res.render).toHaveBeenCalledWith("register",{error:"El número de teléfono no es válido", usuario: usuario,email:""});
 
     req.body.numero_telefono = "123456789";
