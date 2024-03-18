@@ -2,6 +2,7 @@
 function mostrarModal(id) {
     $('#modalConfirmarRechazar').modal('show');
     $('#modalConfirmarRechazar').find('.btn-primary').attr('data-id', id);
+    $('#modalConfirmarRechazar').find('.btn-secondary').attr('data-id', id);
 }
 
 function confirmarCita(button) {
@@ -28,11 +29,25 @@ function confirmarCita(button) {
             duracion: duracion
         }, // Datos a enviar al servidor
         success: function(response) {
-            // Lógica después de asignar la cita (puede ser recargar la lista de citas, etc.)
             console.log('Cita asignada exitosamente:', response);
-            // Por ejemplo, si estás utilizando un calendario, puedes recargar los eventos
             alert("Cita confirmada");
-            calendar.refetchEvents();
+
+            $.ajax({
+                url: '/doctor/eliminar-notificacion', 
+                type: 'POST', 
+                data: {
+                    id: id
+                }, // Datos a enviar al servidor
+                success: function(response) {
+                    console.log('Cita eliminada exitosamente:', response);
+                    window.location.reload();
+                    
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al eliminar la cita:', error);
+                }
+            });
+
         },
         error: function(xhr, status, error) {
             console.error('Error al asignar la cita:', error);
@@ -42,3 +57,30 @@ function confirmarCita(button) {
     // Ocultar el modal después de asignar la cita
     $('#modalConfirmarRechazar').modal('hide');
 }
+
+function rechazarCita(button) {
+    var id = button.getAttribute('data-id');
+    console.log("ID de la notificación:", id);
+
+    alert("Cita cancelada");
+    
+    $.ajax({
+        url: '/doctor/eliminar-notificacion', 
+        type: 'POST', 
+        data: {
+            id: id
+        }, // Datos a enviar al servidor
+        success: function(response) {
+            console.log('Cita eliminada exitosamente:', response);
+            window.location.reload();
+            
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al eliminar la cita:', error);
+        }
+    });
+
+    // Ocultar el modal después de asignar la cita
+    $('#modalConfirmarRechazar').modal('hide');
+}
+

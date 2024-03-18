@@ -95,7 +95,27 @@ router.post("/asignar-cita", async function(req, res, next) {
     nuevoDate = nuevaFechaaaaaaaa;
     console.log(nuevaFechaaaaaaaa)
 
+  }else{
     
+   const fechaParts = fecha.split('/'); // Divide la cadena de fecha por "/"
+    const horaParts = hora.split(':'); // Divide la cadena de hora por ":"
+
+    // Crea un nuevo objeto Date con los componentes de fecha y hora
+    const nuevaFechaaaaaaaa = new Date(
+        fechaParts[2], // Año
+        parseInt(fechaParts[1]) - 1, // Mes (se resta 1 porque los meses en JavaScript van de 0 a 11)
+        fechaParts[0], // Día
+        horaParts[0], // Hora
+        horaParts[1], // Minuto
+        horaParts[2] // Segundo
+    );
+
+    console.log("Ha entrado en invalid");
+
+    nuevoDate = nuevaFechaaaaaaaa;
+    console.log(nuevaFechaaaaaaaa)
+
+
   }
 
 
@@ -134,6 +154,23 @@ router.post("/asignar-cita", async function(req, res, next) {
     
     res.status(200).send("Cita asignada correctamente");
   } catch (error) {
+    console.error("Error al asignar cita:", error.message);
+    res.status(400).send(error.message);
+  }
+});
+
+router.post("/eliminar-notificacion", async function(req, res, next) {
+  const id_card = req.body.id;
+ 
+  try{
+
+    await dao.eliminarNotificacion(id_card); 
+
+    var notificaciones = await dao.obtenerNotificaciones(req.session.currentUser.dni);
+
+    res.render('gestionNotificaciones', { nombre: req.session.currentUser.nombre, notificaciones:notificaciones });
+
+  }catch (error) {
     console.error("Error al asignar cita:", error.message);
     res.status(400).send(error.message);
   }

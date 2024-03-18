@@ -97,6 +97,30 @@ class DAODoctor{
             });
         }); 
     }
+
+    eliminarNotificacion(id){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryeliminarNotificacion ="DELETE FROM notificaciones WHERE id = ?"
+                    connection.query(queryeliminarNotificacion,[id], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
     asignarCita(id_doctor,id_paciente,fecha,duracion){
         
         return new Promise((resolve, reject) => {

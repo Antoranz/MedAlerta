@@ -30,7 +30,7 @@
                 <h3>Lista de Notificaciones</h3>
                 <div class="row">
                     <% notificaciones.forEach(notificacion => { %>
-                        <div class="col-md-4 mb-4">
+                        <div id="card_<%= notificacion.id %>" class="col-md-4 mb-4">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title"><%= notificacion.motivo %></h5>
@@ -62,9 +62,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-secondary" onclick="rechazarCita(this)">Rechazar Cita</button>
                         <!-- Los botones de confirmar y rechazar invocarán funciones JavaScript -->
-                        <button type="button" class="btn btn-primary" onclick="confirmarCita(this)">Sí</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmarCita(this)">Confirmar</button>
                     </div>
                 </div>
             </div>
