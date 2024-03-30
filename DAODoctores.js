@@ -338,6 +338,30 @@ class DAODoctor{
         }); 
     }
 
+    obtenerConsultas_doctor(DNIDoctor){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryobtenerConsultas_doctor ="SELECT DISTINCT dni_paciente, nombre_paciente, apellidos_paciente FROM consultas WHERE dni_doctor = ?"
+                    connection.query(queryobtenerConsultas_doctor,[DNIDoctor], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
     checkDoctor(dni,password){
         
         return new Promise((resolve, reject) => {

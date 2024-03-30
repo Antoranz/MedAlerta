@@ -30,6 +30,7 @@ router.get('/', function(req, res, next) {
     res.render('main', { nombre: req.session.currentUser.nombre });
   }
 });
+
 router.get('/calendario', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
     res.render('index', { nombre:"" });
@@ -37,6 +38,7 @@ router.get('/calendario', function(req, res, next) {
     res.render('calendario', { nombre: req.session.currentUser.nombre });
   }
 });
+
 router.get("/obtener-citas",async function(req, res,next){
   var citas = await dao.checkCitas(req.session.currentUser.dni);
   var eventos=[];
@@ -53,6 +55,7 @@ router.get("/obtener-citas",async function(req, res,next){
   });
   res.json(eventos);
 });
+
 router.post("/eliminar-cita",async function(req, res,next){
   const citaId = req.body.id;
     try {
@@ -654,6 +657,17 @@ router.get('/obtenerURLPDF', (req, res) => {
 
   // Responde con la URL del PDF
   res.json({ downloadURL: pdfURL });
+});
+
+router.get('/consultas', async function(req, res, next) {
+  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+    res.render('index', { nombre:"" });
+  }else{
+
+    var consultas = await dao.obtenerConsultas_doctor(req.session.currentUser.dni);
+
+    res.render('consultas', { nombre: req.session.currentUser.nombre, listaConsultas: consultas });
+  }
 });
 
 module.exports = {
