@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-03-2024 a las 17:47:55
+-- Tiempo de generación: 31-03-2024 a las 21:18:57
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -95,10 +95,11 @@ CREATE TABLE `consultas` (
   `id` int(11) NOT NULL,
   `dni_doctor` varchar(9) NOT NULL,
   `dni_paciente` varchar(9) NOT NULL,
-  `nombre_paciente` varchar(255) NOT NULL,
-  `apellidos_paciente` varchar(255) NOT NULL,
-  `mensaje` longtext NOT NULL,
-  `fecha` date NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `ultima_fecha` datetime NOT NULL,
+  `mensajes_totales` int(11) NOT NULL,
+  `notificaciones_doctor` int(11) NOT NULL,
+  `notificaciones_paciente` int(11) NOT NULL,
   `propietario` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -106,12 +107,9 @@ CREATE TABLE `consultas` (
 -- Volcado de datos para la tabla `consultas`
 --
 
-INSERT INTO `consultas` (`id`, `dni_doctor`, `dni_paciente`, `nombre_paciente`, `apellidos_paciente`, `mensaje`, `fecha`, `propietario`) VALUES
-(1, '', '', '', '', '', '0000-00-00', 0),
-(2, '49249480V', '49249481Z', 'Sergio', 'Chamizo 777', 'Creo que me voy a morir', '2024-03-19', 1),
-(3, '08366085L', '43249480S', 'Carlos', 'Pan Sánchez', 'Soy daltónico', '2024-03-12', 1),
-(5, '08366085L', '43242430G', 'Sergio', 'Sarmón Cálido', 'En Roma, haz como los romanos', '2024-03-14', 0),
-(6, '08366085L', '43242430G', 'Sergio', 'Sarmón Cálido', 'En Roma, haz como los romanos', '2024-03-14', 0);
+INSERT INTO `consultas` (`id`, `dni_doctor`, `dni_paciente`, `titulo`, `ultima_fecha`, `mensajes_totales`, `notificaciones_doctor`, `notificaciones_paciente`, `propietario`) VALUES
+(1, '', '', '', '0000-00-00 00:00:00', 0, 0, 0, 0),
+(2, '', '49249481Z', 'Daltonismo', '2024-03-19 00:00:00', 2, 2, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -148,6 +146,27 @@ CREATE TABLE `enfermedades` (
   `doctor_dni` varchar(10) NOT NULL,
   `enfermedad` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mensajes`
+--
+
+CREATE TABLE `mensajes` (
+  `id_consulta` int(11) NOT NULL,
+  `mensaje` longtext NOT NULL,
+  `propietario` tinyint(1) NOT NULL,
+  `fecha` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `mensajes`
+--
+
+INSERT INTO `mensajes` (`id_consulta`, `mensaje`, `propietario`, `fecha`) VALUES
+(2, 'Sufro de daltonismo (soy paciente)', 1, '2024-03-19 21:15:45'),
+(2, 'Sufro de daltonismo (soy paciente)', 1, '2024-03-19 21:15:45');
 
 -- --------------------------------------------------------
 
@@ -213,7 +232,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('wWCaTqSFDZU7oeV5QeIEqTyq-VoJ0AXt', 1711903597, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-02\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}');
+('ZlgdPTrKZsK6Gbq2ci2UCgjkhYqQQ1yQ', 1711996286, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-02\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}');
 
 -- --------------------------------------------------------
 
