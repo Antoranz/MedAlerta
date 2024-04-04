@@ -47,9 +47,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
                 Executor executor = Executors.newSingleThreadExecutor();
                 String urlServidor = "http://10.0.2.2:3000/pacientes/checkPaciente";
-
-
-
+                
                 JSONObject postData = new JSONObject();
                 try {
                     postData.put("email", email.getText().toString());
