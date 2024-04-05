@@ -163,6 +163,24 @@ router.get('/obtenerAlarmas/:dni', async function(req, res, next) {
    
 });
 
+router.get('/obtenerConsultasPaciente/:dni', async function(req, res, next) {
+
+    try {
+        
+        var dni_paciente=req.params.dni;
+
+        var paciente = await dao.obtenerConsultasPaciente(dni_paciente)
+
+        console.log(paciente)
+        res.json(paciente)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+        
+      }
+   
+});
+
 router.get('/obtenerPaciente/:dni', async function(req, res, next) {
 
     try {

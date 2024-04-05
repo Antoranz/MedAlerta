@@ -270,6 +270,30 @@ class DAOPaciente{
         }); 
     }
 
+    obtenerConsultasPaciente(DNIPaciente){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryobtenerDoctorDelPaciente ="SELECT * FROM consultas WHERE dni_paciente = ?"
+                    connection.query(queryobtenerDoctorDelPaciente,[DNIPaciente], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
     crearNotificacionCita(tipo,motivo,fecha_hora,doctor_dni,paciente_dni){
         
         return new Promise((resolve, reject) => {
