@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
     Button solicitarCita;
 
+    Button solicitarConsultas;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
 
         solicitarCita.setOnClickListener(v -> {
             Intent intent = new Intent(this, CrearCitaActivity.class);
+            startActivity(intent);
+        });
+
+        solicitarConsultas = findViewById(R.id.botonConsultas);
+
+        solicitarConsultas.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ConsultasActivity.class);
             startActivity(intent);
         });
     }
