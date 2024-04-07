@@ -279,8 +279,32 @@ class DAOPaciente{
                     reject(err);
                 }else{
                     console.log("Exito al conectar a la base de datos");
-                    var queryobtenerDoctorDelPaciente ="SELECT * FROM consultas WHERE dni_paciente = ?"
-                    connection.query(queryobtenerDoctorDelPaciente,[DNIPaciente], (err, res) => {
+                    var queryobtenerConsultasPaciente ="SELECT * FROM consultas WHERE dni_paciente = ?"
+                    connection.query(queryobtenerConsultasPaciente,[DNIPaciente], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    obtenerMensajesConsulta(id_consulta){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryobtenerMensajesConsulta ="SELECT * FROM mensajes WHERE id_consulta = ?"
+                    connection.query(queryobtenerMensajesConsulta,[id_consulta], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);

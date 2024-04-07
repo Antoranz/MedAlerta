@@ -169,10 +169,28 @@ router.get('/obtenerConsultasPaciente/:dni', async function(req, res, next) {
         
         var dni_paciente=req.params.dni;
 
-        var paciente = await dao.obtenerConsultasPaciente(dni_paciente)
+        var consultas = await dao.obtenerConsultasPaciente(dni_paciente)
 
-        console.log(paciente)
-        res.json(paciente)
+        console.log(consultas)
+        res.json(consultas)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+        
+      }
+   
+});
+
+router.get('/obtenerMensajesConsulta/:idConsulta', async function(req, res, next) {
+
+    try {
+        
+        var id_consulta=req.params.idConsulta;
+
+        var mensajes = await dao.obtenerMensajesConsulta(id_consulta)
+
+        console.log(mensajes)
+        res.json(mensajes)
     } catch (error) {
         console.error("Error durante la operación:", error);
         res.json(null)
