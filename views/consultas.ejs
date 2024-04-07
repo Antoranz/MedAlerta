@@ -20,8 +20,21 @@
             justify-content: space-between;
         }
         .mensajes {
-            display: none;
-            margin: 10px;
+            border: 1px solid #ccc;
+            margin: 0.3%;
+            padding: 1%;
+            cursor: pointer;
+            background-color:azure;
+        }
+        .mensajePaciente{
+            border-radius: 10px;
+            padding: 0.5%;
+            background-color:darkcyan;
+        }
+        .mensajeDoctor{
+            border-radius: 10px;
+            padding: 0.5%;
+            background-color: lightgreen;
         }
     </style>
 </head>
@@ -31,29 +44,64 @@
 
     <div class="container center">
         <h1 class="text-center m-4 tituloFont">Consultas</h1>
-        <% listaConsultas.forEach((consulta, index) => { %>
-            <div class="consulta">
+        <div id="consultas">
+            <% listaConsultas.forEach((consulta, index) => { %>
+            <div class="consulta mt-3" onclick="getMensajes(<%= consulta.id %>)">
                 <div>
-                    <b><%= consulta.nombre_paciente %> <%= consulta.apellidos_paciente %></b>
+                    <b class="ml-5"><%= consulta.titulo %> </b> <span class="badge rounded-circle bg-danger text-white "> <%= consulta.notificaciones_doctor %> </span>
                 </div>
                 <div>
-                    <a>añadir aqui fecha de inicio</a>
+                    <a><%= consulta.ultima_fecha %></a>
                 </div>
             </div>
+        
+            <% }) %>
+        </div>
+        <div id="mensajes" class="mensajes">
+
+
             
-        <% }) %>
+
+        </div>
+        
     </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
 
     <script>
-        function toggleMensajes(index) {
-            var mensajes = document.getElementById("mensajes" + index);
-            if (mensajes.style.display === "none") {
-                mensajes.style.display = "block";
-            } else {
-                mensajes.style.display = "none";
-            }
+        function getMensajes(consultaId) {
+            // Hacer la llamada AJAX
+            $.ajax({
+                url: '/doctor/mensajes/' + consultaId,
+                type: 'GET',
+                data: { consultaId: consultaId },
+                success: function(response) {
+                    console.log(response);
+                    var mensajesDiv = $('#mensajes'); 
+                    var consultasDiv = $('#consultas'); 
+                    mensajesDiv.empty();
+                    consultasDiv.empty();
+
+                    response.mensajes.forEach(function(element) {
+                        if (element.propietario == 1)
+                            mensajesDiv.append('<p><em class="mensajePaciente">' + element.mensaje + '</em></p>');
+                        else
+                            mensajesDiv.append('<b class="mensajeDoctor">' + element.mensaje + '</b>');
+                    });
+
+                    mensajesDiv.append('<input type="text" id="mensajeInput" placeholder="Escribe tu mensaje...">');
+
+                },
+                error: function(xhr, status, error) {
+                    // Manejar el error
+                    console.error(xhr.responseText);
+                    console.log("falllaaaaaaaaaa");
+                }
+            });
         }
     </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

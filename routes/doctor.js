@@ -670,6 +670,21 @@ router.get('/consultas', async function(req, res, next) {
   }
 });
 
+router.get('/mensajes/:id', async function(req, res, next) {
+  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+      res.render('index', { nombre: "" });
+  } else {
+      try {
+          var mensajes = await dao.obtenerMensajes_consulta(req.params.id);
+
+          res.json({ mensajes: mensajes });
+      } catch (error) {
+
+          res.status(500).json({ error: error.message });
+      }
+  }
+});
+
 module.exports = {
   router,
   registrarUsuario
