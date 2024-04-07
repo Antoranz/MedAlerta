@@ -36,6 +36,11 @@
             android:exported="true" >
         </activity>
 
+        <activity
+            android:name=".ChatViewActivity"
+            android:exported="true" >
+        </activity>
+
 
         <activity
             android:name=".EditarActivity"

@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="160dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="8dp">
+
+<TextView
+android:id="@+id/textViewMessage"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/bg_rounded_corners0"
+    android:elevation="4dp"
+    android:maxWidth="250dp"
+    android:paddingStart="12dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="12dp"
+    android:paddingBottom="8dp"
+    android:text="Mensaje de ejemplo"
+    android:textColor="@android:color/white"
+    android:textSize="16sp" /> <!-- Texto de ejemplo para previsualización -->
+    </LinearLayout>

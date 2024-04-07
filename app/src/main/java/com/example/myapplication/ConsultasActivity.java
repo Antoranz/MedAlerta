@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.data.Consulta;
 import com.example.myapplication.utils.ConsultasListAdapter;
 import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.SessionManager;
@@ -68,8 +69,9 @@ public class ConsultasActivity extends AppCompatActivity {
         rv.setHasFixedSize(true);
         rv.setLayoutManager(layoutManager);
         rv.setAdapter(adapter);
-        adapter.setConsultasList(Controller.getInstance().getAllExpenses(this,sessionManager.getUserId()));
+        adapter.setConsultasList(Controller.getInstance().getAllConsultas(this,sessionManager.getUserId()));
         adapter.notifyDataSetChanged();
+
 
     }
 

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.ChatViewActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.data.Consulta;
 
@@ -49,9 +50,10 @@ public class ConsultasListAdapter extends RecyclerView.Adapter<ConsultasListAdap
 
     public void setConsultasList(List<Consulta> data) {
         consultasList = (LinkedList<Consulta>) data;
+
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public View view;
         public TextView titulo;
         public Context context;
@@ -63,6 +65,14 @@ public class ConsultasListAdapter extends RecyclerView.Adapter<ConsultasListAdap
 
             view = itemView;
             this.context=context;
+
+            itemView.setOnClickListener(this);
+
+        }
+        @Override
+        public void onClick(View v) {
+
+            NavigationManager.getInstance().navigateToDestinationWithData(context, ChatViewActivity.class, e);
 
         }
         public void bind(Consulta b){

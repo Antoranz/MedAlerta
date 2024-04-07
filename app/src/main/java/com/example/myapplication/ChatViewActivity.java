@@ -1,0 +1,56 @@
+package com.example.myapplication;
+
+import android.os.Bundle;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.data.Consulta;
+import com.example.myapplication.utils.ConsultasListAdapter;
+import com.example.myapplication.utils.Controller;
+import com.example.myapplication.utils.MensajesListAdapter;
+import com.example.myapplication.utils.SessionManager;
+
+import java.util.LinkedList;
+
+
+public class ChatViewActivity extends AppCompatActivity {
+
+    SessionManager sessionManager;
+
+    Consulta consulta;
+    private MensajesListAdapter adapter;
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
+
+
+        if (android.os.Build.VERSION.SDK_INT >= 31) {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                consulta = (Consulta) extras.getSerializable("data");
+            }
+        }
+
+        sessionManager = new SessionManager(this);
+        initUI();
+    }
+
+    private void initUI() {
+
+        RecyclerView rv = findViewById(R.id.recyclerViewChat);
+
+        adapter = new MensajesListAdapter(new LinkedList<>(),this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(layoutManager);
+        rv.setAdapter(adapter);
+
+        adapter.setMensajesList(Controller.getInstance().getAllMensajes(this,consulta.getId()));
+        adapter.notifyDataSetChanged();
+
+
+
+    }
+}

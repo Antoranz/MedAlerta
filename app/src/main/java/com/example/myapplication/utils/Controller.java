@@ -11,8 +11,11 @@ import android.util.Log;
 
 import com.example.myapplication.AlarmReceiverActivity;
 import com.example.myapplication.data.Consulta;
+import com.example.myapplication.data.Mensaje;
 import com.example.myapplication.services.ConsultaService;
+import com.example.myapplication.services.MensajeService;
 import com.example.myapplication.services.implementaciones.ConsultaServiceImp;
+import com.example.myapplication.services.implementaciones.MensajeServiceImp;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,10 +33,16 @@ public class Controller {
         return instance;
     }
 
-    public LinkedList<Consulta> getAllExpenses(Context c,String dni) {
+    public LinkedList<Consulta> getAllConsultas(Context c,String dni) {
         ConsultaService service = ConsultaServiceImp.getInstance();
 
         return service.getAllConsultas(dni);
+    }
+
+    public LinkedList<Mensaje> getAllMensajes(Context c, long id_consulta) {
+        MensajeService service = MensajeServiceImp.getInstance();
+
+        return service.getAllMensajes(id_consulta);
     }
 
 
