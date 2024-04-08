@@ -7,11 +7,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewChat"
-        android:layout_width="409dp"
-        android:layout_height="634dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
+        android:layout_width="408dp"
+        android:layout_height="546dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +22,7 @@
         android:inputType="text|textAutoComplete|textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewChat" />
 
     <ImageButton
         android:id="@+id/botonEnviar"
@@ -36,6 +33,7 @@
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toEndOf="@+id/textoAEnviar"
 
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewChat"
         app:srcCompat="@android:drawable/ic_media_play" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

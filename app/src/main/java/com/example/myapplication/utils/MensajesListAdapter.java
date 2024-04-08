@@ -40,9 +40,9 @@ public class MensajesListAdapter extends RecyclerView.Adapter<MensajesListAdapte
         if (viewType == 0) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mensaje0, parent, false);
 
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.gravity = Gravity.END;
-            view.setLayoutParams(layoutParams);
+            //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            //layoutParams.gravity = Gravity.END;
+            //view.setLayoutParams(layoutParams);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mensaje, parent, false);
         }

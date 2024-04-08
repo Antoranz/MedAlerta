@@ -2,5 +2,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners android:radius="8dp" />
-    <solid android:color="?attr/colorPrimary" /> <!-- Utiliza el colorPrimary del tema -->
+    <solid android:color="@color/lightblue" /> <!-- Utiliza el colorPrimary del tema -->
 </shape>
