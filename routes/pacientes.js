@@ -77,6 +77,8 @@ router.post('/bajaPaciente', async function(req, res, next) {
    
 });
 
+
+
 router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
 
     try {
@@ -155,6 +157,36 @@ router.get('/obtenerAlarmas/:dni', async function(req, res, next) {
 
         console.log(paciente)
         res.json(paciente)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+        
+      }
+   
+});
+
+router.get('/obtenerDoctoresDelPaciente/:dni', async function(req, res, next) {
+
+    try {
+        
+        var dni_paciente=req.params.dni;
+
+        var dniDoctores = await dao.obtenerDoctorDelPaciente(dni_paciente);
+
+        console.log(dniDoctores)
+
+        var doctores = [];
+
+        for (let i = 0; i < dniDoctores.length; i++) {
+            let dniDoctor = dniDoctores[0].DNIDoctor;
+            console.log(dniDoctor)
+            let nombreDoctor = await dao.obtenerInformacionDoctor(dniDoctor); // Supongamos que esta función existe en tu DAO
+            doctores.push(nombreDoctor);
+        }
+
+        console.log(doctores)
+    
+        res.json(doctores)
     } catch (error) {
         console.error("Error durante la operación:", error);
         res.json(null)

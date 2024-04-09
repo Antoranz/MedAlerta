@@ -246,6 +246,31 @@ class DAOPaciente{
         }); 
     }
 
+    obtenerInformacionDoctor(dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryobtenerInformacionDoctor ="SELECT * FROM doctores WHERE dni = ?"
+                    connection.query(queryobtenerInformacionDoctor,[dni], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+
     obtenerDoctorDelPaciente(DNIPaciente){
         
         return new Promise((resolve, reject) => {
