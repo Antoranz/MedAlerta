@@ -1,11 +1,6 @@
 package com.example.myapplication.services.implementaciones;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static com.example.myapplication.GetDataAsync.getDataAsync;
-import static com.example.myapplication.PostDataAsync.postDataAsync;
-
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.myapplication.GetDataAsync;
 import com.example.myapplication.data.Consulta;
@@ -18,8 +13,10 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -62,10 +59,9 @@ public class ConsultaServiceImp implements ConsultaService {
                         int mensajesTotales = jsonConsulta.getInt("mensajes_totales");
                         int notificacionesDoctor = jsonConsulta.getInt("notificaciones_doctor");
                         int notificacionesPaciente = jsonConsulta.getInt("notificaciones_paciente");
-                        int propietario = jsonConsulta.getInt("propietario");
 
 
-                        Consulta consulta = new Consulta(id, dniDoctor, dniPaciente, titulo, ultimaFecha, mensajesTotales, notificacionesDoctor, notificacionesPaciente, propietario);
+                        Consulta consulta = new Consulta(id, dniDoctor, dniPaciente, titulo, ultimaFecha, mensajesTotales, notificacionesDoctor, notificacionesPaciente);
                         listaConsultas.add(consulta);
                     }
 
@@ -78,5 +74,37 @@ public class ConsultaServiceImp implements ConsultaService {
 
         return listaConsultas;
     }
+
+    @Override
+    public List<String> getDoctoresParaConsulta(String dni) {
+
+        List<String> listaNombresDoctores = new ArrayList<>();
+
+        Executor executor = Executors.newSingleThreadExecutor();
+        String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerDoctoresDelPaciente/" + dni;
+
+        getDataAsync(urlServidor, executor, (GetDataAsync.OnTaskCompleted) result -> {
+            if (result != null) {
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonConsulta = jsonArray.getJSONObject(i);
+                        String nombre = jsonConsulta.getString("nombre");
+
+                        listaNombresDoctores.add(nombre);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        return listaNombresDoctores;
+    }
+
+
 
 }

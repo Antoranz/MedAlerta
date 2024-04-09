@@ -59,7 +59,7 @@ public class ConsultasActivity extends AppCompatActivity {
         crearConsulta = findViewById(R.id.ButtonCrearConsulta);
 
         crearConsulta.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ConsultasActivity.class);
+            Intent intent = new Intent(this, CrearConsultaActivity.class);
             startActivity(intent);
         });
 

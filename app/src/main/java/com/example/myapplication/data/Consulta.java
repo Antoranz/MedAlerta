@@ -15,9 +15,8 @@ public class Consulta implements Serializable {
     private int notificaciones_doctor;
     private int notificaciones_paciente;
 
-    private int propietario;
 
-    public Consulta(long id, String dni_doctor, String dni_paciente,String titulo, Date ultima_fecha, int mensajes_totales, int notificaciones_doctor, int notificaciones_paciente, int propietario) {
+    public Consulta(long id, String dni_doctor, String dni_paciente,String titulo, Date ultima_fecha, int mensajes_totales, int notificaciones_doctor, int notificaciones_paciente) {
         this.id = id;
         this.dni_doctor = dni_doctor;
         this.dni_paciente = dni_paciente;
@@ -26,7 +25,6 @@ public class Consulta implements Serializable {
         this.mensajes_totales = mensajes_totales;
         this.notificaciones_doctor = notificaciones_doctor;
         this.notificaciones_paciente = notificaciones_paciente;
-        this.propietario = propietario;
     }
 
 
@@ -93,14 +91,6 @@ public class Consulta implements Serializable {
 
     public void setNotificaciones_paciente(int notificaciones_paciente) {
         this.notificaciones_paciente = notificaciones_paciente;
-    }
-
-    public int isPropietario() {
-        return propietario;
-    }
-
-    public void setPropietario(int propietario) {
-        this.propietario = propietario;
     }
 }
 

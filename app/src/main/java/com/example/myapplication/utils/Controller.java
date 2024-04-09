@@ -20,6 +20,7 @@ import com.example.myapplication.services.implementaciones.MensajeServiceImp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 public class Controller {
@@ -44,6 +45,14 @@ public class Controller {
 
         return service.getAllMensajes(id_consulta);
     }
+
+    public List<String> getDoctoresParaConsulta(Context context, String id_paciente) {
+
+        ConsultaService service = ConsultaServiceImp.getInstance();
+
+        return service.getDoctoresParaConsulta(id_paciente);
+    }
+
 
 
 
