@@ -43,7 +43,6 @@ public class ConsultaServiceImp implements ConsultaService {
         getDataAsync(urlServidor, executor, (GetDataAsync.OnTaskCompleted) result -> {
             if (result != null) {
                 try {
-
                     JSONArray jsonArray = new JSONArray(result);
 
                     for (int i = 0; i < jsonArray.length(); i++) {
