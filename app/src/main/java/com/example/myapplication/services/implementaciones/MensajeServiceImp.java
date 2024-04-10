@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -39,6 +40,7 @@ public class MensajeServiceImp implements MensajeService {
         Executor executor = Executors.newSingleThreadExecutor();
         String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerMensajesConsulta/" + idConsulta;
 
+        CountDownLatch latch = new CountDownLatch(1);
 
         getDataAsync(urlServidor, executor, result -> {
             if (result != null) {
@@ -64,8 +66,19 @@ public class MensajeServiceImp implements MensajeService {
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
+
+
             }
+
+            latch.countDown();
         });
+
+        try {
+            // Esperamos a que el CountDownLatch se reduzca a cero, lo que indica que getDataAsync() ha terminado
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return listaMensajes;
     }
