@@ -49,6 +49,25 @@ router.post('/registrarPaciente', async function(req, res, next) {
     }
 });
 
+router.post('/crearConsulta', async function(req, res, next) {
+
+    const {Nombre,titulo,fecha} = req.body;
+
+    try {
+        
+        console.log(Nombre)
+        console.log(titulo)
+        console.log(fecha)
+
+        //await dao.registrarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,hashedPassword);
+
+        res.json(true)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+    }
+});
+
 function cifrarContrasena(contrasena, salt) {
     // Crea un nuevo objeto Hash
     const hash = crypto.createHash('sha256');
