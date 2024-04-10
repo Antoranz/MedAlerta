@@ -18,10 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.Controller;
 
+import com.example.myapplication.utils.NavigationManager;
 import com.example.myapplication.utils.SessionManager;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 
 
 public class CrearConsultaActivity extends AppCompatActivity {
@@ -47,13 +51,10 @@ public class CrearConsultaActivity extends AppCompatActivity {
 
 
     }
-
-
-
     private void initIgui() {
 
         spinner = findViewById(R.id.myspinner);
-        crearConsulta = findViewById(R.id.ButtonCrearConsulta);
+        crearConsulta = findViewById(R.id.buttonCrearConsulta);
         tituloConsulta = findViewById(R.id.editTextTituloConsulta);
 
         listaDoctores = Controller.getInstance().getDoctoresParaConsulta(this,sessionManager.getUserId());
@@ -64,7 +65,10 @@ public class CrearConsultaActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
         crearConsulta.setOnClickListener(v -> {
-            Controller.getInstance().postCrearConsulta()
+            String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+            String titulo = tituloConsulta.getText().toString();
+            Controller.getInstance().postCrearConsulta(spinner.getSelectedItem().toString(),titulo,timeStamp);
+            NavigationManager.getInstance().navigateToDestination(this,ConsultasActivity.class);
         });
 
 

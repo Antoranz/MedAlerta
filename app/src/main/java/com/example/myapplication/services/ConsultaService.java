@@ -12,4 +12,5 @@ public interface ConsultaService {
 
     public LinkedList<String> getDoctoresParaConsulta(String idPaciente);
 
+    void postCrearConsulta(String nombre, String titulo, String fecha);
 }

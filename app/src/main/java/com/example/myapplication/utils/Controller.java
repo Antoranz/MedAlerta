@@ -53,11 +53,11 @@ public class Controller {
         return service.getDoctoresParaConsulta(id_paciente);
     }
 
-    public void postCrearConsulta(Context context, String id_paciente) {
+    public void postCrearConsulta(String nombre, String titulo, String fecha) {
 
         ConsultaService service = ConsultaServiceImp.getInstance();
 
-        return service.getDoctoresParaConsulta(id_paciente);
+        service.postCrearConsulta(nombre, titulo, fecha);
     }
 
 

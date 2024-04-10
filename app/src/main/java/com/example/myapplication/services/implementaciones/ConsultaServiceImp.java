@@ -1,9 +1,17 @@
 package com.example.myapplication.services.implementaciones;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static com.example.myapplication.utils.GetDataAsync.getDataAsync;
+import static com.example.myapplication.utils.PostDataAsync.postDataAsync;
 
+import com.example.myapplication.activities.IniciarSesionActivity;
 import com.example.myapplication.utils.GetDataAsync;
+import com.example.myapplication.utils.PostDataAsync;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.utils.GetDataAsync;
 import com.example.myapplication.data.Consulta;
@@ -14,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,7 +33,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class ConsultaServiceImp implements ConsultaService {
+public class ConsultaServiceImp extends AppCompatActivity implements ConsultaService {
 
     private static ConsultaServiceImp instance;
 
@@ -132,6 +141,34 @@ public class ConsultaServiceImp implements ConsultaService {
         return listaNombresDoctores;
     }
 
+    @Override
+    public void postCrearConsulta(String nombre, String titulo, String fecha) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        String urlServidor = "http://10.0.2.2:3000/pacientes/crearConsulta";
+
+        JSONObject postData = new JSONObject();
+        try {
+
+            postData.put("Nombre", nombre);
+            postData.put("titulo",titulo);
+            postData.put("fecha", fecha);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
+            runOnUiThread(() -> {
+            });
+        }, "POST", postData.toString());
+
+
+    }
+
+
+    private void makeTextToast(String text){
+        Toast.makeText(this,text,Toast.LENGTH_LONG).show();
+    }
 
 
 }
