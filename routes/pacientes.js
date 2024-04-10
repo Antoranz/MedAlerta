@@ -178,10 +178,10 @@ router.get('/obtenerDoctoresDelPaciente/:dni', async function(req, res, next) {
         var doctores = [];
 
         for (let i = 0; i < dniDoctores.length; i++) {
-            let dniDoctor = dniDoctores[0].DNIDoctor;
+            let dniDoctor = dniDoctores[i].DNIDoctor;
             console.log(dniDoctor)
             let nombreDoctor = await dao.obtenerInformacionDoctor(dniDoctor); // Supongamos que esta función existe en tu DAO
-            doctores.push(nombreDoctor);
+            doctores.push(nombreDoctor[0]);
         }
 
         console.log(doctores)
