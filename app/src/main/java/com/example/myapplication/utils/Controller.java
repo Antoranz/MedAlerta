@@ -17,6 +17,7 @@ import com.example.myapplication.services.implementaciones.ConsultaServiceImp;
 import com.example.myapplication.services.implementaciones.MensajeServiceImp;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class Controller {
         return service.getAllMensajes(id_consulta);
     }
 
-    public List<String> getDoctoresParaConsulta(Context context, String id_paciente) {
+    public LinkedList<String> getDoctoresParaConsulta(Context context, String id_paciente) {
 
         ConsultaService service = ConsultaServiceImp.getInstance();
 
