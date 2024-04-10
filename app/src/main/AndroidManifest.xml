@@ -36,6 +36,11 @@
             android:exported="true" >
         </activity>
 
+        <activity
+            android:name=".ChatViewActivity"
+            android:exported="true" >
+        </activity>
+
 
         <activity
             android:name=".EditarActivity"
@@ -77,6 +82,24 @@
 
         <activity
             android:name=".CrearCitaActivity"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".ChatActivity"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".ConsultasActivity"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".CrearConsultaActivity"
             android:exported="true">
 
         </activity>

@@ -10,9 +10,17 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.myapplication.AlarmReceiverActivity;
+import com.example.myapplication.data.Consulta;
+import com.example.myapplication.data.Mensaje;
+import com.example.myapplication.services.ConsultaService;
+import com.example.myapplication.services.MensajeService;
+import com.example.myapplication.services.implementaciones.ConsultaServiceImp;
+import com.example.myapplication.services.implementaciones.MensajeServiceImp;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 public class Controller {
@@ -25,6 +33,26 @@ public class Controller {
         instance = new Controller();
         return instance;
     }
+
+    public LinkedList<Consulta> getAllConsultas(Context c,String dni) {
+        ConsultaService service = ConsultaServiceImp.getInstance();
+
+        return service.getAllConsultas(dni);
+    }
+
+    public LinkedList<Mensaje> getAllMensajes(Context c, long id_consulta) {
+        MensajeService service = MensajeServiceImp.getInstance();
+
+        return service.getAllMensajes(id_consulta);
+    }
+
+    public List<String> getDoctoresParaConsulta(Context context, String id_paciente) {
+
+        ConsultaService service = ConsultaServiceImp.getInstance();
+
+        return service.getDoctoresParaConsulta(id_paciente);
+    }
+
 
 
 

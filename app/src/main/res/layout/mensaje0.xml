@@ -6,13 +6,14 @@
     android:paddingStart="16dp"
     android:paddingTop="8dp"
     android:paddingEnd="16dp"
+    android:layout_gravity="end"
     android:paddingBottom="8dp">
 
     <TextView
         android:id="@+id/textViewMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_rounded_corners"
+        android:background="@drawable/bg_rounded_corners0"
         android:paddingStart="12dp"
         android:paddingTop="8dp"
         android:paddingEnd="12dp"
@@ -23,6 +24,8 @@
         android:elevation="4dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Mensaje de ejemplo" /> <!-- Texto de ejemplo para previsualización -->
+        android:text="Mensaje de ejemplo"
+        android:layout_gravity="end" /> <!-- Alinea el TextView a la derecha -->
 
 </LinearLayout>
+
