@@ -1,9 +1,7 @@
 package com.example.myapplication.services.implementaciones;
 
-import static com.example.myapplication.GetDataAsync.getDataAsync;
+import static com.example.myapplication.utils.GetDataAsync.getDataAsync;
 
-import com.example.myapplication.GetDataAsync;
-import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Mensaje;
 
 import com.example.myapplication.services.MensajeService;

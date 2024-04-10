@@ -6,10 +6,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 
-import com.example.myapplication.AlarmReceiverActivity;
+import com.example.myapplication.activities.AlarmReceiverActivity;
 import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Mensaje;
 import com.example.myapplication.services.ConsultaService;

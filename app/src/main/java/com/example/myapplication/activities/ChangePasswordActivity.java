@@ -1,8 +1,8 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import static com.example.myapplication.PostDataAsync.postDataAsync;
+import static com.example.myapplication.utils.PostDataAsync.postDataAsync;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.R;
 import com.example.myapplication.utils.SessionManager;
 
 import org.json.JSONException;
@@ -23,36 +24,64 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 
-public class ConfirmationActivity extends AppCompatActivity {
+public class ChangePasswordActivity extends AppCompatActivity {
 
     SessionManager sessionManager ;
     Button reenvioButton, checKButton;
-    EditText codigoText;
+    EditText codigoText,password1,password2;
     Integer numeroAleatorio = generarNumeroAleatorio();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_confirmacion);
+        setContentView(R.layout.activity_change_password);
 
         sessionManager = new SessionManager(this);
-        codigoText = findViewById(R.id.editTextNumber);
+        codigoText = findViewById(R.id.editTextCodigo);
+        password1 = findViewById(R.id.editTextPassword);
+        password2 = findViewById(R.id.editTextPassword2);
+
         reenvioButton = findViewById(R.id.idReenvio);
         checKButton = findViewById(R.id.idComprobar);
 
         checKButton.setOnClickListener(v -> {
             //TODO
+            if(!password1.getText().toString().equals(password2.getText().toString())){
+                Toast.makeText(this,"Las contraseñas no coinciden",Toast.LENGTH_LONG).show();
+            }else if(codigoText.getText().toString().equals(numeroAleatorio.toString())){
+
+                Executor executor = Executors.newSingleThreadExecutor();
+                String urlServidor = "http://10.0.2.2:3000/pacientes/editarPassword";
+
+                JSONObject postData = new JSONObject();
+                try {
+                    postData.put("password", password1.getText().toString());
+                    postData.put("email", sessionManager.getEmail());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                // Realizar la solicitud POST para validar el email del paciente
+                postDataAsync(urlServidor, executor, result -> {
+                    runOnUiThread(() -> {
+                        if (result != null) {
+
+                            Log.d(TAG, "Contraseña cambiada correctamente");
+                            Toast.makeText(this, "Contraseña cambiada correctamente", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Log.d(TAG, "Error al cambiar password");
+                            Toast.makeText(this, "Error al cambiar password", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }, "POST", postData.toString());
 
 
 
-            if(codigoText.getText().toString().equals(numeroAleatorio.toString())){
-                sessionManager.verificateEmail();
-                Intent intent = new Intent(this, CargandoConfiguracionActivity.class);
-                startActivity(intent);
 
             }else{
                 Toast.makeText(this,"codigo introducido incorrecto",Toast.LENGTH_LONG).show();
-
             }
 
         });
@@ -86,10 +115,7 @@ public class ConfirmationActivity extends AppCompatActivity {
 
         });
 
-        if (sessionManager.isVerificated()) {
-            Intent intent = new Intent(this, CargandoConfiguracionActivity.class);
-            startActivity(intent);
-        } else {
+
 
             Executor executor = Executors.newSingleThreadExecutor();
             String urlServidor = "http://10.0.2.2:3000/pacientes/validarPaciente";
@@ -116,7 +142,6 @@ public class ConfirmationActivity extends AppCompatActivity {
             }, "POST", postData.toString());
 
 
-        }
 
     }
 

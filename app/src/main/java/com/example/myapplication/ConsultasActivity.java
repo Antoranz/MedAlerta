@@ -1,36 +1,18 @@
 package com.example.myapplication;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-import static com.example.myapplication.PostDataAsync.postDataAsync;
-
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.data.Consulta;
-import com.example.myapplication.utils.ConsultasListAdapter;
+import com.example.myapplication.utils.adapters.ConsultasListAdapter;
 import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.SessionManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.LinkedList;
-import java.util.Locale;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class ConsultasActivity extends AppCompatActivity {
 

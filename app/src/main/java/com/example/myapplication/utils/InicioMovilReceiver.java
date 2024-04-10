@@ -1,11 +1,9 @@
-package com.example.myapplication;
+package com.example.myapplication.utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
-import com.example.myapplication.utils.SessionManager;
 
 public class InicioMovilReceiver extends BroadcastReceiver {
 

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.R;
 import com.example.myapplication.data.Consulta;
-import com.example.myapplication.utils.ConsultasListAdapter;
 import com.example.myapplication.utils.Controller;
-import com.example.myapplication.utils.MensajesListAdapter;
+import com.example.myapplication.utils.adapters.MensajesListAdapter;
 import com.example.myapplication.utils.SessionManager;
 
 import java.util.LinkedList;

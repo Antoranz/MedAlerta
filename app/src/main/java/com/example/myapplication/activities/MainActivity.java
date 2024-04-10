@@ -1,22 +1,15 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import static com.example.myapplication.GetDataAsync.getDataAsync;
-import static com.example.myapplication.PostDataAsync.postDataAsync;
+import static com.example.myapplication.utils.PostDataAsync.postDataAsync;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -28,13 +21,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.utils.Controller;
+import com.example.myapplication.ConsultasActivity;
+import com.example.myapplication.utils.PostDataAsync;
+import com.example.myapplication.R;
 import com.example.myapplication.utils.SessionManager;
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Calendar;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 

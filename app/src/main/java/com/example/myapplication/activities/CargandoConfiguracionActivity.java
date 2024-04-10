@@ -1,8 +1,8 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 
 
-import static com.example.myapplication.GetDataAsync.getDataAsync;
+import static com.example.myapplication.utils.GetDataAsync.getDataAsync;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +13,9 @@ import android.util.Log;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
+import com.example.myapplication.utils.GetDataAsync;
+import com.example.myapplication.R;
 import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.SessionManager;
 
