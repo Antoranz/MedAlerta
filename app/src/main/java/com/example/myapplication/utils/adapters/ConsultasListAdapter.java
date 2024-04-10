@@ -1,4 +1,4 @@
-package com.example.myapplication.utils;
+package com.example.myapplication.utils.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,9 +9,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.ChatViewActivity;
+import com.example.myapplication.activities.ChatViewActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.data.Consulta;
+import com.example.myapplication.utils.NavigationManager;
 
 import java.util.LinkedList;
 import java.util.List;

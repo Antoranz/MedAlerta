@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.utils;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -8,14 +8,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+
+import com.example.myapplication.R;
+import com.example.myapplication.activities.MainActivity;
 
 public class Notificaciones {
 
@@ -57,7 +58,7 @@ public class Notificaciones {
 
         nb.setContentTitle(medicamento + ", dosis: " + dosis);
 
-        Intent actividad_destino = new Intent(context,MainActivity.class);
+        Intent actividad_destino = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,actividad_destino,PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         nb.setContentIntent(pendingIntent);
         nb.setAutoCancel(true);

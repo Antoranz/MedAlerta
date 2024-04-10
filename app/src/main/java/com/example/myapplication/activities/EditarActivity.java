@@ -1,9 +1,9 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import static com.example.myapplication.GetDataAsync.getDataAsync;
-import static com.example.myapplication.PostDataAsync.postDataAsync;
+import static com.example.myapplication.utils.GetDataAsync.getDataAsync;
+import static com.example.myapplication.utils.PostDataAsync.postDataAsync;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -17,6 +17,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.myapplication.utils.GetDataAsync;
+import com.example.myapplication.utils.PostDataAsync;
+import com.example.myapplication.R;
 import com.example.myapplication.utils.SessionManager;
 
 import org.json.JSONArray;
@@ -26,7 +29,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;

@@ -1,9 +1,9 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 
-import static com.example.myapplication.PostDataAsync.postDataAsync;
+import static com.example.myapplication.utils.PostDataAsync.postDataAsync;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.utils.PostDataAsync;
+import com.example.myapplication.R;
 import com.example.myapplication.utils.SessionManager;
 
 import org.json.JSONArray;

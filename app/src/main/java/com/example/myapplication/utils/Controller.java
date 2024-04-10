@@ -6,10 +6,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 
-import com.example.myapplication.AlarmReceiverActivity;
+import com.example.myapplication.activities.AlarmReceiverActivity;
 import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Mensaje;
 import com.example.myapplication.services.ConsultaService;
@@ -18,6 +17,7 @@ import com.example.myapplication.services.implementaciones.ConsultaServiceImp;
 import com.example.myapplication.services.implementaciones.MensajeServiceImp;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class Controller {
         return service.getAllMensajes(id_consulta);
     }
 
-    public List<String> getDoctoresParaConsulta(Context context, String id_paciente) {
+    public LinkedList<String> getDoctoresParaConsulta(Context context, String id_paciente) {
 
         ConsultaService service = ConsultaServiceImp.getInstance();
 

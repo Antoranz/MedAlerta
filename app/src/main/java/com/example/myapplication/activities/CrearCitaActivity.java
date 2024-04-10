@@ -1,7 +1,7 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-import static com.example.myapplication.PostDataAsync.postDataAsync;
+import static com.example.myapplication.utils.PostDataAsync.postDataAsync;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.utils.PostDataAsync;
+import com.example.myapplication.R;
 import com.example.myapplication.utils.SessionManager;
 
 import org.json.JSONException;
@@ -26,7 +28,7 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class ChatActivity extends AppCompatActivity {
+public class CrearCitaActivity extends AppCompatActivity {
 
     private EditText editTextDate,editTextTime,motivoConsulta, duracion,tipo;
     private Button confirmarCita;
@@ -36,7 +38,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_crear_cita);
 
         sessionManager = new SessionManager(this);
 

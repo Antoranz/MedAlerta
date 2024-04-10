@@ -1,8 +1,11 @@
 package com.example.myapplication.services.implementaciones;
 
-import static com.example.myapplication.GetDataAsync.getDataAsync;
+import static com.example.myapplication.utils.GetDataAsync.getDataAsync;
 
-import com.example.myapplication.GetDataAsync;
+import com.example.myapplication.utils.GetDataAsync;
+import android.util.Log;
+
+import com.example.myapplication.utils.GetDataAsync;
 import com.example.myapplication.data.Consulta;
 import com.example.myapplication.services.ConsultaService;
 
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -39,6 +43,8 @@ public class ConsultaServiceImp implements ConsultaService {
 
         Executor executor = Executors.newSingleThreadExecutor();
         String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerConsultasPaciente/" + dni;
+
+        CountDownLatch latch = new CountDownLatch(1);
 
         getDataAsync(urlServidor, executor, (GetDataAsync.OnTaskCompleted) result -> {
             if (result != null) {
@@ -67,20 +73,32 @@ public class ConsultaServiceImp implements ConsultaService {
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
+
+                latch.countDown();
             }
         });
+
+        try {
+
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
         return listaConsultas;
     }
 
     @Override
-    public List<String> getDoctoresParaConsulta(String dni) {
+    public LinkedList<String> getDoctoresParaConsulta(String dni) {
 
-        List<String> listaNombresDoctores = new ArrayList<>();
+        LinkedList<String> listaNombresDoctores = new LinkedList<>();
 
         Executor executor = Executors.newSingleThreadExecutor();
         String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerDoctoresDelPaciente/" + dni;
+
+        CountDownLatch latch = new CountDownLatch(1);
+
 
         getDataAsync(urlServidor, executor, (GetDataAsync.OnTaskCompleted) result -> {
             if (result != null) {
@@ -89,17 +107,27 @@ public class ConsultaServiceImp implements ConsultaService {
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonConsulta = jsonArray.getJSONObject(i);
+
                         String nombre = jsonConsulta.getString("nombre");
 
                         listaNombresDoctores.add(nombre);
                     }
 
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                latch.countDown();
             }
         });
 
+        try {
+
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return listaNombresDoctores;
     }
