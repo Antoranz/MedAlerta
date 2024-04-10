@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.ConsultasActivity;
 import com.example.myapplication.utils.PostDataAsync;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.SessionManager;

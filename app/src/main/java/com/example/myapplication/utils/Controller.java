@@ -53,6 +53,13 @@ public class Controller {
         return service.getDoctoresParaConsulta(id_paciente);
     }
 
+    public void postCrearConsulta(Context context, String id_paciente) {
+
+        ConsultaService service = ConsultaServiceImp.getInstance();
+
+        return service.getDoctoresParaConsulta(id_paciente);
+    }
+
 
 
 
