@@ -46,7 +46,11 @@ public class MensajesListAdapter extends RecyclerView.Adapter<MensajesListAdapte
         view.setOnClickListener(onClickListener);
         return new ViewHolder(view,context,viewType);
     }
-
+    public void setMensajesList(List<Mensaje> data) {
+        mensajesList.clear();
+        mensajesList.addAll(data);
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemViewType(int position) {
         int propietario = mensajesList.get(position).getPropietario();
@@ -65,11 +69,6 @@ public class MensajesListAdapter extends RecyclerView.Adapter<MensajesListAdapte
     @Override
     public int getItemCount() {
         return mensajesList.size();
-    }
-
-    public void setMensajesList(List<Mensaje> data) {
-        mensajesList = (LinkedList<Mensaje>) data;
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

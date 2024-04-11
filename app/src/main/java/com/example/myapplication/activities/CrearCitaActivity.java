@@ -1,7 +1,7 @@
 package com.example.myapplication.activities;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-import static com.example.myapplication.utils.PostDataAsync.postDataAsync;
+import static com.example.myapplication.utils.async.PostDataAsync.postDataAsync;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.utils.PostDataAsync;
+import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.R;
-import com.example.myapplication.utils.SessionManager;
+import com.example.myapplication.utils.manager.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;

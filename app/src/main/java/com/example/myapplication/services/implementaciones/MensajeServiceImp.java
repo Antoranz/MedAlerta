@@ -1,6 +1,6 @@
 package com.example.myapplication.services.implementaciones;
 
-import static com.example.myapplication.utils.GetDataAsync.getDataAsync;
+import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
 
 import com.example.myapplication.data.Mensaje;
 

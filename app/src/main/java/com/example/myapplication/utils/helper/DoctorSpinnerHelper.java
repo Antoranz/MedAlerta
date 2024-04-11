@@ -1,5 +1,5 @@
-// DoctorSpinnerHelper.java
-package com.example.myapplication.utils;
+
+package com.example.myapplication.utils.helper;
 
 import android.content.Context;
 import android.widget.AdapterView;

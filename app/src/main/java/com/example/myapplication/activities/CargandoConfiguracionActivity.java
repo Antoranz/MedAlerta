@@ -2,7 +2,7 @@ package com.example.myapplication.activities;
 
 
 
-import static com.example.myapplication.utils.GetDataAsync.getDataAsync;
+import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +14,10 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.utils.GetDataAsync;
+import com.example.myapplication.utils.async.GetDataAsync;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.Controller;
-import com.example.myapplication.utils.SessionManager;
+import com.example.myapplication.utils.manager.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,16 +1,12 @@
 package com.example.myapplication.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.AdapterView;
 
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.Controller;
 
-import com.example.myapplication.utils.NavigationManager;
-import com.example.myapplication.utils.SessionManager;
+import com.example.myapplication.utils.manager.NavigationManager;
+import com.example.myapplication.utils.manager.SessionManager;
 
 
 import java.text.SimpleDateFormat;

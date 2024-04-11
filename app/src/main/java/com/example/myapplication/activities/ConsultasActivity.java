@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.adapters.ConsultasListAdapter;
 import com.example.myapplication.utils.Controller;
-import com.example.myapplication.utils.SessionManager;
+import com.example.myapplication.utils.manager.SessionManager;
 
 import java.util.LinkedList;
 

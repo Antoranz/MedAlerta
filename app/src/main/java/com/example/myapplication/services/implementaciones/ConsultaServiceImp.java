@@ -1,19 +1,15 @@
 package com.example.myapplication.services.implementaciones;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-import static com.example.myapplication.utils.GetDataAsync.getDataAsync;
-import static com.example.myapplication.utils.PostDataAsync.postDataAsync;
+import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
+import static com.example.myapplication.utils.async.PostDataAsync.postDataAsync;
 
-import com.example.myapplication.activities.IniciarSesionActivity;
-import com.example.myapplication.utils.GetDataAsync;
-import com.example.myapplication.utils.PostDataAsync;
-import android.content.Intent;
-import android.util.Log;
+import com.example.myapplication.utils.async.GetDataAsync;
+import com.example.myapplication.utils.async.PostDataAsync;
+
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.utils.GetDataAsync;
 import com.example.myapplication.data.Consulta;
 import com.example.myapplication.services.ConsultaService;
 
@@ -22,13 +18,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.data.Consulta;
+import com.example.myapplication.utils.async.ActualizarMensajesAsync;
 import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.adapters.MensajesListAdapter;
-import com.example.myapplication.utils.SessionManager;
+import com.example.myapplication.utils.manager.SessionManager;
 
 import java.util.LinkedList;
 
@@ -21,6 +22,7 @@ public class ChatViewActivity extends AppCompatActivity {
 
     Consulta consulta;
     private MensajesListAdapter adapter;
+    private ActualizarMensajesAsync actualizador;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
@@ -35,6 +37,7 @@ public class ChatViewActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         initUI();
+
     }
 
     private void initUI() {
@@ -50,7 +53,15 @@ public class ChatViewActivity extends AppCompatActivity {
         adapter.setMensajesList(Controller.getInstance().getAllMensajes(this,consulta.getId()));
         adapter.notifyDataSetChanged();
 
+        actualizador = new ActualizarMensajesAsync(adapter,consulta.getId(),this);
+        actualizador.startTask();
 
-
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (actualizador != null) {
+            actualizador.stopTask();
+        }
     }
 }

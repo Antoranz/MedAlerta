@@ -57,7 +57,7 @@
 
 
         <receiver
-            android:name=".utils.InicioMovilReceiver"
+            android:name=".utils.receiver.InicioMovilReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

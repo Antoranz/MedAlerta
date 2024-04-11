@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.activities.ChatViewActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.data.Consulta;
-import com.example.myapplication.utils.NavigationManager;
+import com.example.myapplication.utils.manager.NavigationManager;
 
 import java.util.LinkedList;
 import java.util.List;

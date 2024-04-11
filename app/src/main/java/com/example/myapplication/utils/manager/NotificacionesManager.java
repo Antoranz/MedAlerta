@@ -1,4 +1,4 @@
-package com.example.myapplication.utils;
+package com.example.myapplication.utils.manager;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -18,7 +18,7 @@ import androidx.core.app.NotificationCompat;
 import com.example.myapplication.R;
 import com.example.myapplication.activities.MainActivity;
 
-public class Notificaciones {
+public class NotificacionesManager {
 
     private static final String NOTIFICATION_CHANNEL_ID = "nombrecanal2";
     private static final String CHANNEL_NAME = "idcanal2";
