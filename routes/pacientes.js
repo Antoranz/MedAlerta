@@ -51,15 +51,46 @@ router.post('/registrarPaciente', async function(req, res, next) {
 
 router.post('/crearConsulta', async function(req, res, next) {
 
-    const {Nombre,titulo,fecha} = req.body;
+    const {dni_doctor,dni_paciente,titulo,fecha} = req.body;
+
+    
 
     try {
         
-        console.log(Nombre)
+        console.log(dni_doctor)
+        console.log(dni_paciente)
         console.log(titulo)
         console.log(fecha)
 
-        //await dao.registrarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,hashedPassword);
+        const fechaDate = new Date(fecha);
+
+        //fechaDate.setHours(fechaDate.getHours() + 2);
+
+        console.log(fechaDate);
+
+        await dao.registrarConsulta(dni_doctor,dni_paciente,titulo,fechaDate);
+
+        res.json(true)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+    }
+});
+
+router.post('/crearMensaje', async function(req, res, next) {
+
+    const {id_consulta,mensaje,propietario,fecha} = req.body;
+
+    try {
+        
+        console.log(id_consulta)
+        console.log(mensaje)
+        console.log(propietario)
+        console.log(fecha)
+
+        const fechaDate = new Date(fecha);
+
+        await dao.registrarMensaje(id_consulta,mensaje,propietario,fechaDate);
 
         res.json(true)
     } catch (error) {

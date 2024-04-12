@@ -270,6 +270,54 @@ class DAOPaciente{
         }); 
     }
 
+    registrarConsulta(dni_doctor,dni_paciente,titulo,ultima_fecha){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryRegistrarConsulta ="INSERT INTO consultas (dni_doctor,dni_paciente,titulo,ultima_fecha) VALUES (?, ?, ?, ?)"
+                    connection.query(queryRegistrarConsulta,[dni_doctor,dni_paciente,titulo,ultima_fecha], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    registrarMensaje(id_consulta,mensaje,propietario,fecha){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryRegistrarConsulta ="INSERT INTO mensajes (id_consulta,mensaje,propietario,fecha) VALUES (?, ?, ?, ?)"
+                    connection.query(queryRegistrarConsulta,[id_consulta,mensaje,propietario,fecha], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
 
     obtenerDoctorDelPaciente(DNIPaciente){
         
