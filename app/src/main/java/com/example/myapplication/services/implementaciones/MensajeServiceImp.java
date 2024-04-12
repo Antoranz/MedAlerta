@@ -1,10 +1,14 @@
 package com.example.myapplication.services.implementaciones;
 
 import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
+import static com.example.myapplication.utils.async.PostDataAsync.postDataAsync;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.data.Mensaje;
 
 import com.example.myapplication.services.MensajeService;
+import com.example.myapplication.utils.async.PostDataAsync;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,13 +23,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 
-public class MensajeServiceImp implements MensajeService {
+public class MensajeServiceImp extends AppCompatActivity implements MensajeService {
 
     private static MensajeServiceImp instance;
 
     public static MensajeServiceImp getInstance() {
 
-        if(instance == null){
+        if (instance == null) {
             instance = new MensajeServiceImp();
         }
         return instance;
@@ -81,4 +85,31 @@ public class MensajeServiceImp implements MensajeService {
         return listaMensajes;
     }
 
+    @Override
+    public void crearMensaje(long id, String mensaje, long propietario, String fecha) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        String urlServidor = "http://10.0.2.2:3000/pacientes/crearMensaje";
+
+        JSONObject postData = new JSONObject();
+        try {
+
+            postData.put("id_consulta", id);
+            postData.put("mensaje", mensaje);
+            postData.put("propietario", propietario);
+            postData.put("fecha", fecha);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
+            runOnUiThread(() -> {
+            });
+        }, "POST", postData.toString());
+
+
+    }
+
 }
+
+
