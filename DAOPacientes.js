@@ -29,7 +29,7 @@ class DAOPaciente{
         }); 
     }
 
-    checkPaciente(email,password){
+    checkPaciente(dni,password){
         
         return new Promise((resolve, reject) => {
             this.pool.getConnection((err, connection) => {
@@ -38,8 +38,32 @@ class DAOPaciente{
                     reject(err);
                 }else{
                     console.log("Exito al conectar a la base de datos");
-                    var queryCheckPaciente ="SELECT * FROM pacientes WHERE email = ? AND password = ?"
-                    connection.query(queryCheckPaciente,[email,password], (err, res) => {
+                    var queryCheckPaciente ="SELECT * FROM pacientes WHERE dni = ? AND password = ?"
+                    connection.query(queryCheckPaciente,[dni,password], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    obtenerMensajesNoLeidos(dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryobtenerMensajesNoLeidos ="SELECT c.id AS id_consulta,c.titulo,m.mensaje,m.fecha AS fecha_ultimo_mensajeFROM consultas cINNER JOIN mensajes m ON c.id = m.id_consultaWHERE c.dni_paciente = 'dni_del_paciente'AND m.leido_paciente = 0AND m.fecha = (SELECT MAX(fecha)FROM mensajesWHERE id_consulta = c.id)ORDER BY c.id;"
+                    connection.query(queryobtenerMensajesNoLeidos,[dni], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);
