@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.data.Mensaje;
 
 import com.example.myapplication.services.MensajeService;
+import com.example.myapplication.utils.async.GetDataAsync;
 import com.example.myapplication.utils.async.PostDataAsync;
 
 import org.json.JSONArray;
@@ -107,6 +108,52 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
             });
         }, "POST", postData.toString());
 
+
+    }
+
+    @Override
+    public void obtenerMensajesNoLeidos(String dni) {
+
+        Executor executor = Executors.newSingleThreadExecutor();
+        String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerMensajesNoLeidos/" + dni;
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        getDataAsync(urlServidor, executor, (GetDataAsync.OnTaskCompleted) result -> {
+            if (result != null) {
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonConsulta = jsonArray.getJSONObject(i);
+
+                        long id = jsonConsulta.getLong("id");
+                        String dniDoctor = jsonConsulta.getString("dni_doctor");
+                        String dniPaciente = jsonConsulta.getString("dni_paciente");
+                        String titulo = jsonConsulta.getString("titulo");
+                        // Parsear la fecha del String al tipo Date
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Date ultimaFecha = dateFormat.parse(jsonConsulta.getString("ultima_fecha"));
+                        int mensajesTotales = jsonConsulta.getInt("mensajes_totales");
+                        int notificacionesDoctor = jsonConsulta.getInt("notificaciones_doctor");
+                        int notificacionesPaciente = jsonConsulta.getInt("notificaciones_paciente");
+
+                    }
+
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
+                }
+
+                latch.countDown();
+            }
+        });
+
+        try {
+
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 

@@ -61,18 +61,37 @@ public class ChatViewActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("WrongViewCast")
+    @SuppressLint({"WrongViewCast", "NotifyDataSetChanged"})
     private void initUI() {
         nombreDoctorchat = findViewById(R.id.nombreDoctorTextView);
         textoAenviar = findViewById(R.id.textoAEnviar);
         buttonEnviar = findViewById(R.id.botonEnviar);
+        RecyclerView rv = findViewById(R.id.recyclerViewChat);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+
 
         buttonEnviar.setOnClickListener(v -> {
-            String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-            Controller.getInstance().crearMensaje(consulta.getId(),textoAenviar.getText().toString(),1,timeStamp);
-            textoAenviar.setText("");
+            if(!textoAenviar.getText().toString().isEmpty()){
+                String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+                Controller.getInstance().crearMensaje(consulta.getId(),textoAenviar.getText().toString(),1,timeStamp);
+                textoAenviar.setText("");
+
+
+            }
+
         });
+
+
+        rv.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            if (bottom < oldBottom) {
+                rv.postDelayed(() -> rv.smoothScrollToPosition(adapter.getItemCount() - 1), 100);
+            }
+        });
+
+
 
         //Poner nombre del doctor en cada chat
         String dniDoctor = consulta.getDni_doctor();
@@ -87,13 +106,16 @@ public class ChatViewActivity extends AppCompatActivity {
 
         nombreDoctorchat.setText(nombreDoctor);
 
-        RecyclerView rv = findViewById(R.id.recyclerViewChat);
+
 
         adapter = new MensajesListAdapter(new LinkedList<>(),this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(layoutManager);
         rv.setAdapter(adapter);
+
+        rv.postDelayed(() -> {
+            rv.scrollToPosition(adapter.getItemCount() - 1);
+        }, 100);
 
         adapter.setMensajesList(Controller.getInstance().getAllMensajes(this,consulta.getId()));
         adapter.notifyDataSetChanged();

@@ -29,7 +29,7 @@ import java.util.concurrent.Executors;
 public class IniciarSesionActivity extends AppCompatActivity {
 
     TextView logIn, changePassword;
-    EditText email, password;
+    EditText dni, password;
     Button inicio;
     SessionManager sessionManager;
     @Override
@@ -39,19 +39,19 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
-        email = findViewById(R.id.idEmail);
+        dni = findViewById(R.id.idDNI);
         password = findViewById(R.id.idPassword);
 
         inicio = findViewById(R.id.editButton);
         inicio.setOnClickListener(v -> {
-            if(email.getText().toString() != "" && password.getText().toString() != ""){
+            if(dni.getText().toString() != "" && password.getText().toString() != ""){
 
                 Executor executor = Executors.newSingleThreadExecutor();
                 String urlServidor = "http://10.0.2.2:3000/pacientes/checkPaciente";
                 
                 JSONObject postData = new JSONObject();
                 try {
-                    postData.put("email", email.getText().toString());
+                    postData.put("dni", dni.getText().toString());
                     postData.put("password", password.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -69,8 +69,9 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
                                     String dni = firstObject.getString("dni");
                                     String email = firstObject.getString("email");
+                                    String name = firstObject.getString("Nombre");
 
-                                    sessionManager.createSession(dni, email);
+                                    sessionManager.createSession(dni, email,name);
 
                                     Intent intent = new Intent(this, ConfirmationActivity.class);
                                     startActivity(intent);
@@ -104,7 +105,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
         changePassword = findViewById(R.id.changePasswordId);
         changePassword.setOnClickListener(v -> {
-            if(!email.getText().toString().isEmpty()){
+            if(!dni.getText().toString().isEmpty()){
 
                 //TODO falta por implementar el cambio de contraseña
 

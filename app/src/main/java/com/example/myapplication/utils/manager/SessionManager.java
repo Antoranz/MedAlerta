@@ -6,6 +6,7 @@ public class SessionManager {
     private static final String PREF_NAME = "MedAlertaSession";
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_USERNAME = "username";
+    private static final String KEY_NAME = "name";
     private static final String KEY_IS_LOGGED_IN = "is_logged_in";
 
     private static final String KEY_VERIFICATED = "is_verificated";
@@ -20,9 +21,10 @@ public class SessionManager {
         editor = sharedPreferences.edit();
     }
 
-    public void createSession(String userId, String username) {
+    public void createSession(String userId, String username, String name) {
         editor.putString(KEY_USER_ID, userId);
         editor.putString(KEY_USERNAME, username);
+        editor.putString(KEY_NAME, name);
         editor.putBoolean(KEY_IS_LOGGED_IN, true);
         editor.putBoolean(KEY_VERIFICATED,false);
         editor.apply();
@@ -55,5 +57,8 @@ public class SessionManager {
 
     public String getEmail() {
         return sharedPreferences.getString(KEY_USERNAME, null);
+    }
+    public String getName() {
+        return sharedPreferences.getString(KEY_NAME, null);
     }
 }

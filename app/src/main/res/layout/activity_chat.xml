@@ -8,9 +8,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewChat"
         android:layout_width="408dp"
-        android:layout_height="546dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/textoAEnviar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nombreDoctorTextView" />
 
@@ -18,14 +18,11 @@
         android:id="@+id/textoAEnviar"
         android:layout_width="302dp"
         android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="17dp"
+        android:layout_marginStart="10dp"
         android:hint="..."
         android:inputType="text|textAutoComplete|textMultiLine"
-        app:layout_constraintEnd_toStartOf="@+id/botonEnviar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewChat" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/botonEnviar"
@@ -33,10 +30,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toEndOf="@+id/textoAEnviar"
-
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewChat"
         app:srcCompat="@android:drawable/ic_media_play" />
 
     <TextView

@@ -68,6 +68,13 @@ public class Controller {
         service.postCrearConsulta(dni_doctor,dni_paciente, titulo, fecha);
     }
 
+    public void obtenerMensajesNoLeidos(String dni) {
+
+        MensajeService service = MensajeServiceImp.getInstance();
+
+        service.obtenerMensajesNoLeidos(dni);
+    }
+
 
 
 
