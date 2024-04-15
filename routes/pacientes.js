@@ -49,6 +49,56 @@ router.post('/registrarPaciente', async function(req, res, next) {
     }
 });
 
+router.post('/crearConsulta', async function(req, res, next) {
+
+    const {dni_doctor,dni_paciente,titulo,fecha} = req.body;
+
+    
+
+    try {
+        
+        console.log(dni_doctor)
+        console.log(dni_paciente)
+        console.log(titulo)
+        console.log(fecha)
+
+        const fechaDate = new Date(fecha);
+
+        //fechaDate.setHours(fechaDate.getHours() + 2);
+
+        console.log(fechaDate);
+
+        await dao.registrarConsulta(dni_doctor,dni_paciente,titulo,fechaDate);
+
+        res.json(true)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+    }
+});
+
+router.post('/crearMensaje', async function(req, res, next) {
+
+    const {id_consulta,mensaje,propietario,fecha} = req.body;
+
+    try {
+        
+        console.log(id_consulta)
+        console.log(mensaje)
+        console.log(propietario)
+        console.log(fecha)
+
+        const fechaDate = new Date(fecha);
+
+        await dao.registrarMensaje(id_consulta,mensaje,propietario,fechaDate);
+
+        res.json(true)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+    }
+});
+
 function cifrarContrasena(contrasena, salt) {
     // Crea un nuevo objeto Hash
     const hash = crypto.createHash('sha256');
@@ -76,6 +126,8 @@ router.post('/bajaPaciente', async function(req, res, next) {
       }
    
 });
+
+
 
 router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
 
@@ -124,16 +176,16 @@ router.post('/checkPaciente', async function(req, res, next) {
 
     try {
 
-        var email=req.body.email;
+        var dni=req.body.dni;
         var password=req.body.password;
 
-        var hashedPassword = cifrarContrasena(password,email);
+        var hashedPassword = cifrarContrasena(password,dni);
 
         console.log(hashedPassword)
 
-        var paciente = await dao.checkPaciente(email,hashedPassword);
+        var paciente = await dao.checkPaciente(dni,hashedPassword);
 
-        console.log(email)
+        console.log(dni)
         console.log(password)
         console.log(paciente)
         res.json(paciente)
@@ -158,6 +210,55 @@ router.get('/obtenerAlarmas/:dni', async function(req, res, next) {
     } catch (error) {
         console.error("Error durante la operación:", error);
         res.json(null)
+      }
+   
+});
+
+
+router.get('/obtenerMensajesNoLeidos/:dni', async function(req, res, next) {
+
+    try {
+        
+        var dni_paciente=req.params.dni;
+
+        var mensajes = await dao.obtenerMensajesNoLeidos(dni_paciente);
+
+
+        console.log(mensajes)
+        res.json(paciente)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+      }
+   
+});
+
+
+router.get('/obtenerDoctoresDelPaciente/:dni', async function(req, res, next) {
+
+    try {
+        
+        var dni_paciente=req.params.dni;
+
+        var dniDoctores = await dao.obtenerDoctorDelPaciente(dni_paciente);
+
+        console.log(dniDoctores)
+
+        var doctores = [];
+
+        for (let i = 0; i < dniDoctores.length; i++) {
+            let dniDoctor = dniDoctores[i].DNIDoctor;
+            console.log(dniDoctor)
+            let nombreDoctor = await dao.obtenerInformacionDoctor(dniDoctor); // Supongamos que esta función existe en tu DAO
+            doctores.push(nombreDoctor[0]);
+        }
+
+        console.log(doctores)
+    
+        res.json(doctores)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
         
       }
    
@@ -169,10 +270,28 @@ router.get('/obtenerConsultasPaciente/:dni', async function(req, res, next) {
         
         var dni_paciente=req.params.dni;
 
-        var paciente = await dao.obtenerConsultasPaciente(dni_paciente)
+        var consultas = await dao.obtenerConsultasPaciente(dni_paciente)
 
-        console.log(paciente)
-        res.json(paciente)
+        console.log(consultas)
+        res.json(consultas)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+        
+      }
+   
+});
+
+router.get('/obtenerMensajesConsulta/:idConsulta', async function(req, res, next) {
+
+    try {
+        
+        var id_consulta=req.params.idConsulta;
+
+        var mensajes = await dao.obtenerMensajesConsulta(id_consulta)
+
+        console.log(mensajes)
+        res.json(mensajes)
     } catch (error) {
         console.error("Error durante la operación:", error);
         res.json(null)
