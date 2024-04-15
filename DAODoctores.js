@@ -372,7 +372,7 @@ class DAODoctor{
                 }else{
                     console.log("Exito al conectar a la base de datos");
                     console.log("AAAAAAAAAAAAAAAAAAA", id)
-                    var queryobtenerMensajes_consulta ="SELECT * FROM mensajes WHERE id_consulta = ? ORDER BY fecha DESC"
+                    var queryobtenerMensajes_consulta ="SELECT * FROM mensajes WHERE id_consulta = ? ORDER BY fecha ASC"
                     connection.query(queryobtenerMensajes_consulta,[id], (err, res) => {
                         connection.release();
                         if(err){

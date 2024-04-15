@@ -25,6 +25,7 @@
             padding: 1%;
             cursor: pointer;
             background-color:azure;
+            display: none;
         }
         .mensajePaciente{
             border-radius: 10px;
@@ -36,6 +37,36 @@
             border-radius: 10px;
             padding: 0.5%;
             background-color: rgb(0, 189, 189);
+            margin-left: auto;
+        }
+        .casillaDoctor{
+            display: flex;
+            align-items: center;
+        }
+        .mensajesCabezera {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2%;
+            margin-bottom: 1%;
+            background-color: #f0f0f0;
+            
+        }
+        .mensajesCabezera .titulo {
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .mensajesCabezera .nombre {
+            text-align: right;
+            font-size: 1em;
+        }
+        .mensajesCabezera .boton {
+            border: none;
+        }
+        .backIcon{
+            width: auto;
+            height: 20px;
         }
     </style>
 </head>
@@ -44,15 +75,14 @@
     <% include nav.ejs %>
 
     <div class="container center">
-        <h1 class="text-center m-4 tituloFont">Consultas</h1>
+        <h1 id="TituloConsultas" class="text-center m-4 tituloFont">Consultas</h1>
         <div id="consultas">
             <% listaConsultas.forEach((consulta, index) => { %>
-            <div class="consulta mt-3" onclick="getMensajes(<%= consulta.id %>)">
+            <div class="consulta mt-3" onclick="getMensajes('<%= consulta.id %>' , '<%= consulta.titulo %>')">
                 <div>
                     <b class="ml-5"><%= consulta.titulo %> </b> <span class="badge rounded-circle bg-danger text-white "> <%= consulta.notificaciones_doctor %> </span>
                 </div>
                 <div>
-                    
                     <a><%= consulta.ultima_fecha %></a>
                 </div>
             </div>
@@ -60,10 +90,11 @@
             <% }) %>
         </div>
         <div id="mensajes" class="mensajes">
-
-
-            
-
+            <div class="mensajesCabezera">
+                <button class="boton"><img class="backIcon" src="/images/backIcon.jpg"></button>
+                <div id="titulo" class="titulo">Título</div>
+                <div id="fecha"></div>
+            </div>
         </div>
         
     </div>
@@ -72,33 +103,44 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
 
     <script>
-        function getMensajes(consultaId) {
+        function getMensajes(consultaId, consultaTitulo) {
             // Hacer la llamada AJAX
             $.ajax({
                 url: '/doctor/mensajes/' + consultaId,
                 type: 'GET',
-                data: { consultaId: consultaId },
+                data: { consultaId: consultaId, consultaTitulo: consultaTitulo },
                 success: function(response) {
                     console.log(response);
                     var mensajesDiv = $('#mensajes'); 
                     var consultasDiv = $('#consultas'); 
-                    mensajesDiv.empty();
                     consultasDiv.empty();
+                    mensajesDiv.show();
+                    mensajesDiv.children().show();
+                    
 
+                    var TituloConsultas = $('#TituloConsultas'); 
+                    TituloConsultas.empty();
+
+                    var TituloDiv = $('#titulo'); 
+                    TituloDiv.text(consultaTitulo);
+
+                    var FechaDiv = $('#fecha'); 
+                    FechaDiv.text(new Date().toLocaleDateString('es-ES'));
+                    
                     response.mensajes.forEach(function(element) {
                         if (element.propietario == 1)
                             mensajesDiv.append('<p><em class="mensajePaciente">' + element.mensaje + '</em></p>');
                         else
-                            mensajesDiv.append('<b class="mensajeDoctor">' + element.mensaje + '</b>');
+                            mensajesDiv.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + element.mensaje + '</em></p>');
                     });
 
                     mensajesDiv.append('<input type="text" id="mensajeInput" placeholder="Escribe tu mensaje...">');
 
                 },
                 error: function(xhr, status, error) {
-                    // Manejar el error
+                    
                     console.error(xhr.responseText);
-                    console.log("falllaaaaaaaaaa");
+                    console.log("Error del servidor");
                 }
             });
         }
