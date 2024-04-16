@@ -91,11 +91,14 @@
         </div>
         <div id="mensajes" class="mensajes">
             <div class="mensajesCabezera">
-                <button class="boton"><img class="backIcon" src="/images/backIcon.jpg"></button>
+                <a href="/doctor/consultas"><img class="backIcon" src="/images/backIcon.jpg"></a >
                 <div id="titulo" class="titulo">Título</div>
                 <div id="fecha"></div>
             </div>
+            <div id="campoMensajes" class="mensajes">
+            </div>
         </div>
+        
         
     </div>
     
@@ -110,9 +113,9 @@
                 type: 'GET',
                 data: { consultaId: consultaId, consultaTitulo: consultaTitulo },
                 success: function(response) {
-                    console.log(response);
                     var mensajesDiv = $('#mensajes'); 
                     var consultasDiv = $('#consultas'); 
+                    var campoMensajes = $('#campoMensajes')
                     consultasDiv.empty();
                     mensajesDiv.show();
                     mensajesDiv.children().show();
@@ -129,13 +132,36 @@
                     
                     response.mensajes.forEach(function(element) {
                         if (element.propietario == 1)
-                            mensajesDiv.append('<p><em class="mensajePaciente">' + element.mensaje + '</em></p>');
+                            campoMensajes.append('<p><em class="mensajePaciente">' + element.mensaje + '</em></p>');
                         else
-                            mensajesDiv.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + element.mensaje + '</em></p>');
+                            campoMensajes.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + element.mensaje + '</em></p>');
                     });
+                    mensajesDiv.append('<form action="/doctor/mandarMensaje" method="post">');
+                    mensajesDiv.append('<input type="text" id="mensajeDoctor" placeholder="Escribe tu mensaje...">');
+                    mensajesDiv.append('<button id="enviarBoton" type="submit">Enviar</button>');
+                    mensajesDiv.append('</form>');
 
-                    mensajesDiv.append('<input type="text" id="mensajeInput" placeholder="Escribe tu mensaje...">');
+                    const enviarBoton = document.getElementById('enviarBoton');
+                    enviarBoton.addEventListener('click', () => {
 
+                        const mensajeInput = document.getElementById('mensajeDoctor');
+                        const texto = mensajeInput.value;
+
+                        fetch('/doctor/mandarMensaje', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ texto: texto, consultaId: consultaId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            campoMensajes.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + texto + '</em></p>');
+                            mensajeInput.value = "";
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+                    
                 },
                 error: function(xhr, status, error) {
                     

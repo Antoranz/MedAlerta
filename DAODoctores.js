@@ -411,6 +411,30 @@ class DAODoctor{
         }); 
     }
 
+    mandarMensaje(consultaId,texto,propietario,fecha){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryGuardarAlarma ="INSERT INTO mensajes (id_consulta,mensaje,propietario,fecha) VALUES (?, ?, ?, ?)"
+                    connection.query(queryGuardarAlarma,[consultaId,texto,propietario,fecha], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
 }
 
 module.exports = DAODoctor;
