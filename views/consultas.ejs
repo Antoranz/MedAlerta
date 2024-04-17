@@ -27,6 +27,13 @@
             background-color:azure;
             display: none;
         }
+
+        #campoMensajes{
+
+            height: 55vh; /* 70% del alto de la ventana del navegador */
+            border: 1px solid #ccc;
+            overflow: auto;
+        }
         .mensajePaciente{
             border-radius: 10px;
             padding: 0.5%;
@@ -68,6 +75,11 @@
             width: auto;
             height: 20px;
         }
+        #mensajeDoctor{
+            width:94%;
+            padding: 0.5%;
+        }
+
     </style>
 </head>
 
@@ -136,9 +148,9 @@
                         else
                             campoMensajes.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + element.mensaje + '</em></p>');
                     });
-                    mensajesDiv.append('<form action="/doctor/mandarMensaje" method="post">');
+                    mensajesDiv.append('<form class="form-inline" action="/doctor/mandarMensaje" method="post">');
                     mensajesDiv.append('<input type="text" id="mensajeDoctor" placeholder="Escribe tu mensaje...">');
-                    mensajesDiv.append('<button id="enviarBoton" type="submit">Enviar</button>');
+                    mensajesDiv.append('<button id="enviarBoton" class="btn btn-primary" type="submit">Enviar</button>');
                     mensajesDiv.append('</form>');
 
                     const enviarBoton = document.getElementById('enviarBoton');
