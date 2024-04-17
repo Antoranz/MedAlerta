@@ -372,7 +372,7 @@ class DAODoctor{
                 }else{
                     console.log("Exito al conectar a la base de datos");
                     console.log("AAAAAAAAAAAAAAAAAAA", id)
-                    var queryobtenerMensajes_consulta ="SELECT * FROM mensajes WHERE id_consulta = ? ORDER BY fecha DESC"
+                    var queryobtenerMensajes_consulta ="SELECT * FROM mensajes WHERE id_consulta = ? ORDER BY fecha ASC"
                     connection.query(queryobtenerMensajes_consulta,[id], (err, res) => {
                         connection.release();
                         if(err){
@@ -398,6 +398,30 @@ class DAODoctor{
                     console.log("Exito al conectar a la base de datos");
                     var queryCheckDoctor ="SELECT * FROM doctores WHERE dni = ? AND password = ?"
                     connection.query(queryCheckDoctor,[dni,password], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    mandarMensaje(consultaId,texto,propietario,fecha){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryGuardarAlarma ="INSERT INTO mensajes (id_consulta,mensaje,propietario,fecha) VALUES (?, ?, ?, ?)"
+                    connection.query(queryGuardarAlarma,[consultaId,texto,propietario,fecha], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);

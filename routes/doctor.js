@@ -685,6 +685,22 @@ router.get('/mensajes/:id', async function(req, res, next) {
   }
 });
 
+
+router.post("/mandarMensaje", async function(req, res, next) {
+  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+    res.render('index', { nombre:"" });
+  }else{
+    try{
+      const fecha = new Date();
+
+      var mensaje = await dao.mandarMensaje(req.body.consultaId ,req.body.texto, 0, fecha );
+
+      res.json({mensaje: mensaje});
+    } catch(error){
+      res.status(500).json({ error: error.message });
+    }
+  }
+});
 module.exports = {
   router,
   registrarUsuario
