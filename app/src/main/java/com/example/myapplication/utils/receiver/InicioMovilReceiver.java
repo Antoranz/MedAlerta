@@ -28,8 +28,8 @@ public class InicioMovilReceiver extends BroadcastReceiver {
         if(sessionManager.isLoggedIn()){
 
             NotificacionesManager.notificacionComprobandoAlarmas(context);
-            Intent serviceIntent = new Intent(context, NotificarMensajesAsync.class);
-            context.startService(serviceIntent);
+            //Intent serviceIntent = new Intent(context, NotificarMensajesAsync.class);
+            //context.startService(serviceIntent);
 
         }
 
