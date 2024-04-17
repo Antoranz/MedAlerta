@@ -17,7 +17,7 @@ public class InicioMovilReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.i("MedAlerta", "Dispositivo Iniciadooooo");
+        Log.i("MedAlerta", "Dispositivo Iniciadoooorro");
 
 
 
