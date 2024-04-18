@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-03-2024 a las 21:18:57
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Tiempo de generación: 17-04-2024 a las 15:39:12
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -62,7 +62,8 @@ CREATE TABLE `asignaciones` (
 
 INSERT INTO `asignaciones` (`DNIDoctor`, `DNIPaciente`) VALUES
 ('08366085L', '08366085L'),
-('08366085L', '71042723R');
+('08366085L', '71042723R'),
+('71042723R', '08366085L');
 
 -- --------------------------------------------------------
 
@@ -97,19 +98,21 @@ CREATE TABLE `consultas` (
   `dni_paciente` varchar(9) NOT NULL,
   `titulo` varchar(255) NOT NULL,
   `ultima_fecha` datetime NOT NULL,
-  `mensajes_totales` int(11) NOT NULL,
-  `notificaciones_doctor` int(11) NOT NULL,
-  `notificaciones_paciente` int(11) NOT NULL,
-  `propietario` tinyint(1) NOT NULL
+  `mensajes_totales` int(11) NOT NULL DEFAULT 0,
+  `notificaciones_doctor` int(11) NOT NULL DEFAULT 0,
+  `notificaciones_paciente` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `consultas`
 --
 
-INSERT INTO `consultas` (`id`, `dni_doctor`, `dni_paciente`, `titulo`, `ultima_fecha`, `mensajes_totales`, `notificaciones_doctor`, `notificaciones_paciente`, `propietario`) VALUES
-(1, '', '', '', '0000-00-00 00:00:00', 0, 0, 0, 0),
-(2, '', '49249481Z', 'Daltonismo', '2024-03-19 00:00:00', 2, 2, 0, 1);
+INSERT INTO `consultas` (`id`, `dni_doctor`, `dni_paciente`, `titulo`, `ultima_fecha`, `mensajes_totales`, `notificaciones_doctor`, `notificaciones_paciente`) VALUES
+(1, '', '', '', '0000-00-00 00:00:00', 0, 0, 0),
+(2, '08366085L', '08366085L', 'Daltonismo', '2024-03-19 00:00:00', 2, 2, 0),
+(7, '71042723R', '08366085L', 'espartaco', '2024-04-11 01:15:26', 0, 0, 0),
+(8, '08366085L', '08366085L', 'buenas', '2024-04-10 23:17:27', 0, 0, 0),
+(9, '08366085L', '08366085L', 'crack', '2024-04-11 08:52:36', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -126,15 +129,17 @@ CREATE TABLE `doctores` (
   `fecha_nacimiento` date NOT NULL,
   `domicilio` varchar(100) NOT NULL,
   `codigo_postal` varchar(10) NOT NULL,
-  `numero_telefono` varchar(15) NOT NULL
+  `numero_telefono` varchar(15) NOT NULL,
+  `imagen` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `doctores`
 --
 
-INSERT INTO `doctores` (`dni`, `email`, `password`, `nombre`, `apellidos`, `fecha_nacimiento`, `domicilio`, `codigo_postal`, `numero_telefono`) VALUES
-('08366085L', 'frantora@ucm.es', '10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672', 'Francisco Javier', 'Antoranz Esteban', '2002-01-02', 'Calle Ocaña', '28047', '618495616');
+INSERT INTO `doctores` (`dni`, `email`, `password`, `nombre`, `apellidos`, `fecha_nacimiento`, `domicilio`, `codigo_postal`, `numero_telefono`, `imagen`) VALUES
+('08366085L', 'frantora@ucm.es', '10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672', 'Francisco Javier', 'Antoranz Esteban', '2002-01-02', 'Calle Ocaña', '28047', '618495616', ''),
+('71042723R', 'sergis13@ucm.es', 'c22cdd06ab5120cbea143d1b73b262195e00403f8e5421f4bbb65b93dd1e9028', 'Sergio', 'chamizo Sánchez', '2000-02-06', 'Calle vicente camaron 44', '28011', '616859670', '');
 
 -- --------------------------------------------------------
 
@@ -156,17 +161,80 @@ CREATE TABLE `enfermedades` (
 CREATE TABLE `mensajes` (
   `id_consulta` int(11) NOT NULL,
   `mensaje` longtext NOT NULL,
-  `propietario` tinyint(1) NOT NULL,
-  `fecha` datetime NOT NULL
+  `propietario` int(1) NOT NULL,
+  `fecha` datetime NOT NULL,
+  `leido_doctor` int(11) NOT NULL,
+  `leido_paciente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `mensajes`
 --
 
-INSERT INTO `mensajes` (`id_consulta`, `mensaje`, `propietario`, `fecha`) VALUES
-(2, 'Sufro de daltonismo (soy paciente)', 1, '2024-03-19 21:15:45'),
-(2, 'Sufro de daltonismo (soy paciente)', 1, '2024-03-19 21:15:45');
+INSERT INTO `mensajes` (`id_consulta`, `mensaje`, `propietario`, `fecha`, `leido_doctor`, `leido_paciente`) VALUES
+(2, 'Sufro de daltonismo (soy paciente)', 1, '2024-03-19 21:15:45', 0, 0),
+(2, 'Sufro de daltonismo (soy paciente)', 1, '2024-03-19 21:15:45', 0, 0),
+(2, 'hola soy el medico', 0, '2024-03-20 21:15:45', 0, 0),
+(2, 'este es un mensaje de prueba largo para ver como queda lo que quiero vale crack', 0, '2024-03-21 21:15:45', 0, 0),
+(2, 'hola', 1, '2024-04-11 01:03:03', 0, 0),
+(2, 'adios', 0, '2024-04-11 01:03:38', 0, 0),
+(7, 'heyyy', 0, '2024-04-11 01:06:08', 0, 0),
+(2, 'buenas', 0, '2024-04-11 01:07:26', 0, 0),
+(2, 'czczczczdasdasdasd', 0, '2024-04-11 01:57:15', 0, 0),
+(2, 'sadfasdf', 1, '2024-04-11 01:57:52', 0, 0),
+(2, 'asdfasdf', 1, '2024-04-11 01:57:59', 0, 0),
+(2, 'asdasdasd', 1, '2024-04-11 01:58:07', 0, 0),
+(2, 'hola buenas', 1, '2024-04-11 01:58:31', 0, 0),
+(2, 'holsd', 1, '2024-04-11 07:21:18', 0, 0),
+(8, 'hgolasdasdf', 1, '2024-04-11 07:24:12', 0, 0),
+(7, 'buenas', 1, '2024-04-11 07:24:50', 0, 0),
+(7, 'soy', 1, '2024-04-11 07:24:56', 0, 0),
+(7, 'hola buenos dias', 1, '2024-04-11 07:27:39', 0, 0),
+(7, '', 1, '2024-04-11 07:27:42', 0, 0),
+(7, '', 1, '2024-04-11 07:27:43', 0, 0),
+(2, '', 1, '2024-04-11 07:30:25', 0, 0),
+(2, '', 1, '2024-04-11 07:30:27', 0, 0),
+(2, 'gdnyeg', 1, '2024-04-11 07:30:32', 0, 0),
+(2, 'asdfasfasdfasfd', 1, '2024-04-11 07:33:32', 0, 0),
+(2, 'a', 1, '2024-04-11 07:36:53', 0, 0),
+(2, 'holasdas', 1, '2024-04-11 07:46:10', 0, 0),
+(2, 'hola', 1, '2024-04-11 07:47:17', 0, 0),
+(2, 'buenos dias', 1, '2024-04-11 07:47:25', 0, 0),
+(2, 'adios', 1, '2024-04-11 07:47:36', 0, 0),
+(2, 'heyyyyy', 1, '2024-04-11 07:49:35', 0, 0),
+(2, 'a', 1, '2024-04-11 07:49:42', 0, 0),
+(2, 'hola javi', 1, '2024-04-11 07:50:47', 0, 0),
+(2, 'hey', 1, '2024-04-11 07:54:57', 0, 0),
+(2, 'asdfhibaosifdbuasdf', 1, '2024-04-11 07:55:14', 0, 0),
+(2, 'maaaaadriiiiiiiid', 1, '2024-04-11 07:56:08', 0, 0),
+(2, 'alaaaa madriiiiid', 1, '2024-04-11 07:57:13', 0, 0),
+(2, 'sfdgsdfg', 1, '2024-04-11 07:57:26', 0, 0),
+(2, 'asdfasdfasdfasdf', 1, '2024-04-11 07:57:33', 0, 0),
+(2, 'asdfasdfasfasfasdfasf', 1, '2024-04-11 07:57:40', 0, 0),
+(2, 'hola buenos dias charck', 1, '2024-04-11 07:57:49', 0, 0),
+(2, 'asdasdasdf', 1, '2024-04-11 07:57:57', 0, 0),
+(2, 'asdfasfd', 1, '2024-04-11 07:58:04', 0, 0),
+(2, '.....', 1, '2024-04-11 07:58:13', 0, 0),
+(2, 'mira esto', 1, '2024-04-11 07:58:29', 0, 0),
+(2, 'que chuol', 1, '2024-04-11 07:58:33', 0, 0),
+(2, 'mira que guapo esto', 1, '2024-04-11 07:59:58', 0, 0),
+(2, 'hola', 1, '2024-04-11 08:01:10', 0, 0),
+(2, 'mria como funciona tonto', 1, '2024-04-11 08:01:38', 0, 0),
+(2, 'me molesta', 1, '2024-04-11 08:02:19', 0, 0),
+(2, 'hoal', 1, '2024-04-11 08:04:27', 0, 0),
+(2, 'mi viejoooo chamartinnn', 1, '2024-04-11 08:04:56', 0, 0),
+(2, 'hola', 1, '2024-04-11 08:05:38', 0, 0),
+(2, 'adios', 1, '2024-04-11 08:05:46', 0, 0),
+(2, 'asdfasd', 1, '2024-04-11 08:08:12', 0, 0),
+(2, 'holiwi', 1, '2024-04-11 08:08:58', 0, 0),
+(2, 'hry', 1, '2024-04-11 08:10:00', 0, 0),
+(2, 'adios', 1, '2024-04-11 08:10:41', 0, 0),
+(2, 'fdgsdgsdfg', 1, '2024-04-11 08:11:26', 0, 0),
+(2, 'rfsfgrgsdfe', 1, '2024-04-11 08:15:07', 0, 0),
+(8, 'asdfasd', 1, '2024-04-11 08:15:48', 0, 0),
+(2, 'holaaaaa', 1, '2024-04-11 08:15:57', 0, 0),
+(2, 'dsfg', 1, '2024-04-11 08:16:53', 0, 0),
+(8, 'fdfhrtdy', 1, '2024-04-11 08:59:11', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -204,16 +272,17 @@ CREATE TABLE `pacientes` (
   `FechaDeNacimiento` date DEFAULT NULL,
   `Nombre` varchar(255) DEFAULT NULL,
   `telefono` varchar(15) DEFAULT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `imagen` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `pacientes`
 --
 
-INSERT INTO `pacientes` (`email`, `Apellidos`, `CodigoPostal`, `dni`, `Direccion`, `FechaDeNacimiento`, `Nombre`, `telefono`, `password`) VALUES
-('sergiosan112@gmail.com', 'Sanchez Chamizo ', '28012', '08366085L', 'calle las rosas ', '2000-01-08', 'Sergio ', '616859670', '5a0cbbd4b4d0149dbaf8e880e3c0edd949db943b3b80599fc38dd6ffedfa5a1c'),
-('fjavierantoranz@gmail.com', 'Antoranz', '28012', '71042723R', 'calle las rosas ', '2024-01-29', 'javi', '', '7e3e5098c7f185c615c158ccfcf736bd857ed540e4b6da185452e7afe76c6651');
+INSERT INTO `pacientes` (`email`, `Apellidos`, `CodigoPostal`, `dni`, `Direccion`, `FechaDeNacimiento`, `Nombre`, `telefono`, `password`, `imagen`) VALUES
+('sergiosan112@gmail.com', 'Sanchez Chamizo ', '28012', '08366085L', 'calle las rosas ', '2000-01-08', 'Sergio ', '616859670', '10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672', ''),
+('fjavierantoranz@gmail.com', 'Antoranz', '28012', '71042723R', 'calle las rosas ', '2024-01-29', 'javi', '', '7e3e5098c7f185c615c158ccfcf736bd857ed540e4b6da185452e7afe76c6651', '');
 
 -- --------------------------------------------------------
 
@@ -232,7 +301,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('ZlgdPTrKZsK6Gbq2ci2UCgjkhYqQQ1yQ', 1711996286, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-02\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}');
+('8pM_AqWfbH9HMB_ZFx9BRgfskcH_O03v', 1713013040, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-02\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}'),
+('R5khqOkpEwveV7v7-z9wC0VfglXVlDvA', 1713012993, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-02\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}'),
+('ogXwM7ua9ojBItDydmXkORWlANcJwd_a', 1713087967, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-02\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}');
 
 -- --------------------------------------------------------
 
@@ -337,7 +408,7 @@ ALTER TABLE `citas`
 -- AUTO_INCREMENT de la tabla `consultas`
 --
 ALTER TABLE `consultas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `notificaciones`
