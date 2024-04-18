@@ -3,6 +3,7 @@ package com.example.myapplication.services.implementaciones;
 import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
 import static com.example.myapplication.utils.async.PostDataAsync.postDataAsync;
 
+import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.GetDataAsync;
 import com.example.myapplication.utils.async.PostDataAsync;
 
@@ -44,7 +45,7 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
         LinkedList<Consulta> listaConsultas = new LinkedList<>();
 
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerConsultasPaciente/" + dni;
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/obtenerConsultasPaciente/" + dni;
 
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -97,7 +98,7 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
         LinkedList<String> listaNombresDoctores = new LinkedList<>();
 
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerDoctoresDelPaciente/" + dni;
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/obtenerDoctoresDelPaciente/" + dni;
 
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -137,7 +138,7 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
     @Override
     public void postCrearConsulta(String nombre, String titulo, String fecha) {
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = "http://10.0.2.2:3000/pacientes/crearConsulta";
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/crearConsulta";
 
         JSONObject postData = new JSONObject();
         try {

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.manager.SessionManager;
@@ -47,7 +48,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
             if(email.getText().toString() != "" && password.getText().toString() != ""){
 
                 Executor executor = Executors.newSingleThreadExecutor();
-                String urlServidor = "http://10.0.2.2:3000/pacientes/checkPaciente";
+                String urlServidor = ConfigApi.BASE_URL+"pacientes/checkPaciente";
                 
                 JSONObject postData = new JSONObject();
                 try {

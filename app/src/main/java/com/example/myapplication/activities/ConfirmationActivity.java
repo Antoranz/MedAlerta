@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
+import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.manager.SessionManager;
 
 import org.json.JSONException;
@@ -62,7 +63,7 @@ public class ConfirmationActivity extends AppCompatActivity {
 
             numeroAleatorio = generarNumeroAleatorio();
             Executor executor = Executors.newSingleThreadExecutor();
-            String urlServidor = "http://10.0.2.2:3000/pacientes/validarPaciente";
+            String urlServidor = ConfigApi.BASE_URL+"pacientes/validarPaciente";
 
             JSONObject postData = new JSONObject();
             try {
@@ -93,7 +94,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         } else {
 
             Executor executor = Executors.newSingleThreadExecutor();
-            String urlServidor = "http://10.0.2.2:3000/pacientes/validarPaciente";
+            String urlServidor = ConfigApi.BASE_URL+"pacientes/validarPaciente";
 
             JSONObject postData = new JSONObject();
             try {

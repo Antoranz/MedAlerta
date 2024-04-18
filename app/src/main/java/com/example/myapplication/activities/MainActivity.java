@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.manager.SessionManager;
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     private void borrarDatos(){
 
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = "http://10.0.2.2:3000/pacientes/bajaPaciente";
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/bajaPaciente";
 
         JSONObject postData = new JSONObject();
         try {

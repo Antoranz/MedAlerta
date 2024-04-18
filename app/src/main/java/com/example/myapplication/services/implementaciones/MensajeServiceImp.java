@@ -4,6 +4,7 @@ import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
 
 import com.example.myapplication.data.Mensaje;
 
+import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.services.MensajeService;
 
 import org.json.JSONArray;
@@ -36,7 +37,7 @@ public class MensajeServiceImp implements MensajeService {
         LinkedList<Mensaje> listaMensajes = new LinkedList<>();
 
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerMensajesConsulta/" + idConsulta;
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/obtenerMensajesConsulta/" + idConsulta;
 
         CountDownLatch latch = new CountDownLatch(1);
 

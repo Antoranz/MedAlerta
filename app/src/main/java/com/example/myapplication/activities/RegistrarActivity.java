@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.example.myapplication.R;
+import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.PostDataAsync;
 
 import org.json.JSONException;
@@ -74,7 +75,7 @@ public class RegistrarActivity extends AppCompatActivity  {
            else{
 
                Executor executor = Executors.newSingleThreadExecutor();
-               String urlServidor = "http://10.0.2.2:3000/pacientes/registrarPaciente";
+               String urlServidor = ConfigApi.BASE_URL+"pacientes/registrarPaciente";
 
                JSONObject postData = new JSONObject();
                try {

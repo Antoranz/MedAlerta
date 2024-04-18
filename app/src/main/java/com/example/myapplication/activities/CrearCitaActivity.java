@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.manager.SessionManager;
@@ -62,7 +63,7 @@ public class CrearCitaActivity extends AppCompatActivity {
         confirmarCita.setOnClickListener(v -> {
 
             Executor executor2 = Executors.newSingleThreadExecutor();
-            String urlServidor2 = "http://10.0.2.2:3000/pacientes/crearNotificacionCita/" + sessionManager.getUserId();
+            String urlServidor2 = ConfigApi.BASE_URL+"pacientes/crearNotificacionCita/" + sessionManager.getUserId();
 
             JSONObject postData = new JSONObject();
             try {

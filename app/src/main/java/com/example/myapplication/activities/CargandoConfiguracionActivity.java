@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.GetDataAsync;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.Controller;
@@ -95,7 +96,7 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
 
 
             Executor executor = Executors.newSingleThreadExecutor();
-            String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerAlarmas/" + sessionManager.getUserId() ;
+            String urlServidor = ConfigApi.BASE_URL+"pacientes/obtenerAlarmas/" + sessionManager.getUserId() ;
 
             getDataAsync(urlServidor, executor, (GetDataAsync.OnTaskCompleted) result -> {
                 if (result != null) {

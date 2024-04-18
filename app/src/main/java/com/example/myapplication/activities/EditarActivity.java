@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.GetDataAsync;
 import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.R;
@@ -72,7 +73,7 @@ public class EditarActivity extends AppCompatActivity {
 
 
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerPaciente/" + sessionManager.getUserId();
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/obtenerPaciente/" + sessionManager.getUserId();
 
         getDataAsync(urlServidor, executor, (GetDataAsync.OnTaskCompleted) result -> {
             if (result != null) {
@@ -123,7 +124,7 @@ public class EditarActivity extends AppCompatActivity {
         editButton.setOnClickListener(v -> {
 
             Executor executor2 = Executors.newSingleThreadExecutor();
-            String urlServidor2 = "http://10.0.2.2:3000/pacientes/editarPaciente/" + sessionManager.getUserId();
+            String urlServidor2 = ConfigApi.BASE_URL+"pacientes/editarPaciente/" + sessionManager.getUserId();
 
             JSONObject postData = new JSONObject();
             try {
