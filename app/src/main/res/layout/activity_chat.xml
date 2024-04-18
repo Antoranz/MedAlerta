@@ -8,23 +8,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewChat"
         android:layout_width="408dp"
-        android:layout_height="546dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/textoAEnviar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/nombreDoctorTextView" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textoAEnviar"
         android:layout_width="302dp"
         android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="17dp"
+        android:layout_marginStart="10dp"
         android:hint="..."
         android:inputType="text|textAutoComplete|textMultiLine"
-        app:layout_constraintEnd_toStartOf="@+id/botonEnviar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewChat" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/botonEnviar"
@@ -32,10 +30,33 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toEndOf="@+id/textoAEnviar"
-
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewChat"
         app:srcCompat="@android:drawable/ic_media_play" />
+
+    <TextView
+        android:id="@+id/nombreDoctorTextView"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="@color/light_yellow"
+        android:gravity="center"
+        android:text="Nombre del Doctor"
+        android:textColor="@android:color/black"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/logoDoctorImageView"
+        android:layout_width="67dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="340dp"
+        android:src="@mipmap/ic_launcher_round"
+        app:layout_constraintBottom_toBottomOf="@id/nombreDoctorTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/nombreDoctorTextView"
+        app:layout_constraintVertical_bias="0.888" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

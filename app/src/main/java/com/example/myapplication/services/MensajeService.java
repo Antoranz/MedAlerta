@@ -8,4 +8,6 @@ import java.util.LinkedList;
 public interface MensajeService {
 
     public LinkedList<Mensaje> getAllMensajes(long id_consulta);
+    public void crearMensaje(long id, String mensaje,long propietario,String fecha);
+    public void obtenerMensajesNoLeidos(String dni);
 }

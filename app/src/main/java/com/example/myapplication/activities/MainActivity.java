@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
-        String username = sessionManager.getEmail();
+        String username = sessionManager.getName();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

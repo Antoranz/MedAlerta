@@ -6,30 +6,27 @@
     android:layout_height="wrap_content"
     android:backgroundTint="?attr/colorOnPrimary">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tituloTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:text="Nombre de la consulta"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
 
-            <TextView
-                android:id="@+id/tituloTextView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Nombre de la consulta"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+    </RelativeLayout>
 
+    <!-- Línea fina en la parte inferior del CardView -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tituloTextView"/> <!-- Alinea la línea debajo del RelativeLayout -->
 
-        </LinearLayout>
-
-
-
-    </LinearLayout>
 </androidx.cardview.widget.CardView>

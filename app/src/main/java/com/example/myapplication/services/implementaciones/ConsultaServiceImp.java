@@ -3,6 +3,7 @@ package com.example.myapplication.services.implementaciones;
 import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
 import static com.example.myapplication.utils.async.PostDataAsync.postDataAsync;
 
+import com.example.myapplication.data.Doctor;
 import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.GetDataAsync;
 import com.example.myapplication.utils.async.PostDataAsync;
@@ -93,9 +94,9 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
     }
 
     @Override
-    public LinkedList<String> getDoctoresParaConsulta(String dni) {
+    public LinkedList<Doctor> getDoctoresParaConsulta(String dni) {
 
-        LinkedList<String> listaNombresDoctores = new LinkedList<>();
+        LinkedList<Doctor> listaDoctores = new LinkedList<>();
 
         Executor executor = Executors.newSingleThreadExecutor();
         String urlServidor = ConfigApi.BASE_URL+"pacientes/obtenerDoctoresDelPaciente/" + dni;
@@ -112,8 +113,10 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
                         JSONObject jsonConsulta = jsonArray.getJSONObject(i);
 
                         String nombre = jsonConsulta.getString("nombre");
+                        String dniDoctor = jsonConsulta.getString("dni");
 
-                        listaNombresDoctores.add(nombre);
+                        Doctor doctor = new Doctor(nombre, dniDoctor);
+                        listaDoctores.add(doctor);
                     }
 
 
@@ -132,18 +135,19 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
             e.printStackTrace();
         }
 
-        return listaNombresDoctores;
+        return listaDoctores;
     }
 
     @Override
-    public void postCrearConsulta(String nombre, String titulo, String fecha) {
+    public void postCrearConsulta(String dni_doctor, String dni_paciente, String titulo, String fecha) {
         Executor executor = Executors.newSingleThreadExecutor();
         String urlServidor = ConfigApi.BASE_URL+"pacientes/crearConsulta";
 
         JSONObject postData = new JSONObject();
         try {
 
-            postData.put("Nombre", nombre);
+            postData.put("dni_doctor", dni_doctor);
+            postData.put("dni_paciente",dni_paciente);
             postData.put("titulo",titulo);
             postData.put("fecha", fecha);
 

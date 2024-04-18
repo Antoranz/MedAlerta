@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
+import com.example.myapplication.data.Doctor;
 import com.example.myapplication.utils.Controller;
 
 import com.example.myapplication.utils.manager.NavigationManager;
@@ -33,7 +34,7 @@ public class CrearConsultaActivity extends AppCompatActivity {
 
     Spinner spinner;
 
-    LinkedList<String> listaDoctores;
+    LinkedList<Doctor> listaDoctores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +57,19 @@ public class CrearConsultaActivity extends AppCompatActivity {
         listaDoctores = Controller.getInstance().getDoctoresParaConsulta(this,sessionManager.getUserId());
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, com.google.android.material.R.layout.support_simple_spinner_dropdown_item, listaDoctores);
+        ArrayAdapter<Doctor> adapter = new ArrayAdapter<>(this, com.google.android.material.R.layout.support_simple_spinner_dropdown_item, listaDoctores);
 
         spinner.setAdapter(adapter);
 
         crearConsulta.setOnClickListener(v -> {
             String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
             String titulo = tituloConsulta.getText().toString();
-            Controller.getInstance().postCrearConsulta(spinner.getSelectedItem().toString(),titulo,timeStamp);
+
+            // Obtener el doctor seleccionado del Spinner
+            Doctor doctorSeleccionado = (Doctor) spinner.getSelectedItem();
+            String dniDoctorSeleccionado = doctorSeleccionado.getDni();
+
+            Controller.getInstance().postCrearConsulta(dniDoctorSeleccionado,sessionManager.getUserId().toString(),titulo,timeStamp);
             NavigationManager.getInstance().navigateToDestination(this,ConsultasActivity.class);
         });
 

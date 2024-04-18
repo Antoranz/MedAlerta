@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.myapplication.activities.AlarmReceiverActivity;
 import com.example.myapplication.data.Consulta;
+import com.example.myapplication.data.Doctor;
 import com.example.myapplication.data.Mensaje;
 import com.example.myapplication.services.ConsultaService;
 import com.example.myapplication.services.MensajeService;
@@ -46,18 +47,32 @@ public class Controller {
         return service.getAllMensajes(id_consulta);
     }
 
-    public LinkedList<String> getDoctoresParaConsulta(Context context, String id_paciente) {
+    public LinkedList<Doctor> getDoctoresParaConsulta(Context context, String id_paciente) {
 
         ConsultaService service = ConsultaServiceImp.getInstance();
 
         return service.getDoctoresParaConsulta(id_paciente);
     }
 
-    public void postCrearConsulta(String nombre, String titulo, String fecha) {
+    public void crearMensaje(long id, String mensaje, long propietario, String fecha) {
+
+        MensajeService service = MensajeServiceImp.getInstance();
+
+        service.crearMensaje(id,mensaje,propietario,fecha);
+    }
+
+    public void postCrearConsulta(String dni_doctor,String dni_paciente, String titulo, String fecha) {
 
         ConsultaService service = ConsultaServiceImp.getInstance();
 
-        service.postCrearConsulta(nombre, titulo, fecha);
+        service.postCrearConsulta(dni_doctor,dni_paciente, titulo, fecha);
+    }
+
+    public void obtenerMensajesNoLeidos(String dni) {
+
+        MensajeService service = MensajeServiceImp.getInstance();
+
+        service.obtenerMensajesNoLeidos(dni);
     }
 
 
