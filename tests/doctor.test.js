@@ -44,10 +44,10 @@ var nLlamadasRender = 0;
 
 describe('Pruebas de exito para la función de registro', () => {
   test('Debe mandar a la página principal al ser un registro correcto', async () => {
-      await registrarUsuario(req, res);
-      dao.eliminarDoctor(req.body.dni);
-      expect(2).toBe(2);
-      //expect(pool.query).toHaveBeenCalled(); // Verifica que se llamó a la función de consulta
+      registrarUsuario(req, res);
+      //dao.eliminarDoctor(req.body.dni);
+      //expect(2).toBe(2);res.render("index",{nombre : ""});
+      expect(console.log).toHaveBeenCalledWith("caracol");
       
   });
 });

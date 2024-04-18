@@ -280,6 +280,7 @@ router.get('/obtener-doctores', (req, res) => {
       }
   });
 });
+
 router.get('/editar-perfil', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
     res.render('index', { nombre:"" });
@@ -329,7 +330,7 @@ function registrarUsuario(req, res, next) {
   }
 
   if(valido){
-    var hashedPassword = cifrarContrasena(password,dni);
+    var hashedPassword = cifrarContrasena(password,dni + "caminar es bueno para la salud");
 
     dao.aniadirDoctor(dni, email, hashedPassword, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
     .then((resultado) => {
@@ -659,48 +660,6 @@ router.get('/obtenerURLPDF', (req, res) => {
   res.json({ downloadURL: pdfURL });
 });
 
-router.get('/consultas', async function(req, res, next) {
-  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
-    res.render('index', { nombre:"" });
-  }else{
-
-    var consultas = await dao.obtenerConsultas_doctor(req.session.currentUser.dni);
-
-    res.render('consultas', { nombre: req.session.currentUser.nombre, listaConsultas: consultas });
-  }
-});
-
-router.get('/mensajes/:id', async function(req, res, next) {
-  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
-      res.render('index', { nombre: "" });
-  } else {
-      try {
-          var mensajes = await dao.obtenerMensajes_consulta(req.params.id);
-
-          res.json({ mensajes: mensajes });
-      } catch (error) {
-
-          res.status(500).json({ error: error.message });
-      }
-  }
-});
-
-
-router.post("/mandarMensaje", async function(req, res, next) {
-  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
-    res.render('index', { nombre:"" });
-  }else{
-    try{
-      const fecha = new Date();
-
-      var mensaje = await dao.mandarMensaje(req.body.consultaId ,req.body.texto, 0, fecha );
-
-      res.json({mensaje: mensaje});
-    } catch(error){
-      res.status(500).json({ error: error.message });
-    }
-  }
-});
 module.exports = {
   router,
   registrarUsuario
