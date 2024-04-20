@@ -53,22 +53,18 @@ router.post('/crearConsulta', async function(req, res, next) {
 
     const {dni_doctor,dni_paciente,titulo,fecha} = req.body;
 
-    
-
     try {
-        
-        console.log(dni_doctor)
-        console.log(dni_paciente)
-        console.log(titulo)
-        console.log(fecha)
 
         const fechaDate = new Date(fecha);
 
-        //fechaDate.setHours(fechaDate.getHours() + 2);
+        const consulta = await dao.registrarConsulta(dni_doctor,dni_paciente,titulo,fechaDate);
+        
+        const consultaId = consulta.insertId;
 
-        console.log(fechaDate);
+        const mensaje = "Hola, soy tu doctor, dime lo que necesites"
+        const propietario = 0
 
-        await dao.registrarConsulta(dni_doctor,dni_paciente,titulo,fechaDate);
+        await dao.registrarMensaje(consultaId,mensaje,propietario,fechaDate);
 
         res.json(true)
     } catch (error) {
@@ -82,11 +78,6 @@ router.post('/crearMensaje', async function(req, res, next) {
     const {id_consulta,mensaje,propietario,fecha} = req.body;
 
     try {
-        
-        console.log(id_consulta)
-        console.log(mensaje)
-        console.log(propietario)
-        console.log(fecha)
 
         const fechaDate = new Date(fecha);
 
@@ -220,12 +211,12 @@ router.get('/obtenerMensajesNoLeidos/:dni', async function(req, res, next) {
     try {
         
         var dni_paciente=req.params.dni;
+        console.log(dni_paciente)
 
         var mensajes = await dao.obtenerMensajesNoLeidos(dni_paciente);
 
-
         console.log(mensajes)
-        res.json(paciente)
+        res.json(mensajes)
     } catch (error) {
         console.error("Error durante la operación:", error);
         res.json(null)
@@ -290,7 +281,6 @@ router.get('/obtenerMensajesConsulta/:idConsulta', async function(req, res, next
 
         var mensajes = await dao.obtenerMensajesConsulta(id_consulta)
 
-        console.log(mensajes)
         res.json(mensajes)
     } catch (error) {
         console.error("Error durante la operación:", error);
