@@ -55,6 +55,10 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
 
                     initAlarms();
 
+                    Intent intentService = new Intent(this, NotificarMensajesAsync.class);
+                    intentService.putExtra("dni", sessionManager.getUserId());
+                    startService(intentService);
+
                 }else {
                     Intent intent = new Intent(this, ConfirmationActivity.class);
                     startActivity(intent);

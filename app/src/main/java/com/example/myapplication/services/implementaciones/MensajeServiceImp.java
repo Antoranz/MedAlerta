@@ -160,6 +160,27 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
 
     }
 
+    @Override
+    public void ponerMensajesComoLeidos(String dni, long id) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        String urlServidor = "http://10.0.2.2:3000/pacientes/ponerMensajesComoLeidosConsulta" + id;
+
+        JSONObject postData = new JSONObject();
+        try {
+
+            postData.put("dni_paciente", dni);
+            postData.put("id_consulta", id);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
+            runOnUiThread(() -> {
+            });
+        }, "POST", postData.toString());
+    }
+
 }
 
 

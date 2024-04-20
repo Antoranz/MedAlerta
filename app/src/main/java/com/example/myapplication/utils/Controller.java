@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.myapplication.activities.AlarmReceiverActivity;
+import com.example.myapplication.activities.ChatViewActivity;
 import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Doctor;
 import com.example.myapplication.data.Mensaje;
@@ -75,6 +76,14 @@ public class Controller {
         return service.obtenerMensajesNoLeidos(dni);
     }
 
+    public void ponerMensajesComoLeidos(String userId, long id) {
+
+        MensajeService service = MensajeServiceImp.getInstance();
+
+        service.ponerMensajesComoLeidos(userId,id);
+
+    }
+
 
 
 
@@ -99,5 +108,7 @@ public class Controller {
         Log.i("ALARMAS", "Alarma creada: ID " + i + ", timestamp " + formattedDateTime);
 
     }
+
+
 
 }

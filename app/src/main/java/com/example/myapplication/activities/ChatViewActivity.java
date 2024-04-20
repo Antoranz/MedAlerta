@@ -72,6 +72,8 @@ public class ChatViewActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
 
+        //Controller.getInstance().ponerMensajesComoLeidos(sessionManager.getUserId(),consulta.getId());
+
         buttonEnviar.setOnClickListener(v -> {
 
             if(!textoAenviar.getText().toString().isEmpty()){

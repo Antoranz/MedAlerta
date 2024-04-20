@@ -55,6 +55,13 @@
 
         </activity>
 
+        <service
+            android:name=".utils.async.NotificarMensajesAsync"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="TODO">
+        </service>
+
 
         <receiver
             android:name=".utils.receiver.InicioMovilReceiver"

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
 import com.example.myapplication.services.ConfigApi;
+import com.example.myapplication.utils.async.NotificarMensajesAsync;
 import com.example.myapplication.utils.manager.SessionManager;
 
 import org.json.JSONException;
@@ -46,9 +47,10 @@ public class ConfirmationActivity extends AppCompatActivity {
             //TODO
 
 
-
             if(codigoText.getText().toString().equals(numeroAleatorio.toString())){
                 sessionManager.verificateEmail();
+
+
                 Intent intent = new Intent(this, CargandoConfiguracionActivity.class);
                 startActivity(intent);
 
