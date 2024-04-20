@@ -14,6 +14,7 @@ import com.example.myapplication.utils.manager.SessionManager;
 public class InicioMovilReceiver extends BroadcastReceiver {
 
     SessionManager sessionManager;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -28,8 +29,6 @@ public class InicioMovilReceiver extends BroadcastReceiver {
         if(sessionManager.isLoggedIn()){
 
             NotificacionesManager.notificacionComprobandoAlarmas(context);
-            //Intent serviceIntent = new Intent(context, NotificarMensajesAsync.class);
-            //context.startService(serviceIntent);
 
         }
 

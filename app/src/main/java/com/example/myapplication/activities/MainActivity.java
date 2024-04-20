@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.services.ConfigApi;
+import com.example.myapplication.utils.async.ActualizarMensajesAsync;
+import com.example.myapplication.utils.async.NotificarMensajesAsync;
 import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.manager.SessionManager;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     Button solicitarCita;
 
     Button solicitarConsultas;
+
 
 
     @Override
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
 
 
         userText = findViewById(R.id.name);

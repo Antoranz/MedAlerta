@@ -1,70 +1,58 @@
 package com.example.myapplication.utils.async;
 
-import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
-
-import android.app.Service;
-import android.content.Intent;
+import android.content.Context;
 import android.os.Handler;
-import android.os.IBinder;
+import android.os.Looper;
+import android.util.Log;
 
-import androidx.annotation.Nullable;
-
+import com.example.myapplication.data.Mensaje;
 import com.example.myapplication.utils.Controller;
-import com.example.myapplication.utils.manager.SessionManager;
+import com.example.myapplication.utils.adapters.MensajesListAdapter;
+import com.example.myapplication.utils.manager.NotificacionesManager;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.LinkedList;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-public class NotificarMensajesAsync extends Service {
-
+public class NotificarMensajesAsync {
+    private Handler mHandler;
+    private boolean mShouldStop = false;
+    private Context context;
     private String dni;
-    private Handler handler = new Handler();
 
-    private Runnable runnableCode = new Runnable() {
+
+    public NotificarMensajesAsync(String dni, Context context) {
+        mHandler = new Handler(Looper.getMainLooper());
+        this.dni = dni;
+        this.context = context;
+    }
+
+    public void startTask() {
+        mHandler.postDelayed(updateRunnable, 10000); // Ejecutar la tarea cada 10 segundos
+
+    }
+
+    public void stopTask() {
+        mShouldStop = true;
+    }
+
+    private Runnable updateRunnable = new Runnable() {
         @Override
         public void run() {
+            if (!mShouldStop) {
 
-            sendRequestToServer();
-            // Ejecutar este runnable nuevamente después de 30 segundos
-            handler.postDelayed(this, 30 * 1000);
+
+                obtenerConsultasSinLeer();
+                NotificacionesManager.lanzarNotificacionMensajeNoLeido(context);
+
+
+                mHandler.postDelayed(updateRunnable, 10000); // Ejecutar la tarea cada 10 segundos
+
+            }
         }
     };
 
-    public NotificarMensajesAsync(String dni) {
-        this.dni=dni;
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        handler.post(runnableCode);
-        // Si el sistema mata el servicio, reiniciar
-        return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        // Detener el handler cuando se destruye el servicio
-        handler.removeCallbacks(runnableCode);
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    private void sendRequestToServer() {
-
-        Controller.getInstance().obtenerMensajesNoLeidos(dni);
-
+    private LinkedList<String> obtenerConsultasSinLeer() {
+        LinkedList<String> mensajesNoLeidos = Controller.getInstance().obtenerMensajesNoLeidos(dni);
+        Log.d("TAG", "Mensajes no leídos obtenidos: " + mensajesNoLeidos);
+        return mensajesNoLeidos;
     }
 }

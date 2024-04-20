@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 
+import com.example.myapplication.utils.async.NotificarMensajesAsync;
 import com.example.myapplication.utils.manager.NotificacionesManager;
 import com.example.myapplication.utils.manager.SessionManager;
 
@@ -24,6 +25,7 @@ public class AlarmReceiverActivity extends BroadcastReceiver {
             String dosis = intent.getStringExtra("DOSIS");
 
             NotificacionesManager.lanzarNotificacion(context,medicamento,dosis);
+
         }
 
         Log.i("WALKIRIA", " ALARM RECEIVED!!!");

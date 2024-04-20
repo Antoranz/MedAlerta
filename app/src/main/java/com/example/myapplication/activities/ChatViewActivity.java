@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -35,7 +36,7 @@ public class ChatViewActivity extends AppCompatActivity {
 
     private TextView nombreDoctorchat;
 
-    private TextInputEditText textoAenviar;
+    private EditText textoAenviar;
     private AppCompatImageButton buttonEnviar;
 
     LinkedList<Doctor> listaDoctores;
@@ -68,16 +69,20 @@ public class ChatViewActivity extends AppCompatActivity {
         buttonEnviar = findViewById(R.id.botonEnviar);
         RecyclerView rv = findViewById(R.id.recyclerViewChat);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
 
         buttonEnviar.setOnClickListener(v -> {
 
             if(!textoAenviar.getText().toString().isEmpty()){
-                String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
 
                 Controller.getInstance().crearMensaje(consulta.getId(),textoAenviar.getText().toString(),1,timeStamp);
                 textoAenviar.setText("");
+
+                adapter.setMensajesList(Controller.getInstance().getAllMensajes(this, consulta.getId()));
+                adapter.notifyDataSetChanged();
+                rv.postDelayed(() -> rv.smoothScrollToPosition(adapter.getItemCount() - 1), 100);
 
 
             }
@@ -91,6 +96,15 @@ public class ChatViewActivity extends AppCompatActivity {
             }
         });
 
+
+        adapter = new MensajesListAdapter(new LinkedList<>(),this);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(layoutManager);
+        rv.setAdapter(adapter);
+
+        rv.post(() -> {
+            rv.scrollToPosition(adapter.getItemCount() - 1);
+        });
 
 
         //Poner nombre del doctor en cada chat
@@ -107,21 +121,12 @@ public class ChatViewActivity extends AppCompatActivity {
         nombreDoctorchat.setText(nombreDoctor);
 
 
-
-        adapter = new MensajesListAdapter(new LinkedList<>(),this);
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(layoutManager);
-        rv.setAdapter(adapter);
-
-        rv.postDelayed(() -> {
-            rv.scrollToPosition(adapter.getItemCount() - 1);
-        }, 100);
-
         adapter.setMensajesList(Controller.getInstance().getAllMensajes(this,consulta.getId()));
         adapter.notifyDataSetChanged();
 
         actualizador = new ActualizarMensajesAsync(adapter,consulta.getId(),this);
         actualizador.startTask();
+
 
     }
     @Override

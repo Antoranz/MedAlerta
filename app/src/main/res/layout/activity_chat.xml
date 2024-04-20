@@ -14,13 +14,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nombreDoctorTextView" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/textoAEnviar"
         android:layout_width="302dp"
         android:layout_height="48dp"
         android:layout_marginStart="10dp"
         android:hint="..."
-        android:inputType="text|textAutoComplete|textMultiLine"
+        android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

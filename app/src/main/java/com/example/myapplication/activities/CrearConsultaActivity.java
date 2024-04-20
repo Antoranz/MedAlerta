@@ -70,6 +70,7 @@ public class CrearConsultaActivity extends AppCompatActivity {
             String dniDoctorSeleccionado = doctorSeleccionado.getDni();
 
             Controller.getInstance().postCrearConsulta(dniDoctorSeleccionado,sessionManager.getUserId().toString(),titulo,timeStamp);
+
             NavigationManager.getInstance().navigateToDestination(this,ConsultasActivity.class);
         });
 

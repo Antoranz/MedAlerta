@@ -5,6 +5,7 @@ import static com.example.myapplication.utils.async.PostDataAsync.postDataAsync;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Mensaje;
 
 import com.example.myapplication.services.ConfigApi;
@@ -113,8 +114,9 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
     }
 
     @Override
-    public void obtenerMensajesNoLeidos(String dni) {
+    public LinkedList<String> obtenerMensajesNoLeidos(String dni) {
 
+        LinkedList<String> listaMensajes = new LinkedList<>();
         Executor executor = Executors.newSingleThreadExecutor();
         String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerMensajesNoLeidos/" + dni;
 
@@ -128,20 +130,18 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonConsulta = jsonArray.getJSONObject(i);
 
-                        long id = jsonConsulta.getLong("id");
-                        String dniDoctor = jsonConsulta.getString("dni_doctor");
-                        String dniPaciente = jsonConsulta.getString("dni_paciente");
+                        long id_consulta = jsonConsulta.getLong("id_consulta");
                         String titulo = jsonConsulta.getString("titulo");
-                        // Parsear la fecha del String al tipo Date
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        Date ultimaFecha = dateFormat.parse(jsonConsulta.getString("ultima_fecha"));
-                        int mensajesTotales = jsonConsulta.getInt("mensajes_totales");
-                        int notificacionesDoctor = jsonConsulta.getInt("notificaciones_doctor");
-                        int notificacionesPaciente = jsonConsulta.getInt("notificaciones_paciente");
+                        String mensaje = jsonConsulta.getString("mensaje");
+
+
+
+
+                        listaMensajes.add(titulo);
 
                     }
 
-                } catch (JSONException | ParseException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -155,6 +155,8 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        return listaMensajes;
 
     }
 

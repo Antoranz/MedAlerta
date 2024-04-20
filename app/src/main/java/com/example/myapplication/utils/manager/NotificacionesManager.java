@@ -16,6 +16,7 @@ import android.os.Handler;
 import androidx.core.app.NotificationCompat;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.ConsultasActivity;
 import com.example.myapplication.activities.MainActivity;
 
 public class NotificacionesManager {
@@ -59,6 +60,35 @@ public class NotificacionesManager {
         nb.setContentTitle(medicamento + ", dosis: " + dosis);
 
         Intent actividad_destino = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,actividad_destino,PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+        nb.setContentIntent(pendingIntent);
+        nb.setAutoCancel(true);
+        Notification notification = nb.build();
+
+        notificationManager.notify(57,notification);
+    }
+
+    public static void lanzarNotificacionMensajeNoLeido (Context context){
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        NotificationChannel notificationChannel =null;
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+
+            notificationChannel = crearCanalNotificaciones(context,NOMBRE_CANAL,ID_CANAL);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        NotificationCompat.Builder nb = new NotificationCompat.Builder(context,ID_CANAL);
+        nb.setDefaults(Notification.DEFAULT_ALL);
+        nb.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        nb.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        nb.setSmallIcon(android.R.drawable.ic_dialog_info);
+
+        nb.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher_round));
+
+        nb.setContentTitle("MENSAJES NO LEIDOS");
+
+        Intent actividad_destino = new Intent(context, ConsultasActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,actividad_destino,PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         nb.setContentIntent(pendingIntent);
         nb.setAutoCancel(true);
