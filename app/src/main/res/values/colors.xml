@@ -6,4 +6,5 @@
     <color name="lightblue">#72B0B8</color>
     <color name="red">#B61313</color>
     <color name="light_yellow">#DEE3AD</color>
+    <color name="calendarTextColor">#FF000000</color>
 </resources>

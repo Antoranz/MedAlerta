@@ -51,22 +51,34 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.147" />
+        app:layout_constraintTop_toBottomOf="@+id/botonCalendarioCitas"
+        app:layout_constraintVertical_bias="0.461" />
 
     <Button
         android:id="@+id/botonConsultas"
         android:layout_width="250dp"
         android:layout_height="60dp"
+        android:layout_marginTop="76dp"
         android:text="Consultas"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/botonCita"
-        app:layout_constraintVertical_bias="0.195" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <Button
+        android:id="@+id/botonCalendarioCitas"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="108dp"
+        android:text="Calendario"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/botonConsultas" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
