@@ -1,11 +1,7 @@
-
 var express = require('express');
 var router = express.Router();
 const DAODoctor = require("../DAODoctores")
 const DAOPaciente = require("../DAOPacientes")
-const PDFDocument = require('pdfkit');
-const fs = require('fs');
-const crypto = require('crypto');
 
 const mysql = require('mysql');
 
@@ -36,129 +32,6 @@ router.get('/calendario', function(req, res, next) {
     res.render('index', { nombre:"" });
   }else{
     res.render('calendario', { nombre: req.session.currentUser.nombre });
-  }
-});
-
-router.get("/obtener-citas",async function(req, res,next){
-  var citas = await dao.checkCitas(req.session.currentUser.dni);
-  var eventos=[];
-  console.log(citas);
-  citas.forEach(function(c){
-    const fechaHoraObj = new Date(c.fecha_hora); // Crear objeto Date directamente desde c.fecha_hora
-    const nuevaFechaHora = new Date(fechaHoraObj.getTime() + c.duracion * 60000); // Sumar duración en milisegundos
-    eventos.push({
-      "id":c.id,
-      "title": `Cita médica con ${c.nombre_paciente} ${c.apellidos_paciente}`,
-      "start": c.fecha_hora,
-      "end": nuevaFechaHora
-    });
-  });
-  res.json(eventos);
-});
-
-router.post("/eliminar-cita",async function(req, res,next){
-  const citaId = req.body.id;
-    try {
-        // Aquí realizas la lógica para eliminar la cita de la base de datos
-        await dao.eliminarCita(citaId);
-        // Si la eliminación fue exitosa, envía una respuesta con el código de estado 200 (Éxito)
-        res.status(200).json({ message: 'La cita se eliminó correctamente.' });
-    } catch (error) {
-        // Si ocurrió algún error durante la eliminación, envía una respuesta con el código de estado 500 (Error del servidor)
-        res.status(500).json({ error: 'Se produjo un error al intentar eliminar la cita.' });
-    }
-});
-
-router.post("/asignar-cita", async function(req, res, next) {
-  const dni = req.body.dni;
-  const fecha = req.body.fecha;
-  const hora = req.body.hora;
-  const duracion = req.body.duracion;
-  const fechaHoraString = fecha + ' ' + hora; // Combinar fecha y hora en una sola cadena
-  var nuevoDate = new Date(fechaHoraString);
-  const fechaActual = new Date();
-
-  if (nuevoDate == "Invalid Date") {
-
-    const fechaParts = fecha.split('/'); // Divide la cadena de fecha por "/"
-    const horaParts = hora.split(':'); // Divide la cadena de hora por ":"
-
-    // Crea un nuevo objeto Date con los componentes de fecha y hora
-    const nuevaFechaaaaaaaa = new Date(
-        fechaParts[2], // Año
-        parseInt(fechaParts[1]) - 1, // Mes (se resta 1 porque los meses en JavaScript van de 0 a 11)
-        fechaParts[0], // Día
-        horaParts[0], // Hora
-        horaParts[1], // Minuto
-        horaParts[2] // Segundo
-    );
-
-    console.log("Ha entrado en invalid");
-
-    nuevoDate = nuevaFechaaaaaaaa;
-    console.log(nuevaFechaaaaaaaa)
-
-  }else{
-    
-   const fechaParts = fecha.split('/'); // Divide la cadena de fecha por "/"
-    const horaParts = hora.split(':'); // Divide la cadena de hora por ":"
-
-    // Crea un nuevo objeto Date con los componentes de fecha y hora
-    const nuevaFechaaaaaaaa = new Date(
-        fechaParts[2], // Año
-        parseInt(fechaParts[1]) - 1, // Mes (se resta 1 porque los meses en JavaScript van de 0 a 11)
-        fechaParts[0], // Día
-        horaParts[0], // Hora
-        horaParts[1], // Minuto
-        horaParts[2] // Segundo
-    );
-
-    console.log("Ha entrado en invalid");
-
-    nuevoDate = nuevaFechaaaaaaaa;
-    console.log(nuevaFechaaaaaaaa)
-
-
-  }
-
-
-  console.log(dni)
-  console.log(fecha)
-  console.log(hora)
-  console.log(duracion)
-  console.log(nuevoDate)
-
-  try {
-    if (!/^\d{8}[a-zA-Z]$/.test(dni)) {
-      throw new Error("Formato de DNI inválido");
-    }
-
-    const paciente = await dao2.obtenerPaciente(dni);
-
-    if (paciente.length === 0) {
-      throw new Error("El paciente no existe");
-    }
-
-    if (duracion <= 0 || duracion > 60) {
-      throw new Error("La duración de la cita debe estar entre 1 y 60 minutos");
-    }
-
-    if (nuevoDate <= fechaActual) {
-      throw new Error("La fecha y hora seleccionadas deben ser posteriores a la fecha y hora actual");
-    }
-    const fecha_hora = nuevoDate.toISOString();
-    var citasCoincidentes = await dao.checkearCitasCoincidentes(req.session.currentUser.dni, fecha_hora, duracion);
-    console.log("citas:", citasCoincidentes);
-    if (citasCoincidentes.length > 0) {
-      throw new Error("Ya existe una cita en ese intervalo de tiempo");
-    }
-    
-    await dao.asignarCita(req.session.currentUser.dni, dni, nuevoDate, duracion);
-    
-    res.status(200).send("Cita asignada correctamente");
-  } catch (error) {
-    console.error("Error al asignar cita:", error.message);
-    res.status(400).send(error.message);
   }
 });
 
@@ -212,54 +85,6 @@ router.get('/gestion-notificaciones', async function(req, res, next) {
   }
 });
 
-
-router.post('/signin' , async function(req,res,next){
-
-  try {
-
-    var dni=req.body.dni;
-    var password=req.body.password;
-
-    var hashedPassword = cifrarContrasena(password,dni);
-
-    console.log("Contraseña inicio de sesion: " + hashedPassword);
-
-    var doctor = await dao.checkDoctor(dni,hashedPassword);
-
-    if(doctor.length===0){
-      res.render('index', {error: 'Las credenciales son incorrectas', confirmacion: '',nombre:""});
-
-    }else{
-
-      doctor[0].validado = true;
-      req.session.currentUser = doctor[0]
-      delete req.session.currentUser.password;
-      req.session.currentUser.fecha_nacimiento = new Date(req.session.currentUser.fecha_nacimiento);
-      req.session.currentUser.fecha_nacimiento.setDate(req.session.currentUser.fecha_nacimiento.getDate() + 1);//por alguna razon se resta un día a lo que hay en la bbdd
-      req.session.currentUser.fecha_nacimiento =obtenerFecha(req.session.currentUser.fecha_nacimiento);
-        
-      console.log(doctor[0])
-      console.log(req.session.currentUser)
-      res.redirect('/');
-    }
-    
-    
-  } catch (error) {
-    console.error("Error durante la operación:", error);
-  }
-
-});
-function obtenerFecha(cadenaFechaHora) {
-  if (typeof cadenaFechaHora === 'string') {
-    var soloFecha = cadenaFechaHora.split("T")[0];
-    return soloFecha;
-  } else if (cadenaFechaHora instanceof Date) {
-    var soloFecha = cadenaFechaHora.toISOString().split("T")[0];
-    return soloFecha;
-  }else {
-      return ""; 
-  }
-}
 router.get('/funciones-paciente/:dni', (req, res) => {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
     res.render('index', { nombre:"" });
@@ -281,98 +106,10 @@ router.get('/obtener-doctores', (req, res) => {
   });
 });
 
-router.get('/editar-perfil', function(req, res, next) {
-  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
-    res.render('index', { nombre:"" });
-  }else{
-    usuario = req.session.currentUser;
-    console.log(usuario);
-    res.render("editarPerfil",{error:"", usuario: usuario,nombre: req.session.currentUser.nombre});
-  }
-});
-router.get('/register', function(req, res, next) {
-  res.render("register",{error:"", usuario: "",nombre: ""});
-});
 
 
-router.post('/registrando', registrarUsuario);
-
-function registrarUsuario(req, res, next) {
-  const {dni,email,password,repeatPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono} = req.body;
-  var usuario = {dni: dni,email: email,password: password,repeatPassword: repeatPassword,nombre: nombre,apellidos: apellidos,fecha_nacimiento: fecha_nacimiento,domicilio: domicilio,codigo_postal: codigo_postal,numero_telefono: numero_telefono};
-
-  var valido = true;
-  if (password !== repeatPassword) {
-    valido = false;
-    usuario.password = "";
-    usuario.repeatPassword = "";
-    res.render("register",{error:"Las contraseñas no coinciden", usuario: usuario,email:""});
-  }
-
-  if (!/^\d{8}[a-zA-Z]$/.test(dni)) {
-    valido = false;
-    usuario.dni = "";
-    res.render("register",{error:"El DNI no es válido", usuario: usuario,email:""});
-  }
-
-  const fechaNacimiento = new Date(fecha_nacimiento);
-  const fechaActual = new Date();
-  if (fechaNacimiento >= fechaActual) {
-    valido = false;
-    usuario.fecha_nacimiento = "";
-    res.render("register",{error:"La fecha de nacimiento debe ser anterior a la fecha actual", usuario: usuario,email:""});
-  }
-
-  if (!/^\d{9}$/.test(numero_telefono)) {
-    valido = false;
-    usuario.numero_telefono = "";
-    res.render("register",{error:"El número de teléfono no es válido", usuario: usuario,email:""});
-  }
-
-  if(valido){
-    var hashedPassword = cifrarContrasena(password,dni + "caminar es bueno para la salud");
-
-    dao.aniadirDoctor(dni, email, hashedPassword, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
-    .then((resultado) => {
-      req.session.currentUser = {dni,email,nombre,apellidos};
-
-      res.render("index",{nombre : ""});
-    })
-    .catch((error) => {
-        console.error("Error interno del servidor" + error);
-    });
-
-    
-    /*
-    // Sentencia SQL para insertar un nuevo doctor
-    const sql = `INSERT INTO doctores 
-                (dni, email, password, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-  
-    // Parámetros para la sentencia SQL
-    const params = [dni,email,hashedPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono];
-    pool.query(sql, params, (error, resultados) => {
-      if(error){
-        console.log("Error interno del servidor" + error);
-      }else{
-        req.session.currentUser = {dni,email,nombre,apellidos};
-        res.render("index",{nombre : ""});
-      }});*/
-  }
-
-};
 
 
-function cifrarContrasena(contrasena, salt) {
-  // Crea un nuevo objeto Hash
-  const hash = crypto.createHash('sha256');
-
-  // Actualiza el hash con la contraseña y el salt
-  hash.update(contrasena + salt);
-
-  // Devuelve el hash en formato hexadecimal
-  return hash.digest('hex');
-}
 
 router.post("/aniadirUsuario", async function(req, res, next) {
   
@@ -492,175 +229,19 @@ router.get('/eliminarAsociacion/:dni', async function(req, res, next) {
   }
 });
 
-router.get('/CrearHistorial/', function(req, res, next) {
-  if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
-    res.render('index', { nombre:"" });
-  }else{
-    res.render('historialMedico', { title: 'Express' ,userData: "",nombre:req.session.currentUser.nombre});
-  }
-});
-  
-  router.post('/guardarHistorial', function(req, res){
-    // Creamos un nuevo documento PDF
-    const doc = new PDFDocument();
-    
-    
-    function obtenerFechaActual() {
-      const fecha = new Date();
-      const dia = fecha.getDate();
-      const mes = fecha.getMonth() + 1;
-      const anio = fecha.getFullYear();
-      return `${dia}/${mes}/${anio}`;
-    }
+var usuarioRouter = require('./usuario');
+router.use('/usuario', usuarioRouter);
 
-    // Definir coordenadas y dimensiones del rectángulo del título
-    const tituloRectX = 50;
-    const tituloRectY = 50;
-    const tituloRectWidth = 500;
-    const tituloRectHeight = 80;
-    const tituloRectBorderWidth = 2;
+var citasRouter = require('./citas');
+router.use('/citas', citasRouter);
 
-    // Dibujar el rectángulo del título con borde negro y fondo gris
-    doc.rect(tituloRectX, tituloRectY, tituloRectWidth, tituloRectHeight)
-        .lineWidth(tituloRectBorderWidth)
-        .fillColor('#CCCCCC') // Color de fondo gris
-        .strokeColor('#000000') // Color de borde negro
-        .stroke()
-        .fill();
+var consultaRouter = require('./consulta');
+router.use('/consulta', consultaRouter);
 
-    // Título del documento
-    doc.font('Helvetica-Bold').fontSize(24)
-        .fillColor('#000000') // Cambiar color de texto a negro
-        .text('Historial Médico', { align: 'center', lineGap: 10 });
+var historialRouter = require('./historial');
+router.use('/historial', historialRouter);
 
-    // Fecha actual
-    doc.font('Helvetica').fontSize(16)
-        .text(obtenerFechaActual(), { align: 'center' });
-
-    // Ruta de la imagen a añadir
-    const rutaImagen = './public/images/logoMedAlerta.png';
-
-    // Coordenadas de la imagen en el PDF
-    const imagenX = 70;
-    const imagenY = 50;
-    const imagenAncho = 80;
-    const imagenAlto = 80;
-
-    // Añadir la imagen al PDF
-    doc.image(rutaImagen, imagenX, imagenY, { width: imagenAncho, height: imagenAlto });
-
-
-    
-    doc.moveDown(1.5);
-
-
-    // Definir coordenadas y dimensiones del rectángulo del título
-    const datosRectX = 50;
-    const datosRectY = 140;
-    const datosRectWidth = 500;
-    const datosRectHeight = 600;
-    const datosRectBorderWidth = 2;
-
-    // Dibujar el rectángulo del título con borde negro y fondo gris
-    doc.rect(datosRectX, datosRectY, datosRectWidth, datosRectHeight)
-        .lineWidth(datosRectBorderWidth)
-        .fillColor('#000000') // Color de fondo gris
-        .strokeColor('#787878') // Color de borde negro
-        .stroke()
-        .fill();
-
-    // Datos del formulario
-    const campos = [
-      { titulo: 'Nombre', valor: req.body.nombre },
-      { titulo: 'Apellido', valor: req.body.apellido },
-      { titulo: 'Sexo', valor: req.body.sexo },
-      { titulo: 'Fecha de Nacimiento', valor: req.body.fechaNacimiento },
-      { titulo: 'Edad', valor: req.body.edad },
-      { titulo: 'Peso (kg)', valor: req.body.peso },
-      { titulo: 'Altura (cm)', valor: req.body.altura },
-      { titulo: 'Alergias', valor: req.body.alergias },
-      { titulo: 'Notas', valor: req.body.notas },
-      { titulo: 'Fecha Actual', valor: obtenerFechaActual() }
-    ];
-
-    doc.fontSize(12);
-    doc.strokeColor('#787878');
-    let actual = 0;
-    // Agregar campos al documento con separación
-    campos.forEach((campo, index) => {
-      const yPos = 100 + index * 20;
-      doc.text(`${campo.titulo}: `, { align: 'left', continued: true })
-          .text(campo.valor, { align: 'left', continued: false, indent: 100 });
-      doc.moveDown(0.3).lineWidth(1).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
-      doc.moveDown();
-      actual = yPos;
-    });
-
-    const enfermedades = Object.keys(req.body).filter(key => key !== "_csrf").slice(7);
-    const enfermedadesMarcadas = enfermedades.slice(0,enfermedades.length-2);
-    console.log(enfermedadesMarcadas);
-    // Posición inicial
-    let xPos = 80;
-    let yPos = actual+ 210;
-    const spaceBetweenElements = 5;
-    const maxPosX = 500; // Posición X máxima antes de un salto de línea
-
-    doc.text(`Enfermedades: `, { align: 'left', continued: true });
-
-    let firstElement = true; // Variable para controlar el primer elemento
-
-    enfermedadesMarcadas.forEach((enfermedad, index) => {
-      // Calculamos el ancho de la enfermedad
-
-      console.log(enfermedad, " ")
-      const enfermedadWidth = doc.widthOfString(enfermedad);
-  
-      // Verificamos si la enfermedad excede el espacio disponible en la línea actual
-      if (xPos + enfermedadWidth > maxPosX) {
-          xPos = 80; // Reiniciamos la posición X para iniciar una nueva línea
-          yPos += 20; // Aumentamos la posición Y para el salto de línea
-      }
-  
-      // Agregamos la enfermedad al PDF
-      console.log("Escribo " + enfermedad + "en x, y: " + xPos + " " + yPos);
-      if(index != 0)doc.text(enfermedad + ",", xPos, yPos);
-      else{
-        doc.text("   ", xPos, yPos);
-        xPos -= (enfermedadWidth + spaceBetweenElements);
-      }
-      // Actualizamos la posición X para el próximo elemento
-      xPos += enfermedadWidth + spaceBetweenElements; // Agregamos espacio entre enfermedades
-  });
-
-    // Creamos un flujo de escritura para guardar el PDF en un archivo local
-    const filePath = "../MedAlerta/public/historiales/HM"+req.session.currentUser.dni + "-" + req.body.dni + ".pdf";
-    const writeStream = fs.createWriteStream(filePath);
-
-    // Manejamos eventos de error y finalización del flujo de escritura
-    writeStream.on('finish', () => {
-      res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
-    });
-
-    writeStream.on('error', (err) => {
-        console.error('Error al guardar el PDF:', err);
-        res.status(500).send('Error al guardar el PDF.');
-    });
-
-    // Piping PDFKit to writeStream
-    doc.pipe(writeStream); 
-
-    // Finalizamos el documento PDF
-    doc.end();
-});
-
-router.get('/obtenerURLPDF', (req, res) => {
-  const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + req.query.dni + ".pdf";
-
-  // Responde con la URL del PDF
-  res.json({ downloadURL: pdfURL });
-});
 
 module.exports = {
-  router,
-  registrarUsuario
+  router
 };

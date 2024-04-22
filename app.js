@@ -9,7 +9,7 @@ var pacientesRouter = require('./routes/pacientes');
 var {router} = require('./routes/doctor');
 var doctorRouter = router;
 
-var consultaRouter = require('./routes/consulta');
+
 
 const session = require('express-session');
 const mysqlSession = require("express-mysql-session");
@@ -45,7 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/pacientes',pacientesRouter);
 app.use('/doctor', doctorRouter);
-app.use('/consulta', consultaRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

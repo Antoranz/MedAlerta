@@ -103,7 +103,7 @@
         </div>
         <div id="mensajes" class="mensajes">
             <div class="mensajesCabezera">
-                <a href="/consulta/consultas"><img class="backIcon" src="/images/backIcon.jpg"></a >
+                <a href="/doctor/consulta"><img class="backIcon" src="/images/backIcon.jpg"></a >
                 <div id="titulo" class="titulo">Título</div>
                 <div id="fecha"></div>
             </div>
@@ -121,7 +121,7 @@
         function getMensajes(consultaId, consultaTitulo) {
             // Hacer la llamada AJAX
             $.ajax({
-                url: '/consulta/mensajes/' + consultaId,
+                url: '/doctor/consulta/mensajes/' + consultaId,
                 type: 'GET',
                 data: { consultaId: consultaId, consultaTitulo: consultaTitulo },
                 success: function(response) {
@@ -148,7 +148,7 @@
                         else
                             campoMensajes.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + element.mensaje + '</em></p>');
                     });
-                    mensajesDiv.append('<form class="form-inline" action="/consulta/mandarMensaje" method="post">');
+                    mensajesDiv.append('<form class="form-inline" action="/doctor/consulta/mandarMensaje" method="post">');
                     mensajesDiv.append('<input type="text" id="mensajeDoctor" placeholder="Escribe tu mensaje...">');
                     mensajesDiv.append('<button id="enviarBoton" class="btn btn-primary" type="submit">Enviar</button>');
                     mensajesDiv.append('</form>');
@@ -159,7 +159,7 @@
                         const mensajeInput = document.getElementById('mensajeDoctor');
                         const texto = mensajeInput.value;
 
-                        fetch('/consulta/mandarMensaje', {
+                        fetch('/doctor/consulta/mandarMensaje', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'

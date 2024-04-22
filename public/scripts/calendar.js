@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar.render();
     function eliminarCita(eventoId) {
         $.ajax({
-            url: '/doctor/eliminar-cita', // Ruta en el servidor para eliminar la cita
+            url: '/doctor/citas/eliminar-cita', // Ruta en el servidor para eliminar la cita
             type: 'POST', // Método HTTP utilizado
             data: { id: eventoId }, // Datos a enviar al servidor (el identificador del evento)
             success: function(response) {
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function cargarCitas(){
         $.ajax({
-            url: '/doctor/obtener-citas',
+            url: '/doctor/citas/obtener-citas',
             type: 'GET',
             dataType: 'json',
             success: function(response) {

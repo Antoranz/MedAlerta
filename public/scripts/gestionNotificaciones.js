@@ -20,7 +20,7 @@ function confirmarCita(button) {
     console.log(hora)
     // Enviar los datos al servidor utilizando AJAX
     $.ajax({
-        url: '/doctor/asignar-cita', // Ruta en el servidor para asignar la cita
+        url: '/doctor/citas/asignar-cita', // Ruta en el servidor para asignar la cita
         type: 'POST', // Método HTTP utilizado
         data: {
             dni: dni,
