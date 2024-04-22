@@ -36,8 +36,10 @@ public class NotificarMensajesAsync extends Service {
         mRunnable = new Runnable() {
             @Override
             public void run() {
-                obtenerConsultasSinLeer();
-                NotificacionesManager.lanzarNotificacionMensajeNoLeido(getApplicationContext());
+
+                if(!obtenerConsultasSinLeer().isEmpty()){
+                    NotificacionesManager.lanzarNotificacionMensajeNoLeido(getApplicationContext());
+                }
                 mHandler.postDelayed(this, 10000); // Ejecutar cada 10 segundos
             }
         };
@@ -47,11 +49,8 @@ public class NotificarMensajesAsync extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Obtener el DNI del intent
         dni = intent.getStringExtra("dni");
-        // Almacenar el DNI en las preferencias compartidas
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("dni", dni);
-        editor.apply();
+
+
         return Service.START_STICKY;
     }
 
@@ -76,8 +75,9 @@ public class NotificarMensajesAsync extends Service {
         Log.i(TAG, "onLowMemory()");
     }
 
-    private void obtenerConsultasSinLeer() {
+    private LinkedList<String> obtenerConsultasSinLeer() {
         LinkedList<String> mensajesNoLeidos = Controller.getInstance().obtenerMensajesNoLeidos(dni);
         Log.d(TAG, "Mensajes no leídos obtenidos: " + mensajesNoLeidos);
+        return mensajesNoLeidos;
     }
 }
