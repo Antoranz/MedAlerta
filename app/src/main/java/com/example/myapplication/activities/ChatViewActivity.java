@@ -72,7 +72,7 @@ public class ChatViewActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
 
-        //Controller.getInstance().ponerMensajesComoLeidos(sessionManager.getUserId(),consulta.getId());
+
 
         buttonEnviar.setOnClickListener(v -> {
 
@@ -97,6 +97,8 @@ public class ChatViewActivity extends AppCompatActivity {
                 rv.postDelayed(() -> rv.smoothScrollToPosition(adapter.getItemCount() - 1), 100);
             }
         });
+
+        Controller.getInstance().ponerMensajesComoLeidos(sessionManager.getUserId(),consulta.getId());
 
 
         adapter = new MensajesListAdapter(new LinkedList<>(),this);
