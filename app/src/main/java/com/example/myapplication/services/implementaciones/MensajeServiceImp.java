@@ -91,7 +91,7 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
     @Override
     public void crearMensaje(long id, String mensaje, long propietario, String fecha) {
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = "http://10.0.2.2:3000/pacientes/crearMensaje";
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/crearMensaje";
 
         JSONObject postData = new JSONObject();
         try {
@@ -118,7 +118,7 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
 
         LinkedList<String> listaMensajes = new LinkedList<>();
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = "http://10.0.2.2:3000/pacientes/obtenerMensajesNoLeidos/" + dni;
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/obtenerMensajesNoLeidos/" + dni;
 
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -163,7 +163,7 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
     @Override
     public void ponerMensajesComoLeidos(String dni, long id) {
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = "http://10.0.2.2:3000/pacientes/ponerMensajesComoLeidosConsulta/" + id;
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/ponerMensajesComoLeidosConsulta" + id;
 
         JSONObject postData = new JSONObject();
         try {
