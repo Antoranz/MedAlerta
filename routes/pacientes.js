@@ -1,4 +1,3 @@
-
 var express = require('express');
 var router = express.Router();
 const nodemailer = require("nodemailer");
@@ -64,8 +63,9 @@ router.post('/crearConsulta', async function(req, res, next) {
 
         const mensaje = "Hola, soy tu doctor, dime lo que necesites"
         const propietario = 0
+        const leido_paciente = 1
 
-        await dao.registrarMensaje(consultaId,mensaje,propietario,fechaDate);
+        await dao.registrarMensajeInicialDoctor(consultaId,mensaje,propietario,fechaDate,leido_paciente);
 
         res.json(true)
     } catch (error) {
@@ -82,7 +82,11 @@ router.post('/crearMensaje', async function(req, res, next) {
 
         const fechaDate = new Date(fecha);
 
+
         await dao.registrarMensaje(id_consulta,mensaje,propietario,fechaDate);
+
+        
+
 
         res.json(true)
     } catch (error) {
@@ -206,23 +210,6 @@ router.get('/obtenerAlarmas/:dni', async function(req, res, next) {
    
 });
 
-/*router.get('/obtenerCitas/:dni', async function(req, res, next) {
-
-    try {
-        
-        var dni_paciente=req.params.dni;
-
-        var paciente = await .(dni_paciente)
-
-        console.log(paciente)
-        res.json(paciente)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-      }
-   
-});*/
-
 
 router.get('/obtenerMensajesNoLeidos/:dni', async function(req, res, next) {
 
@@ -318,6 +305,27 @@ router.get('/obtenerPaciente/:dni', async function(req, res, next) {
 
         console.log(paciente)
         res.json(paciente)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+        
+      }
+   
+});
+
+router.post('/ponerMensajesComoLeidosConsulta/:id', async function(req, res, next) {
+
+    try {
+
+        var id_consulta=req.params.id;
+        console.log(id_consulta)
+
+        var paciente = await dao.ponerMensajesComoLeidosConsulta(id_consulta);
+
+        console.log(paciente);
+        
+
+        res.json(true)
     } catch (error) {
         console.error("Error durante la operación:", error);
         res.json(null)
