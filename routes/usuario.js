@@ -25,13 +25,13 @@ function registrarUsuario(req, res, next) {
     valido = false;
     usuario.password = "";
     usuario.repeatPassword = "";
-    res.render("register",{error:"Las contraseñas no coinciden", usuario: usuario,email:""});
+    res.render("register",{error:"Las contraseñas no coinciden", usuario: usuario,email:"",nombre: ""});
   }
 
   if (!/^\d{8}[a-zA-Z]$/.test(dni)) {
     valido = false;
     usuario.dni = "";
-    res.render("register",{error:"El DNI no es válido", usuario: usuario,email:""});
+    res.render("register",{error:"El DNI no es válido", usuario: usuario,email:"",nombre: ""});
   }
 
   const fechaNacimiento = new Date(fecha_nacimiento);
@@ -39,13 +39,13 @@ function registrarUsuario(req, res, next) {
   if (fechaNacimiento >= fechaActual) {
     valido = false;
     usuario.fecha_nacimiento = "";
-    res.render("register",{error:"La fecha de nacimiento debe ser anterior a la fecha actual", usuario: usuario,email:""});
+    res.render("register",{error:"La fecha de nacimiento debe ser anterior a la fecha actual", usuario: usuario,email:"",nombre: ""});
   }
 
   if (!/^\d{9}$/.test(numero_telefono)) {
     valido = false;
     usuario.numero_telefono = "";
-    res.render("register",{error:"El número de teléfono no es válido", usuario: usuario,email:""});
+    res.render("register",{error:"El número de teléfono no es válido", usuario: usuario,email:"",nombre: ""});
   }
 
   if(valido){
@@ -60,23 +60,6 @@ function registrarUsuario(req, res, next) {
     .catch((error) => {
         console.error("Error interno del servidor" + error);
     });
-
-    
-    /*
-    // Sentencia SQL para insertar un nuevo doctor
-    const sql = `INSERT INTO doctores 
-                (dni, email, password, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-  
-    // Parámetros para la sentencia SQL
-    const params = [dni,email,hashedPassword,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono];
-    pool.query(sql, params, (error, resultados) => {
-      if(error){
-        console.log("Error interno del servidor" + error);
-      }else{
-        req.session.currentUser = {dni,email,nombre,apellidos};
-        res.render("index",{nombre : ""});
-      }});*/
   }
 
 };
@@ -89,7 +72,7 @@ router.post('/signin' , async function(req,res,next){
       var dni=req.body.dni;
       var password=req.body.password;
   
-      var hashedPassword = cifrarContrasena(password,dni);
+      var hashedPassword = cifrarContrasena(password,dni + "caminar es bueno para la salud");
   
       console.log("Contraseña inicio de sesion: " + hashedPassword);
   

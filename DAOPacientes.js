@@ -391,7 +391,29 @@ class DAOPaciente{
             });
         }); 
     }
-
+    obtenerCitasPaciente(DNIPaciente){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryobtenerCitasPaciente ="SELECT * FROM citas WHERE paciente_dni = ?"
+                    connection.query(queryobtenerCitasPaciente,[DNIPaciente], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
     obtenerConsultasPaciente(DNIPaciente){
         
         return new Promise((resolve, reject) => {

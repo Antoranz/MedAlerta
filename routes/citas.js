@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const DAODoctor = require("../DAODoctores")
-
+const DAOPaciente = require("../DAOPacientes")
 
 const mysql = require('mysql');
 const pool = mysql.createPool({
@@ -12,6 +12,7 @@ const pool = mysql.createPool({
 });
 
 const dao = new DAODoctor(pool);
+const dao2 = new DAOPaciente(pool);
 
 router.get("/obtener-citas",async function(req, res,next){
     var citas = await dao.checkCitas(req.session.currentUser.dni);
@@ -108,7 +109,6 @@ router.post("/asignar-cita", async function(req, res, next) {
       }
   
       const paciente = await dao2.obtenerPaciente(dni);
-  
       if (paciente.length === 0) {
         throw new Error("El paciente no existe");
       }
@@ -120,7 +120,10 @@ router.post("/asignar-cita", async function(req, res, next) {
       if (nuevoDate <= fechaActual) {
         throw new Error("La fecha y hora seleccionadas deben ser posteriores a la fecha y hora actual");
       }
+      console.log("AAAAAAAAAAAAAAAAAAAAA");
+      console.log(nuevoDate);
       const fecha_hora = nuevoDate.toISOString();
+      console.log("AAAAAAAAAAAAAAAAAAAAA");
       var citasCoincidentes = await dao.checkearCitasCoincidentes(req.session.currentUser.dni, fecha_hora, duracion);
       console.log("citas:", citasCoincidentes);
       if (citasCoincidentes.length > 0) {
