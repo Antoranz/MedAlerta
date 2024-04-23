@@ -61,7 +61,7 @@ class DAOPaciente{
                     console.error(`Error al realizar la conexión: ${err.message}`);
                     reject(err);
                 }else{
-                    console.log("Exito al conectar a la base de datos");
+                    //console.log("Exito al conectar a la base de datos");
                     var queryobtenerMensajesNoLeidos = "SELECT c.id AS id_consulta, c.titulo, m.mensaje, m.fecha AS fecha_ultimo_mensaje FROM consultas c INNER JOIN mensajes m ON c.id = m.id_consulta WHERE c.dni_paciente = ? AND m.leido_paciente = 0 AND m.fecha = (SELECT MAX(fecha) FROM mensajes WHERE id_consulta = c.id) ORDER BY c.id;";
                     connection.query(queryobtenerMensajesNoLeidos,[dni], (err, res) => {
                         connection.release();
@@ -366,7 +366,29 @@ class DAOPaciente{
             });
         }); 
     }
-
+    obtenerCitasPaciente(DNIPaciente){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryobtenerCitasPaciente ="SELECT * FROM citas WHERE paciente_dni = ?"
+                    connection.query(queryobtenerCitasPaciente,[DNIPaciente], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
     obtenerConsultasPaciente(DNIPaciente){
         
         return new Promise((resolve, reject) => {

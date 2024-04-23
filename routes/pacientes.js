@@ -206,13 +206,13 @@ router.get('/obtenerAlarmas/:dni', async function(req, res, next) {
    
 });
 
-/*router.get('/obtenerCitas/:dni', async function(req, res, next) {
+router.get('/obtenerCitasPaciente/:dni', async function(req, res, next) {
 
     try {
         
         var dni_paciente=req.params.dni;
 
-        var paciente = await .(dni_paciente)
+        var paciente = await dao.obtenerCitasPaciente(dni_paciente);
 
         console.log(paciente)
         res.json(paciente)
@@ -221,7 +221,7 @@ router.get('/obtenerAlarmas/:dni', async function(req, res, next) {
         res.json(null)
       }
    
-});*/
+});
 
 
 router.get('/obtenerMensajesNoLeidos/:dni', async function(req, res, next) {
@@ -229,11 +229,11 @@ router.get('/obtenerMensajesNoLeidos/:dni', async function(req, res, next) {
     try {
         
         var dni_paciente=req.params.dni;
-        console.log(dni_paciente)
+        //console.log(dni_paciente)
 
         var mensajes = await dao.obtenerMensajesNoLeidos(dni_paciente);
 
-        console.log(mensajes)
+        //console.log(mensajes)
         res.json(mensajes)
     } catch (error) {
         console.error("Error durante la operación:", error);
