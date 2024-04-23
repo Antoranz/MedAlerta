@@ -1,13 +1,16 @@
-package com.example.myapplication.activities;
+package com.example.myapplication.fragments;
 
 import android.app.AlertDialog;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,33 +25,32 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CalendarCitasActivity extends AppCompatActivity {
+public class CalendarCitasFragment extends Fragment {
+
     private List<Cita> citas;
     private SessionManager sessionManager;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendario_citas);
-        sessionManager = new SessionManager(this);
-        citas = Controller.getInstance().getAllCitas(this, sessionManager.getUserId());
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this)); // o GridLayoutManager según tus necesidades
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_calendario_citas, container, false);
+
+        sessionManager = new SessionManager(requireContext());
+        citas = Controller.getInstance().getAllCitas(requireContext(), sessionManager.getUserId());
+
+        RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         // Crea un adaptador para el RecyclerView y asigna la lista de citas
-        CitasListAdapter adapter = new CitasListAdapter( new LinkedList<>(citas),this); // Suponiendo que "citas" es tu lista de citas
+        CitasListAdapter adapter = new CitasListAdapter(new LinkedList<>(citas), requireContext()); // Suponiendo que "citas" es tu lista de citas
         recyclerView.setAdapter(adapter);
 
-        CalendarView calendarView = findViewById(R.id.calendarView);
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                // Aquí puedes manejar la lógica cuando el usuario selecciona una fecha
-                // Por ejemplo, puedes mostrar una ventana emergente con la información de la cita para esa fecha
-                mostrarInformacionDeCita(year, month, dayOfMonth);
-            }
-        });
+        CalendarView calendarView = rootView.findViewById(R.id.calendarView);
+        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> mostrarInformacionDeCita(year, month, dayOfMonth));
+
+        return rootView;
     }
+
     private void mostrarInformacionDeCita(int year, int month, int dayOfMonth) {
         boolean citaEncontrada = false;
         for (Cita cita : citas) {
@@ -57,7 +59,7 @@ public class CalendarCitasActivity extends AppCompatActivity {
 
             if (calendar.get(Calendar.YEAR) == year && calendar.get(Calendar.MONTH) == month && calendar.get(Calendar.DAY_OF_MONTH) == dayOfMonth) {
                 citaEncontrada = true;
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                 builder.setTitle("Detalles de la Cita");
                 builder.setMessage("Doctor DNI: " + cita.getDoctor_dni() + "\n"
                         + "Paciente DNI: " + cita.getPaciente_dni() + "\n"
@@ -69,12 +71,9 @@ public class CalendarCitasActivity extends AppCompatActivity {
         }
 
         if (!citaEncontrada) {
-            Toast.makeText(this, "No hay cita para esta fecha", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "No hay cita para esta fecha", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
 
     private Date getDate(int year, int month, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();

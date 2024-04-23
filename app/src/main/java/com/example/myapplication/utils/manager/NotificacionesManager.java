@@ -16,7 +16,6 @@ import android.os.Handler;
 import androidx.core.app.NotificationCompat;
 
 import com.example.myapplication.R;
-import com.example.myapplication.activities.ConsultasActivity;
 import com.example.myapplication.activities.MainActivity;
 
 public class NotificacionesManager {
@@ -88,7 +87,7 @@ public class NotificacionesManager {
 
         nb.setContentTitle("MENSAJES NO LEIDOS");
 
-        Intent actividad_destino = new Intent(context, ConsultasActivity.class);
+        Intent actividad_destino = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,actividad_destino,PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         nb.setContentIntent(pendingIntent);
         nb.setAutoCancel(true);

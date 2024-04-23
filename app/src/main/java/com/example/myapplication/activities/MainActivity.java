@@ -5,8 +5,12 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import static com.example.myapplication.utils.async.PostDataAsync.postDataAsync;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,11 +25,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.fragments.CalendarCitasFragment;
+import com.example.myapplication.fragments.ConsultasFragment;
+import com.example.myapplication.fragments.CrearCitaFragment;
+import com.example.myapplication.fragments.LogoFragment;
 import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.manager.NavigationManager;
 import com.example.myapplication.utils.manager.SessionManager;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,13 +50,7 @@ public class MainActivity extends AppCompatActivity {
     TextView userText;
     SessionManager sessionManager;
 
-    Button solicitarCita;
-
-    Button solicitarConsultas;
-
-    Button calendarioCitas;
-
-
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,36 +66,30 @@ public class MainActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
 
         String username = sessionManager.getName();
-
+        userText = findViewById(R.id.name);
+        userText.setText(username);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
-
-
-        userText = findViewById(R.id.name);
-        userText.setText(username);
-
-        solicitarCita = findViewById(R.id.botonCita);
-
-        solicitarCita.setOnClickListener(v -> {
-            NavigationManager.getInstance().navigateToDestination(this,CrearCitaActivity.class);
+        replaceFragment(new LogoFragment());
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.consultas) {
+                replaceFragment(new ConsultasFragment());
+                return true;
+            } else if (item.getItemId() == R.id.calendario) {
+                replaceFragment(new CalendarCitasFragment());
+                return true;
+            } else if (item.getItemId() == R.id.anadir_cita) {
+                replaceFragment(new CrearCitaFragment());
+                return true;
+            } else {
+                return false;
+            }
         });
-
-        solicitarConsultas = findViewById(R.id.botonConsultas);
-
-        solicitarConsultas.setOnClickListener(v -> {
-            NavigationManager.getInstance().navigateToDestination(this,ConsultasActivity.class);
-        });
-
-        calendarioCitas = findViewById(R.id.botonCalendarioCitas);
-        calendarioCitas.setOnClickListener(v -> {
-            NavigationManager.getInstance().navigateToDestination(this,CalendarCitasActivity.class);
-        });
-
     }
 
 
@@ -182,7 +181,12 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
     }
-
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.commit();
+    }
     private void makeTextToast(String text){
         Toast.makeText(this,text,Toast.LENGTH_LONG).show();
     }

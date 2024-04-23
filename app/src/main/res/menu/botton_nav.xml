@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Consultas"
+        android:icon="@drawable/consultas"
+        android:id="@+id/consultas"/>
+
+    <item android:title="Calendario"
+        android:icon="@drawable/calendario"
+        android:id="@+id/calendario"/>
+
+    <item android:title="Solicitar Cita"
+        android:icon="@drawable/anadir_cita"
+        android:id="@+id/anadir_cita"/>
+</menu>

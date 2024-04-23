@@ -71,7 +71,7 @@ public class CrearConsultaActivity extends AppCompatActivity {
 
             Controller.getInstance().postCrearConsulta(dniDoctorSeleccionado,sessionManager.getUserId().toString(),titulo,timeStamp);
 
-            NavigationManager.getInstance().navigateToDestination(this,ConsultasActivity.class);
+            NavigationManager.getInstance().navigateToDestination(this,MainActivity.class);
         });
 
 
