@@ -22,10 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.services.ConfigApi;
-import com.example.myapplication.utils.async.ActualizarMensajesAsync;
-import com.example.myapplication.utils.async.NotificarMensajesAsync;
 import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.R;
+import com.example.myapplication.utils.manager.NavigationManager;
 import com.example.myapplication.utils.manager.SessionManager;
 
 import org.json.JSONException;
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     Button solicitarCita;
 
     Button solicitarConsultas;
+
+    Button calendarioCitas;
 
 
 
@@ -76,16 +77,20 @@ public class MainActivity extends AppCompatActivity {
         solicitarCita = findViewById(R.id.botonCita);
 
         solicitarCita.setOnClickListener(v -> {
-            Intent intent = new Intent(this, CrearCitaActivity.class);
-            startActivity(intent);
+            NavigationManager.getInstance().navigateToDestination(this,CrearCitaActivity.class);
         });
 
         solicitarConsultas = findViewById(R.id.botonConsultas);
 
         solicitarConsultas.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ConsultasActivity.class);
-            startActivity(intent);
+            NavigationManager.getInstance().navigateToDestination(this,ConsultasActivity.class);
         });
+
+        calendarioCitas = findViewById(R.id.botonCalendarioCitas);
+        calendarioCitas.setOnClickListener(v -> {
+            NavigationManager.getInstance().navigateToDestination(this,CalendarCitasActivity.class);
+        });
+
     }
 
 

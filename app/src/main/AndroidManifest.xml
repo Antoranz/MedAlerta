@@ -120,6 +120,10 @@
             android:name=".activities.RegistrarActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".activities.CalendarCitasActivity"
+            android:exported="true">
+        </activity>
 
     </application>
 

@@ -76,6 +76,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
                                     Intent intent = new Intent(this, ConfirmationActivity.class);
                                     startActivity(intent);
+
                                 } else {
                                     Log.d(TAG, "Error: No data found in the JSON array");
                                     makeTextToast("Credenciales incorrectas");

@@ -10,11 +10,14 @@ import android.util.Log;
 
 import com.example.myapplication.activities.AlarmReceiverActivity;
 import com.example.myapplication.activities.ChatViewActivity;
+import com.example.myapplication.data.Cita;
 import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Doctor;
 import com.example.myapplication.data.Mensaje;
+import com.example.myapplication.services.CitaService;
 import com.example.myapplication.services.ConsultaService;
 import com.example.myapplication.services.MensajeService;
+import com.example.myapplication.services.implementaciones.CitaServiceImp;
 import com.example.myapplication.services.implementaciones.ConsultaServiceImp;
 import com.example.myapplication.services.implementaciones.MensajeServiceImp;
 
@@ -40,6 +43,11 @@ public class Controller {
         ConsultaService service = ConsultaServiceImp.getInstance();
 
         return service.getAllConsultas(dni);
+    }
+    public LinkedList<Cita> getAllCitas(Context c, String dni) {
+        CitaService service = CitaServiceImp.getInstance();
+
+        return service.getAllCitas(c,dni);
     }
 
     public LinkedList<Mensaje> getAllMensajes(Context c, long id_consulta) {
