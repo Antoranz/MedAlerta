@@ -26,7 +26,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 
-public class MensajeServiceImp extends AppCompatActivity implements MensajeService {
+public class MensajeServiceImp implements MensajeService {
 
     private static MensajeServiceImp instance;
 
@@ -106,8 +106,6 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
         }
 
         postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
-            runOnUiThread(() -> {
-            });
         }, "POST", postData.toString());
 
 
@@ -130,14 +128,15 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonConsulta = jsonArray.getJSONObject(i);
 
-                        long id_consulta = jsonConsulta.getLong("id_consulta");
-                        String titulo = jsonConsulta.getString("titulo");
-                        String mensaje = jsonConsulta.getString("mensaje");
+                        String dni_paciente = jsonConsulta.getString("dni_paciente");
+                        String dni_doctor = jsonConsulta.getString("dni_doctor");
+                        String fecha = jsonConsulta.getString("fecha_ultimo_mensaje");
+
+                        String id_mensaje = dni_doctor+dni_paciente+fecha;
 
 
 
-
-                        listaMensajes.add(titulo);
+                        listaMensajes.add(id_mensaje);
 
                     }
 
@@ -163,7 +162,7 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
     @Override
     public void ponerMensajesComoLeidos(String dni, long id) {
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = ConfigApi.BASE_URL+"pacientes/consulta/ponerMensajesComoLeidosConsulta" + id;
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/consulta/ponerMensajesComoLeidosConsulta/" + id;
 
         JSONObject postData = new JSONObject();
         try {
@@ -176,8 +175,7 @@ public class MensajeServiceImp extends AppCompatActivity implements MensajeServi
         }
 
         postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
-            runOnUiThread(() -> {
-            });
+
         }, "POST", postData.toString());
     }
 
