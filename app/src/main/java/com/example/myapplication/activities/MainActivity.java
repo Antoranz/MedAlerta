@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     private void borrarDatos(){
 
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = ConfigApi.BASE_URL+"pacientes/bajaPaciente";
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/usuario/bajaPaciente";
 
         JSONObject postData = new JSONObject();
         try {

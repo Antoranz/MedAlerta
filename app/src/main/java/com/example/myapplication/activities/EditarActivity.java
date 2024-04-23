@@ -124,7 +124,7 @@ public class EditarActivity extends AppCompatActivity {
         editButton.setOnClickListener(v -> {
 
             Executor executor2 = Executors.newSingleThreadExecutor();
-            String urlServidor2 = ConfigApi.BASE_URL+"pacientes/editarPaciente/" + sessionManager.getUserId();
+            String urlServidor2 = ConfigApi.BASE_URL+"pacientes/usuario/editarPaciente/" + sessionManager.getUserId();
 
             JSONObject postData = new JSONObject();
             try {

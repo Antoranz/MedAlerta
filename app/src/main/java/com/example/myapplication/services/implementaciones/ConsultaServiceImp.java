@@ -46,7 +46,7 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
         LinkedList<Consulta> listaConsultas = new LinkedList<>();
 
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = ConfigApi.BASE_URL+"pacientes/obtenerConsultasPaciente/" + dni;
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/consulta/obtenerConsultasPaciente/" + dni;
 
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -141,7 +141,7 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
     @Override
     public void postCrearConsulta(String dni_doctor, String dni_paciente, String titulo, String fecha) {
         Executor executor = Executors.newSingleThreadExecutor();
-        String urlServidor = ConfigApi.BASE_URL+"pacientes/crearConsulta";
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/consulta/crearConsulta";
 
         JSONObject postData = new JSONObject();
         try {

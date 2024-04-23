@@ -75,7 +75,7 @@ public class RegistrarActivity extends AppCompatActivity  {
            else{
 
                Executor executor = Executors.newSingleThreadExecutor();
-               String urlServidor = ConfigApi.BASE_URL+"pacientes/registrarPaciente";
+               String urlServidor = ConfigApi.BASE_URL+"pacientes/usuario/registrarPaciente";
 
                JSONObject postData = new JSONObject();
                try {

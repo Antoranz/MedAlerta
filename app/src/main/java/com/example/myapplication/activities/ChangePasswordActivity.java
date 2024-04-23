@@ -52,7 +52,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             }else if(codigoText.getText().toString().equals(numeroAleatorio.toString())){
 
                 Executor executor = Executors.newSingleThreadExecutor();
-                String urlServidor = ConfigApi.BASE_URL+"pacientes/editarPassword";
+                String urlServidor = ConfigApi.BASE_URL+"pacientes/usuario/editarPassword";
 
                 JSONObject postData = new JSONObject();
                 try {
@@ -91,7 +91,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
             numeroAleatorio = generarNumeroAleatorio();
             Executor executor = Executors.newSingleThreadExecutor();
-            String urlServidor = ConfigApi.BASE_URL+"pacientes/validarPaciente";
+            String urlServidor = ConfigApi.BASE_URL+"pacientes/usuario/validarPaciente";
 
             JSONObject postData = new JSONObject();
             try {
