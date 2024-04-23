@@ -19,109 +19,7 @@ const pool = mysql.createPool({
 
 const dao = new DAOPaciente(pool);
 
-router.post('/validarPaciente', async function(req, res, next) {
-    console.log(req.body.email);
-    console.log(req.body.codigo);
 
-    sendVerificationEmail(req.body.email,req.body.codigo)
-
-    res.json(true)
-});
-
-
-
-router.post('/registrarPaciente', async function(req, res, next) {
-
-    const {Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,password} = req.body;
-
-    try {
-        var hashedPassword = cifrarContrasena(password,email);
-
-        console.log("FECHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        console.log(FechaDeNacimiento)
-
-        await dao.registrarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,hashedPassword);
-
-        res.json(true)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-    }
-});
-
-router.post('/crearConsulta', async function(req, res, next) {
-
-    const {dni_doctor,dni_paciente,titulo,fecha} = req.body;
-
-    try {
-
-        const fechaDate = new Date(fecha);
-
-        const consulta = await dao.registrarConsulta(dni_doctor,dni_paciente,titulo,fechaDate);
-        
-        const consultaId = consulta.insertId;
-
-        const mensaje = "Hola, soy tu doctor, dime lo que necesites"
-        const propietario = 0
-        const leido_paciente = 1
-
-        await dao.registrarMensajeInicialDoctor(consultaId,mensaje,propietario,fechaDate,leido_paciente);
-
-        res.json(true)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-    }
-});
-
-router.post('/crearMensaje', async function(req, res, next) {
-
-    const {id_consulta,mensaje,propietario,fecha} = req.body;
-
-    try {
-
-        const fechaDate = new Date(fecha);
-
-
-        await dao.registrarMensaje(id_consulta,mensaje,propietario,fechaDate);
-
-        
-
-
-        res.json(true)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-    }
-});
-
-function cifrarContrasena(contrasena, salt) {
-    // Crea un nuevo objeto Hash
-    const hash = crypto.createHash('sha256');
-  
-    // Actualiza el hash con la contraseña y el salt
-    hash.update(contrasena + salt);
-  
-    // Devuelve el hash en formato hexadecimal
-    return hash.digest('hex');
-}
-
-router.post('/bajaPaciente', async function(req, res, next) {
-
-    try {
-
-
-        await dao.bajaPaciente_alarmas(req.body.dniPaciente)
-        await dao.bajaPaciente_tratamientos(req.body.dniPaciente)
-        await dao.bajaPaciente(req.body.dniPaciente);
-        res.json(true)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-        
-      }
-   
-});
 
 
 
@@ -210,26 +108,6 @@ router.get('/obtenerAlarmas/:dni', async function(req, res, next) {
    
 });
 
-
-router.get('/obtenerMensajesNoLeidos/:dni', async function(req, res, next) {
-
-    try {
-        
-        var dni_paciente=req.params.dni;
-        console.log(dni_paciente)
-
-        var mensajes = await dao.obtenerMensajesNoLeidos(dni_paciente);
-
-        console.log(mensajes)
-        res.json(mensajes)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-      }
-   
-});
-
-
 router.get('/obtenerDoctoresDelPaciente/:dni', async function(req, res, next) {
 
     try {
@@ -260,40 +138,6 @@ router.get('/obtenerDoctoresDelPaciente/:dni', async function(req, res, next) {
    
 });
 
-router.get('/obtenerConsultasPaciente/:dni', async function(req, res, next) {
-
-    try {
-        
-        var dni_paciente=req.params.dni;
-
-        var consultas = await dao.obtenerConsultasPaciente(dni_paciente)
-
-        console.log(consultas)
-        res.json(consultas)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-        
-      }
-   
-});
-
-router.get('/obtenerMensajesConsulta/:idConsulta', async function(req, res, next) {
-
-    try {
-        
-        var id_consulta=req.params.idConsulta;
-
-        var mensajes = await dao.obtenerMensajesConsulta(id_consulta)
-
-        res.json(mensajes)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-        
-      }
-   
-});
 
 router.get('/obtenerPaciente/:dni', async function(req, res, next) {
 
@@ -313,72 +157,10 @@ router.get('/obtenerPaciente/:dni', async function(req, res, next) {
    
 });
 
-router.post('/ponerMensajesComoLeidosConsulta/:id', async function(req, res, next) {
+var consultaRouter = require('./consultaP');
+router.use('/consulta', consultaRouter);
 
-    try {
-
-        var id_consulta=req.params.id;
-        console.log(id_consulta)
-
-        var paciente = await dao.ponerMensajesComoLeidosConsulta(id_consulta);
-
-        console.log(paciente);
-        
-
-        res.json(true)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-        
-      }
-   
-});
-
-router.post('/editarPaciente/:dni', async function(req, res, next) {
-
-    try {
-
-        var dni=req.params.dni;
-
-        const {Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono} = req.body;
-
-
-        await dao.editarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,dni);
-
-        res.json(true)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-        
-      }
-   
-});
-
-
-router.post('/editarPassword', async function(req, res, next) {
-
-    try {
-
-        const {password,email} = req.body;
-
-        var hashedPassword = cifrarContrasena(password,email);
-
-        console.log(hashedPassword)
-
-        console.log(password)
-        console.log(email)
-
-        await dao.editarPassword(hashedPassword,email);
-
-        res.json(true)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-        
-      }
-   
-});
-
-
+var usuarioRouter = require('./usuarioP');
+router.use('/usuario', usuarioRouter);
 
 module.exports = router;
