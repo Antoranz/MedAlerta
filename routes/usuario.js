@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-const crypto = require('crypto');
-const DAODoctor = require("../DAODoctores")
+  var express = require('express');
+  var router = express.Router();
+  const crypto = require('crypto');
+  const DAODoctor = require("../DAODoctores")
 
 
 const mysql = require('mysql');
