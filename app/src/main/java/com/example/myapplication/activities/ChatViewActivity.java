@@ -84,7 +84,8 @@ public class ChatViewActivity extends AppCompatActivity {
 
                 adapter.setMensajesList(Controller.getInstance().getAllMensajes(this, consulta.getId()));
                 adapter.notifyDataSetChanged();
-                rv.postDelayed(() -> rv.smoothScrollToPosition(adapter.getItemCount() - 1), 100);
+                rv.postDelayed(() -> rv.smoothScrollToPosition(adapter.getItemCount() - 1), 500);
+
 
 
             }
@@ -94,7 +95,7 @@ public class ChatViewActivity extends AppCompatActivity {
 
         rv.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             if (bottom < oldBottom) {
-                rv.postDelayed(() -> rv.smoothScrollToPosition(adapter.getItemCount() - 1), 100);
+                rv.postDelayed(() -> rv.smoothScrollToPosition(adapter.getItemCount() - 1), 500);
             }
         });
 

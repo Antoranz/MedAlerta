@@ -3,6 +3,7 @@ package com.example.myapplication.utils.async;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
@@ -19,9 +20,12 @@ import java.util.LinkedList;
 
 public class NotificarMensajesAsync extends Service {
     private static final String TAG = "NotificarMensajesAsync";
+
     private String dni;
+    private LinkedList<String> mensajesNoLeidosAnteriores = new LinkedList<>();
 
     private Handler mHandler;
+
     private Runnable mRunnable;
 
     public IBinder onBind(Intent arg0) {
@@ -32,14 +36,27 @@ public class NotificarMensajesAsync extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
         mHandler = new Handler();
         mRunnable = new Runnable() {
             @Override
             public void run() {
 
-                if(!obtenerConsultasSinLeer().isEmpty()){
+                SharedPreferences pref = getSharedPreferences("datos_persona", Context.MODE_PRIVATE);
+                dni = pref.getString("dni", "");
+
+                Log.d(TAG, "DNI_PERSONA: " + dni);
+
+                LinkedList<String> mensajesNoLeidos = obtenerConsultasSinLeer();
+
+                // Compara el tamaño de la lista actual con la lista anterior
+                if (mensajesNoLeidos.size() > mensajesNoLeidosAnteriores.size()) {
+                    // Si el tamaño de la lista actual es mayor, se agregó un nuevo mensaje, muestra la notificación
                     NotificacionesManager.lanzarNotificacionMensajeNoLeido(getApplicationContext());
                 }
+
+                mensajesNoLeidosAnteriores = mensajesNoLeidos;
+
                 mHandler.postDelayed(this, 10000); // Ejecutar cada 10 segundos
             }
         };
@@ -47,8 +64,15 @@ public class NotificarMensajesAsync extends Service {
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Obtener el DNI del intent
+
         dni = intent.getStringExtra("dni");
+
+        // Código para insertar
+        SharedPreferences pref = getSharedPreferences("datos_persona", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("dni", dni);
+        editor.commit();
+        editor.apply();
 
 
         return Service.START_STICKY;
