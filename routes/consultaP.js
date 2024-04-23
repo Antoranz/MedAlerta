@@ -70,6 +70,7 @@ router.get('/obtenerConsultasPaciente/:dni', async function(req, res, next) {
 
         console.log(consultas)
         res.json(consultas)
+
     } catch (error) {
         console.error("Error durante la operación:", error);
         res.json(null)
@@ -121,9 +122,10 @@ router.get('/obtenerMensajesNoLeidos/:dni', async function(req, res, next) {
     try {
         
         var dni_paciente=req.params.dni;
-        console.log(dni_paciente)
 
         var mensajes = await dao.obtenerMensajesNoLeidos(dni_paciente);
+
+        
 
         console.log(mensajes)
         res.json(mensajes)
