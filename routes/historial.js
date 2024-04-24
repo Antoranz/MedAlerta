@@ -2,12 +2,28 @@ var express = require('express');
 var router = express.Router();
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+const DAOPaciente = require("../DAOPacientes")
 
-router.get('/CrearHistorial/', function(req, res, next) {
+const mysql = require('mysql');
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'medalerta'
+});
+
+const dao = new DAOPaciente(pool);
+
+router.get('/CrearHistorial/', async function(req, res, next) {
     if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
       res.render('index', { nombre:"" });
     }else{
-      res.render('historialMedico', { title: 'Express' ,userData: "",nombre:req.session.currentUser.nombre});
+      console.log(req.query.dni);
+
+      var paciente = await dao.obtenerPaciente(req.query.dni);
+      console.log(paciente);
+      console.log(paciente[0].dni);
+      res.render('historialMedico', { title: 'Express' ,userData: paciente[0],nombre:req.session.currentUser.nombre});
     }
 });
     

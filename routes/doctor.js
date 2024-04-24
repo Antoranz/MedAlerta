@@ -197,10 +197,16 @@ router.post("/guardarTratamiento", async function(req, res, next) {
 router.get('/getUsuarios/', async function(req, res, next) {
   try {
 
-    var pacientes = await dao.obtenerPacientes_doctor(req.session.currentUser.dni)
+    var pacientes = await dao.obtenerPacientes_doctor(req.session.currentUser.dni);
 
-    console.log(pacientes)
-
+    pacientes = pacientes.map(paciente => {
+      return {
+          Nombre: paciente.Nombre,
+          Apellidos: paciente.Apellidos,
+          email: paciente.email,
+          dni: paciente.dni
+      };
+  });
     res.json(pacientes);
   } catch (error) {
     console.error("Error al obtener usuarios:", error);
