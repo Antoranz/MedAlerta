@@ -14,6 +14,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageViewMensajesNoLeidos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/alert_notification_consult"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/recyclerViewConsultas"
+        app:layout_constraintTop_toTopOf="@id/recyclerViewConsultas" />
+
     <Button
         android:id="@+id/ButtonCrearConsulta"
         android:layout_width="wrap_content"
