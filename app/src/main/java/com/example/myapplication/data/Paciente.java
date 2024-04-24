@@ -15,7 +15,7 @@ public class Paciente {
     private String password;
 
 
-    public Paciente(String dni, String email, String nombre, String apellidos, String codigoPostal, Date fechaDeNacimiento, String direccion, String telefono, String password) {
+    public Paciente(String dni, String email, String nombre, String apellidos, String codigoPostal, Date fechaDeNacimiento, String direccion, String telefono,String password) {
         this.dni = dni;
         this.email = email;
         Nombre = nombre;
@@ -26,7 +26,14 @@ public class Paciente {
         this.telefono = telefono;
         this.password = password;
     }
-
+    public Paciente(String nombre, String apellidos, String codigoPostal, Date fechaDeNacimiento, String direccion, String telefono) {
+        Nombre = nombre;
+        Apellidos = apellidos;
+        CodigoPostal = codigoPostal;
+        FechaDeNacimiento = fechaDeNacimiento;
+        Direccion = direccion;
+        this.telefono = telefono;
+    }
 
     public String writeDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

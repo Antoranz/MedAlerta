@@ -5,7 +5,6 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import static com.example.myapplication.utils.async.PostDataAsync.postDataAsync;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -21,22 +20,22 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.fragments.CalendarCitasFragment;
 import com.example.myapplication.fragments.ConsultasFragment;
 import com.example.myapplication.fragments.CrearCitaFragment;
+import com.example.myapplication.fragments.EditarFragment;
 import com.example.myapplication.fragments.LogoFragment;
 import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.manager.NavigationManager;
 import com.example.myapplication.utils.manager.SessionManager;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
     TextView userText;
     SessionManager sessionManager;
-
     BottomNavigationView bottomNavigationView;
 
     @Override
@@ -75,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         replaceFragment(new LogoFragment());
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.consultas) {
@@ -92,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -105,23 +103,14 @@ public class MainActivity extends AppCompatActivity {
         final int id = item.getItemId();
 
         if (id == R.id.action_edit) {
-
-            Intent intent = new Intent(this, EditarActivity.class);
-            startActivity(intent);
-
-            finish();
+            replaceFragment(new EditarFragment());
             return true;
         } else if (id == R.id.action_delete) {
             showDeleteConfirmationDialog();
             return true;
         } else if (id == R.id.action_logout) {
-            // Acción para cerrar sesión
-
             sessionManager.logout();
-
-            Intent intent = new Intent(this, IniciarSesionActivity.class);
-            startActivity(intent);
-            finish();
+            NavigationManager.getInstance().navigateToDestination(this,IniciarSesionActivity.class);
             return true;
         } else {
             return super.onOptionsItemSelected(item);

@@ -14,12 +14,15 @@ import com.example.myapplication.data.Cita;
 import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Doctor;
 import com.example.myapplication.data.Mensaje;
+import com.example.myapplication.data.Paciente;
 import com.example.myapplication.services.CitaService;
 import com.example.myapplication.services.ConsultaService;
 import com.example.myapplication.services.MensajeService;
+import com.example.myapplication.services.PacienteService;
 import com.example.myapplication.services.implementaciones.CitaServiceImp;
 import com.example.myapplication.services.implementaciones.ConsultaServiceImp;
 import com.example.myapplication.services.implementaciones.MensajeServiceImp;
+import com.example.myapplication.services.implementaciones.PacienteServiceImp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -116,7 +119,10 @@ public class Controller {
         Log.i("ALARMAS", "Alarma creada: ID " + i + ", timestamp " + formattedDateTime);
 
     }
-
+    public Paciente getPaciente(String dni){
+        PacienteService service = PacienteServiceImp.getInstance();
+        return service.getPaciente(dni);
+    }
 
 
 }
