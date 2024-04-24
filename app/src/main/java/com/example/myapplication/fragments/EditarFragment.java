@@ -28,9 +28,11 @@ import com.example.myapplication.utils.manager.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -79,33 +81,25 @@ public class EditarFragment extends Fragment {
         postalAddressText.setText(paciente.getCodigoPostal());
         phoneText.setText(paciente.getTelefono());
 
-
         editButton.setOnClickListener(v -> {
-            Executor executor2 = Executors.newSingleThreadExecutor();
-            String urlServidor2 = ConfigApi.BASE_URL + "pacientes/usuario/editarPaciente/" + sessionManager.getUserId();
-
-            JSONObject postData = new JSONObject();
+            String fechaString = editTextDate.getText().toString();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // Define el formato de fecha esperado
+            Date fecha;
             try {
-                postData.put("Nombre", nameText.getText().toString());
-                postData.put("Apellidos", surnameText.getText().toString());
-                postData.put("FechaDeNacimiento", editTextDate.getText().toString());
-                postData.put("Direccion", domicilioText.getText().toString());
-                postData.put("CodigoPostal", postalAddressText.getText().toString());
-                postData.put("telefono", phoneText.getText().toString());
-            } catch (JSONException e) {
+                fecha = sdf.parse(fechaString);
+            } catch (ParseException e) {
                 e.printStackTrace();
+                fecha = null;
             }
-
-            PostDataAsync.postDataAsync(urlServidor2, executor2, (PostDataAsync.OnTaskCompleted) result -> {
-                requireActivity().runOnUiThread(() -> {
-                    if (result != null) {
-                        makeTextToast("Registro finalizado correctamente");
-                        NavigationManager.getInstance().navigateToDestination(requireContext(), MainActivity.class);
-                    } else {
-                        makeTextToast("Error al registrar");
-                    }
-                });
-            }, "POST", postData.toString());
+            Paciente updatePaciente = new Paciente(
+                    nameText.getText().toString(),
+                    surnameText.getText().toString(),
+                    postalAddressText.getText().toString(),
+                    fecha,
+                    domicilioText.getText().toString(),
+                    phoneText.getText().toString());
+            updatePaciente.setDni(sessionManager.getUserId());
+            Controller.getInstance().updatePaciente(updatePaciente,requireContext());
         });
     }
 

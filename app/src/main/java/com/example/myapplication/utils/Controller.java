@@ -127,7 +127,10 @@ public class Controller {
         PacienteService service = PacienteServiceImp.getInstance();
         return service.getPaciente(dni);
     }
-
+    public void updatePaciente(Paciente paciente, Context context){
+        PacienteService service = PacienteServiceImp.getInstance();
+        service.updatePaciente(paciente,context);
+    }
 
 
 }
