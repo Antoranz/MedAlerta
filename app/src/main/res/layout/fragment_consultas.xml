@@ -7,8 +7,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewConsultas"
-        android:layout_width="409dp"
-        android:layout_height="657dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/ButtonCrearConsulta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,10 +23,9 @@
         android:text="Crear consulta"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewConsultas"
-        app:layout_constraintVertical_bias="0.445"
+        app:layout_constraintVertical_bias="0.366"
         tools:ignore="UnknownIdInLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
