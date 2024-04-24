@@ -2,10 +2,16 @@ package com.example.myapplication.services.implementaciones;
 
 import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
 
+import android.content.Context;
+import android.widget.Toast;
+
+import com.example.myapplication.activities.MainActivity;
 import com.example.myapplication.data.Paciente;
 import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.services.PacienteService;
 import com.example.myapplication.utils.async.GetDataAsync;
+import com.example.myapplication.utils.async.PostDataAsync;
+import com.example.myapplication.utils.manager.NavigationManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,5 +76,32 @@ public class PacienteServiceImp implements PacienteService {
             e.printStackTrace();
         }
         return paciente[0];
+    }
+
+    @Override
+    public void updatePaciente(Paciente paciente,Context context) {
+        Executor executor2 = Executors.newSingleThreadExecutor();
+        String urlServidor2 = ConfigApi.BASE_URL + "pacientes/usuario/editarPaciente/" + paciente.getDni();
+
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("Nombre", paciente.getNombre());
+            postData.put("Apellidos", paciente.getApellidos());
+            postData.put("FechaDeNacimiento", paciente.writeDate());
+            postData.put("Direccion", paciente.getDireccion());
+            postData.put("CodigoPostal", paciente.getCodigoPostal());
+            postData.put("telefono", paciente.getTelefono());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        PostDataAsync.postDataAsync(urlServidor2, executor2, (PostDataAsync.OnTaskCompleted) result -> {
+            if (result != null) {
+                Toast.makeText(context, "Registro finalizado correctamente", Toast.LENGTH_LONG).show();
+                NavigationManager.getInstance().navigateToDestination(context, MainActivity.class);
+            } else {
+                Toast.makeText(context, "Error al registrar", Toast.LENGTH_LONG).show();
+            }
+        }, "POST", postData.toString());
     }
 }
