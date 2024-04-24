@@ -2,7 +2,9 @@ package com.example.myapplication.services.implementaciones;
 
 import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.myapplication.activities.MainActivity;
@@ -85,9 +87,11 @@ public class PacienteServiceImp implements PacienteService {
 
         JSONObject postData = new JSONObject();
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+            String fechaFormateada = sdf.format(paciente.getFechaDeNacimiento());
             postData.put("Nombre", paciente.getNombre());
             postData.put("Apellidos", paciente.getApellidos());
-            postData.put("FechaDeNacimiento", paciente.writeDate());
+            postData.put("FechaDeNacimiento", fechaFormateada);
             postData.put("Direccion", paciente.getDireccion());
             postData.put("CodigoPostal", paciente.getCodigoPostal());
             postData.put("telefono", paciente.getTelefono());
@@ -95,13 +99,24 @@ public class PacienteServiceImp implements PacienteService {
             e.printStackTrace();
         }
 
+        final Context applicationContext = context.getApplicationContext(); // Almacenar una referencia al contexto
+
         PostDataAsync.postDataAsync(urlServidor2, executor2, (PostDataAsync.OnTaskCompleted) result -> {
-            if (result != null) {
-                Toast.makeText(context, "Registro finalizado correctamente", Toast.LENGTH_LONG).show();
-                NavigationManager.getInstance().navigateToDestination(context, MainActivity.class);
+
+            if (context != null) {
+                ((Activity) context).runOnUiThread(() -> {
+                    if(result!=null){
+                        Toast.makeText(context, "Registro finalizado correctamente", Toast.LENGTH_LONG).show();
+                        NavigationManager.getInstance().navigateToDestination(context, MainActivity.class);
+                    }else{
+                        Toast.makeText(context, "Error al modificar", Toast.LENGTH_LONG).show();
+                    }
+                });
             } else {
-                Toast.makeText(context, "Error al registrar", Toast.LENGTH_LONG).show();
+                Log.e("PacienteServiceImp", "El contexto es nulo");
             }
         }, "POST", postData.toString());
+
+
     }
 }

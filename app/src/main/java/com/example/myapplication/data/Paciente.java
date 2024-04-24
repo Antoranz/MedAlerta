@@ -36,7 +36,7 @@ public class Paciente {
     }
 
     public String writeDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy//MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(FechaDeNacimiento.getTime());
     }
     public String getDni() {
