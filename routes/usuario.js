@@ -72,8 +72,10 @@ router.post('/signin' , async function(req,res,next){
   
       var dni=req.body.dni;
       var password=req.body.password;
+
+      console.log(password)
   
-      var hashedPassword = cifrarContrasena(password,dni + "caminar es bueno para la salud");
+      var hashedPassword = cifrarContrasena(password,dni);
   
       console.log("Contraseña inicio de sesion: " + hashedPassword);
   
