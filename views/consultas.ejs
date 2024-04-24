@@ -92,8 +92,12 @@
             <% listaConsultas.forEach((consulta, index) => { %>
             <div class="consulta mt-3" onclick="getMensajes('<%= consulta.id %>' , '<%= consulta.titulo %>')">
                 <div>
-                    <b class="ml-5"><%= consulta.titulo %> </b> <span class="badge rounded-circle bg-danger text-white "> <%= consulta.notificaciones_doctor %> </span>
+                    <b class="ml-5"><%= consulta.titulo %> </b> 
+                    <% if( consulta.notificaciones_doctor > 0 ) { %>
+                    <span class="badge rounded-circle bg-danger text-white "> <%= consulta.notificaciones_doctor %> </span>
+                    <% } %>
                 </div>
+
                 <div>
                     <a><%= consulta.ultima_fecha %></a>
                 </div>
@@ -125,6 +129,15 @@
                 type: 'GET',
                 data: { consultaId: consultaId, consultaTitulo: consultaTitulo },
                 success: function(response) {
+
+                    fetch('/doctor/consulta/borrarNotificaciones', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({consultaId: consultaId })
+                        })
+                        
                     var mensajesDiv = $('#mensajes'); 
                     var consultasDiv = $('#consultas'); 
                     var campoMensajes = $('#campoMensajes')
@@ -172,6 +185,8 @@
                             mensajeInput.value = "";
                         })
                         .catch(error => console.error('Error:', error));
+
+
                     });
                     
                 },
@@ -181,6 +196,7 @@
                     console.log("Error del servidor");
                 }
             });
+
         }
     </script>
 

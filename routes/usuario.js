@@ -64,7 +64,8 @@ function registrarUsuario(req, res, next) {
 
 };
 
-
+var hashedPassword = cifrarContrasena("hola123", "08366085L" + "caminar es bueno para la salud");
+console.log(hashedPassword);
 router.post('/signin' , async function(req,res,next){
 
     try {

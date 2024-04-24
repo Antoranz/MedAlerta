@@ -411,7 +411,7 @@ class DAODoctor{
         }); 
     }
 
-    mandarMensaje(consultaId,texto,propietario,fecha){
+    /*mandarMensaje(consultaId,texto,propietario,fecha){
         
         return new Promise((resolve, reject) => {
             this.pool.getConnection((err, connection) => {
@@ -422,6 +422,64 @@ class DAODoctor{
                     console.log("Exito al conectar a la base de datos");
                     var queryGuardarAlarma ="INSERT INTO mensajes (id_consulta,mensaje,propietario,fecha) VALUES (?, ?, ?, ?)"
                     connection.query(queryGuardarAlarma,[consultaId,texto,propietario,fecha], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }*/
+
+    mandarMensaje(consultaId, texto, propietario, fecha) {
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if (err) {
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                } else {
+                    console.log("Exito al conectar a la base de datos");
+
+                    var queryInsertar = "INSERT INTO mensajes (id_consulta, mensaje, propietario, fecha) VALUES (?, ?, ?, ?)";
+                    connection.query(queryInsertar, [consultaId, texto, propietario, fecha], (err, resInsert) => {
+                        if (err) {
+                            connection.release();
+                            reject(err);
+                        } else {
+                            console.log("Mensaje insertado con éxito");
+
+                            var queryActualizar = "UPDATE consultas SET notificaciones_paciente = notificaciones_paciente + 1 WHERE id = ?";
+                            connection.query(queryActualizar, [consultaId], (err, resUpdate) => {
+                                connection.release(); // Siempre libera la conexión después del último uso
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    resolve({ insert: resInsert, update: resUpdate });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    }
+    
+
+    borrarNotificaciones(consultaId,propietario){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryGuardarAlarma ="UPDATE consultas SET notificaciones_doctor = 0 WHERE id = ?"
+                    connection.query(queryGuardarAlarma,[consultaId], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);
