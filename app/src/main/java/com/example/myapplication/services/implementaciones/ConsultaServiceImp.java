@@ -8,6 +8,7 @@ import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.GetDataAsync;
 import com.example.myapplication.utils.async.PostDataAsync;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ConsultaServiceImp extends AppCompatActivity implements ConsultaService {
 
@@ -136,6 +138,38 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
         }
 
         return listaDoctores;
+    }
+
+
+    public boolean getSaberSiHayMensajesNoLeidos(long id,String dni) {
+
+        AtomicBoolean hayNoLeidos = new AtomicBoolean(false);
+
+        Executor executor = Executors.newSingleThreadExecutor();
+        String urlServidor = ConfigApi.BASE_URL+"pacientes/consulta/saberSiHayMensajesNoLeidos/"+id+"/"+dni;
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+
+        getDataAsync(urlServidor, executor, (GetDataAsync.OnTaskCompleted) result -> {
+            if (result != null) {
+                hayNoLeidos.set(Boolean.parseBoolean(result.trim()));
+
+                Log.d("FlagValue_service", "El valor de flag es: " + result);
+                Log.d("FlagValue_service", "El valor de flag es: " + hayNoLeidos.get());
+
+                latch.countDown();
+            }
+        });
+
+        try {
+
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return hayNoLeidos.get();
     }
 
     @Override

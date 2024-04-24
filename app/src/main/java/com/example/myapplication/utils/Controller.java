@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.myapplication.activities.AlarmReceiverActivity;
-import com.example.myapplication.activities.ChatViewActivity;
 import com.example.myapplication.data.Cita;
 import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Doctor;
@@ -25,10 +24,8 @@ import com.example.myapplication.services.implementaciones.MensajeServiceImp;
 import com.example.myapplication.services.implementaciones.PacienteServiceImp;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 
 public class Controller {
@@ -95,6 +92,13 @@ public class Controller {
 
     }
 
+    public boolean getSaberSiHayMensajesNoLeidos(long id, String dni) {
+
+        ConsultaService service = ConsultaServiceImp.getInstance();
+
+        return service.getSaberSiHayMensajesNoLeidos(id, dni);
+    }
+
 
 
 
@@ -127,5 +131,6 @@ public class Controller {
         PacienteService service = PacienteServiceImp.getInstance();
         service.updatePaciente(paciente,context);
     }
+
 
 }

@@ -50,7 +50,7 @@ public class ConsultasFragment extends Fragment {
             startActivity(intent);
         });
 
-        adapter = new ConsultasListAdapter(new LinkedList<>(), requireContext());
+        adapter = new ConsultasListAdapter(new LinkedList<>(), requireContext(),sessionManager.getUserId());
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         rv.setHasFixedSize(true);
         rv.setLayoutManager(layoutManager);
