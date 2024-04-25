@@ -121,16 +121,11 @@ router.post('/editarPassword', async function(req, res, next) {
 
     try {
 
-        const {password,email} = req.body;
+        const {password,dni} = req.body;
 
-        var hashedPassword = cifrarContrasena(password,email);
+        var hashedPassword = cifrarContrasena(password,dni);
 
-        console.log(hashedPassword)
-
-        console.log(password)
-        console.log(email)
-
-        await dao.editarPassword(hashedPassword,email);
+        await dao.editarPassword(hashedPassword,dni);
 
         res.json(true)
     } catch (error) {

@@ -173,7 +173,7 @@ class DAOPaciente{
         }); 
     }
 
-    editarPassword(password,email){
+    editarPassword(password,dni){
         
         return new Promise((resolve, reject) => {
             this.pool.getConnection((err, connection) => {
@@ -182,8 +182,8 @@ class DAOPaciente{
                     reject(err);
                 }else{
                     console.log("Exito al conectar a la base de datos");
-                    var queryEditarPassword ="UPDATE pacientes SET password = ? WHERE email = ?"
-                    connection.query(queryEditarPassword,[password,email], (err, res) => {
+                    var queryEditarPassword ="UPDATE pacientes SET password = ? WHERE dni = ?"
+                    connection.query(queryEditarPassword,[password,dni], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);
