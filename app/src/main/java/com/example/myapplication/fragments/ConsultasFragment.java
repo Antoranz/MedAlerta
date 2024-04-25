@@ -10,11 +10,12 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.activities.CrearConsultaActivity;
 import com.example.myapplication.utils.adapters.ConsultasListAdapter;
 import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.manager.SessionManager;
@@ -46,8 +47,7 @@ public class ConsultasFragment extends Fragment {
         crearConsulta = rootView.findViewById(R.id.ButtonCrearConsulta);
 
         crearConsulta.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), CrearConsultaActivity.class);
-            startActivity(intent);
+            replaceFragment(new CrearConsultaFragment());
         });
 
         adapter = new ConsultasListAdapter(new LinkedList<>(), requireContext(),sessionManager.getUserId());
@@ -57,5 +57,11 @@ public class ConsultasFragment extends Fragment {
         rv.setAdapter(adapter);
         adapter.setConsultasList(Controller.getInstance().getAllConsultas(requireContext(), sessionManager.getUserId()));
         adapter.notifyDataSetChanged();
+    }
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.commit();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.myapplication.activities;
+package com.example.myapplication.utils.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,11 +6,10 @@ import android.content.Intent;
 import android.util.Log;
 
 
-import com.example.myapplication.utils.async.NotificarMensajesAsync;
 import com.example.myapplication.utils.manager.NotificacionesManager;
 import com.example.myapplication.utils.manager.SessionManager;
 
-public class AlarmReceiverActivity extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
 
     SessionManager sessionManager;
 

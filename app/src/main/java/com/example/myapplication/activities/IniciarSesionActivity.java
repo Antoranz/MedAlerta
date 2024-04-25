@@ -48,7 +48,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
             if(dni.getText().toString() != "" && password.getText().toString() != ""){
 
                 Executor executor = Executors.newSingleThreadExecutor();
-                String urlServidor = ConfigApi.BASE_URL+"pacientes/checkPaciente";
+                String urlServidor = ConfigApi.BASE_URL+"pacientes/usuario/checkPaciente";
                 
                 JSONObject postData = new JSONObject();
                 try {

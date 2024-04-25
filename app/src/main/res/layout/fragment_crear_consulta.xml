@@ -10,45 +10,41 @@
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
         android:text="Crear una consulta"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/myspinner"/>
 
     <!-- Spinner (este es tu spinner existente) -->
-
-    <EditText
-        android:id="@+id/editTextTituloConsulta"
-        android:layout_width="286dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="112dp"
-        android:hint="Título de la consulta"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myspinner" />
-
     <Spinner
         android:id="@+id/myspinner"
         android:layout_width="292dp"
         android:layout_height="51dp"
-        android:layout_marginTop="120dp"
         android:prompt="@string/select_doctor"
         android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-        tools:ignore="MissingConstraints" />
-
+        app:layout_constraintBottom_toTopOf="@+id/editTextTituloConsulta" />
+    <EditText
+        android:id="@+id/editTextTituloConsulta"
+        android:layout_width="286dp"
+        android:layout_height="49dp"
+        android:hint="Título de la consulta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myspinner"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCrearConsulta"/>
     <Button
         android:id="@+id/buttonCrearConsulta"
         android:layout_width="282dp"
         android:layout_height="69dp"
-        android:layout_marginTop="144dp"
         android:text="Crear Consulta"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"

@@ -96,7 +96,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         } else {
 
             Executor executor = Executors.newSingleThreadExecutor();
-            String urlServidor = ConfigApi.BASE_URL+"pacientes/validarPaciente";
+            String urlServidor = ConfigApi.BASE_URL+"pacientes/usuario/validarPaciente";
 
             JSONObject postData = new JSONObject();
             try {

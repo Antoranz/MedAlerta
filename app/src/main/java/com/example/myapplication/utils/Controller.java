@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.myapplication.activities.AlarmReceiverActivity;
+import com.example.myapplication.utils.receiver.AlarmReceiver;
 import com.example.myapplication.data.Cita;
 import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Doctor;
@@ -105,7 +105,7 @@ public class Controller {
     public void creacionAlarma(int i, Long timestamp, String medicamento, String dosis, Context ctx) {
 
         AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ALARM_SERVICE);
-        Intent alarmIntent = new Intent(ctx, AlarmReceiverActivity.class);
+        Intent alarmIntent = new Intent(ctx, AlarmReceiver.class);
 
         alarmIntent.putExtra("MEDICAMENTO",medicamento);
         alarmIntent.putExtra("DOSIS", dosis);

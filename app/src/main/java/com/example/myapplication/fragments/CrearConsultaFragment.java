@@ -1,7 +1,10 @@
-package com.example.myapplication.activities;
+package com.example.myapplication.fragments;
 
 import android.os.Bundle;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
@@ -9,9 +12,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.MainActivity;
 import com.example.myapplication.data.Doctor;
 import com.example.myapplication.utils.Controller;
 
@@ -25,7 +31,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 
-public class CrearConsultaActivity extends AppCompatActivity {
+public class CrearConsultaFragment extends Fragment {
 
     SessionManager sessionManager;
     private Button crearConsulta;
@@ -36,28 +42,28 @@ public class CrearConsultaActivity extends AppCompatActivity {
 
     LinkedList<Doctor> listaDoctores;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crear_consulta);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        sessionManager = new SessionManager(this);
+        View rootView = inflater.inflate(R.layout.fragment_crear_consulta, container, false);
 
+        sessionManager = new SessionManager(requireContext());
 
-        initIgui();
+        initGui(rootView);
 
-
+        return rootView;
     }
-    private void initIgui() {
+    private void initGui(View rootView) {
 
-        spinner = findViewById(R.id.myspinner);
-        crearConsulta = findViewById(R.id.buttonCrearConsulta);
-        tituloConsulta = findViewById(R.id.editTextTituloConsulta);
+        spinner = rootView.findViewById(R.id.myspinner);
+        crearConsulta = rootView.findViewById(R.id.buttonCrearConsulta);
+        tituloConsulta = rootView.findViewById(R.id.editTextTituloConsulta);
 
-        listaDoctores = Controller.getInstance().getDoctoresParaConsulta(this,sessionManager.getUserId());
+        listaDoctores = Controller.getInstance().getDoctoresParaConsulta(requireContext(),sessionManager.getUserId());
 
 
-        ArrayAdapter<Doctor> adapter = new ArrayAdapter<>(this, com.google.android.material.R.layout.support_simple_spinner_dropdown_item, listaDoctores);
+        ArrayAdapter<Doctor> adapter = new ArrayAdapter<>(requireContext(), com.google.android.material.R.layout.support_simple_spinner_dropdown_item, listaDoctores);
 
         spinner.setAdapter(adapter);
 
@@ -71,7 +77,7 @@ public class CrearConsultaActivity extends AppCompatActivity {
 
             Controller.getInstance().postCrearConsulta(dniDoctorSeleccionado,sessionManager.getUserId().toString(),titulo,timeStamp);
 
-            NavigationManager.getInstance().navigateToDestination(this,MainActivity.class);
+            NavigationManager.getInstance().navigateToDestination(requireContext(), MainActivity.class);
         });
 
 
