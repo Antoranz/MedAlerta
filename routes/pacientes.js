@@ -66,30 +66,7 @@ router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
    
 });
 
-router.post('/checkPaciente', async function(req, res, next) {
 
-    try {
-
-        var dni=req.body.dni;
-        var password=req.body.password;
-
-        var hashedPassword = cifrarContrasena(password,dni);
-
-        console.log(hashedPassword)
-
-        var paciente = await dao.checkPaciente(dni,hashedPassword);
-
-        console.log(dni)
-        console.log(password)
-        console.log(paciente)
-        res.json(paciente)
-    } catch (error) {
-        console.error("Error durante la operación:", error);
-        res.json(null)
-        
-      }
-   
-});
 
 router.get('/obtenerAlarmas/:dni', async function(req, res, next) {
 
@@ -199,5 +176,6 @@ router.use('/consulta', consultaRouter);
 
 var usuarioRouter = require('./usuarioP');
 router.use('/usuario', usuarioRouter);
+
 
 module.exports = router;
