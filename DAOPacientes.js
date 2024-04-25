@@ -62,7 +62,7 @@ class DAOPaciente{
                     reject(err);
                 }else{
                     console.log("Exito al conectar a la base de datos");
-                    var queryobtenerMensajesNoLeidos = "SELECT c.id AS id_consulta, c.titulo AS titulo_consulta, m.mensaje, m.fecha AS fecha_ultimo_mensaje, c.dni_paciente, c.dni_doctor FROM consultas c INNER JOIN mensajes m ON c.id = m.id_consulta WHERE c.dni_paciente = ? AND m.leido_paciente = 0 AND m.propietario = 0 AND m.fecha = (SELECT MAX(fecha) FROM mensajes WHERE id_consulta = c.id) ORDER BY c.id;";
+                    var queryobtenerMensajesNoLeidos = "SELECT c.id AS id_consulta, c.titulo AS titulo_consulta, m.mensaje, m.fecha AS fecha_ultimo_mensaje, c.dni_paciente, c.dni_doctor FROM consultas c INNER JOIN mensajes m ON c.id = m.id_consulta WHERE c.dni_paciente = ? AND m.leido_paciente = 0 AND m.propietario = 0 ORDER BY c.id;";
                     connection.query(queryobtenerMensajesNoLeidos,[dni], (err, res) => {
                         connection.release();
                         if(err){
