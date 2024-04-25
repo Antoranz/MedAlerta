@@ -113,6 +113,9 @@
             </div>
             <div id="campoMensajes" class="mensajes">
             </div>
+            <div id="inputMensajes">
+
+            </div>
         </div>
         
         
@@ -122,8 +125,12 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
 
     <script>
+        var consultaActualId = "";
+        var consultaActualTitulo = "";
         function getMensajes(consultaId, consultaTitulo) {
-            // Hacer la llamada AJAX
+            
+            consultaActualId = consultaId;
+            consultaActualTitulo = consultaTitulo;
             $.ajax({
                 url: '/doctor/consulta/mensajes/' + consultaId,
                 type: 'GET',
@@ -154,17 +161,21 @@
 
                     var FechaDiv = $('#fecha'); 
                     FechaDiv.text(new Date().toLocaleDateString('es-ES'));
+
+                    var InputMensajesDiv = $('#inputMensajes'); 
+                    InputMensajesDiv.empty();
                     
+                    campoMensajes.empty();
                     response.mensajes.forEach(function(element) {
                         if (element.propietario == 1)
                             campoMensajes.append('<p><em class="mensajePaciente">' + element.mensaje + '</em></p>');
                         else
                             campoMensajes.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + element.mensaje + '</em></p>');
                     });
-                    mensajesDiv.append('<form class="form-inline" action="/doctor/consulta/mandarMensaje" method="post">');
-                    mensajesDiv.append('<input type="text" id="mensajeDoctor" placeholder="Escribe tu mensaje...">');
-                    mensajesDiv.append('<button id="enviarBoton" class="btn btn-primary" type="submit">Enviar</button>');
-                    mensajesDiv.append('</form>');
+                    InputMensajesDiv.append('<form class="form-inline" action="/doctor/consulta/mandarMensaje" method="post">');
+                    InputMensajesDiv.append('<input type="text" id="mensajeDoctor" placeholder="Escribe tu mensaje...">');
+                    InputMensajesDiv.append('<button id="enviarBoton" class="btn btn-primary" type="submit">Enviar</button>');
+                    InputMensajesDiv.append('</form>');
 
                     const enviarBoton = document.getElementById('enviarBoton');
                     enviarBoton.addEventListener('click', () => {
@@ -197,7 +208,18 @@
                 }
             });
 
+
+
         }
+        window.addEventListener('load', function() {
+            const intervalo = 5000;
+            setInterval(function() {
+                if(consultaActualId != ""){
+                    getMensajes(consultaActualId, consultaActualTitulo);
+                }
+
+            }, intervalo);
+        });
     </script>
 
 
