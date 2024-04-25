@@ -16,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.example.myapplication.R;
+import com.example.myapplication.data.Paciente;
 import com.example.myapplication.services.ConfigApi;
+import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.async.PostDataAsync;
 
 import org.json.JSONException;
@@ -73,56 +75,26 @@ public class RegistrarActivity extends AppCompatActivity  {
                makeTextToast("DNI inválido");
            }
            else{
-
-               Executor executor = Executors.newSingleThreadExecutor();
-               String urlServidor = ConfigApi.BASE_URL+"pacientes/usuario/registrarPaciente";
-
-               JSONObject postData = new JSONObject();
+               String fechaString = editTextDate.getText().toString();
+               DateFormat formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
+               Date fecha = null;
                try {
-
-                   String fechaString = editTextDate.getText().toString();
-                   DateFormat formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
-                   DateFormat formatoBD = new SimpleDateFormat("yyyy-MM-dd");
-
-
-                   Date fecha = formatoSalida.parse(fechaString);
-
-                   String fechaFormateadaBD = formatoBD.format(fecha);
-
-
-
-                   postData.put("Nombre", nameText.getText().toString());
-                   postData.put("Apellidos",surnameText.getText().toString());
-                   postData.put("FechaDeNacimiento", fechaFormateadaBD);
-                   postData.put("Direccion", domicilioText.getText().toString());
-                   postData.put("CodigoPostal", postalAddressText.getText().toString());
-                   postData.put("telefono", phoneText.getText().toString());
-                   postData.put("email", emailText.getText().toString());
-                   postData.put("DNI", dniText.getText().toString());
-                   postData.put("password", passwordText.getText().toString());
-
-               } catch (JSONException e) {
-                   e.printStackTrace();
+                   fecha = formatoSalida.parse(fechaString);
                } catch (ParseException e) {
                    throw new RuntimeException(e);
                }
 
-               postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
-                   runOnUiThread(() -> {
-                       if (result != null) {
-
-                           Log.d(TAG, "Registro finalizado correctamente");
-                           makeTextToast("Registro finalizado correctamente");
-                           Intent intent = new Intent(this, IniciarSesionActivity.class);
-                           startActivity(intent);
-
-                       }else{
-                           Log.d(TAG, "Error al registrar");
-                           makeTextToast("Error al registrar");
-                       }
-                   });
-               }, "POST", postData.toString());
-
+               Paciente paciente = new Paciente(dniText.getText().toString(),
+                       emailText.getText().toString(),
+                       nameText.getText().toString(),
+                       surnameText.getText().toString(),
+                       postalAddressText.getText().toString(),
+                       fecha,
+                       domicilioText.getText().toString(),
+                       phoneText.getText().toString(),
+                       passwordText.getText().toString()
+               );
+               Controller.getInstance().registrarPaciente(paciente, this);
            }
         });
     }

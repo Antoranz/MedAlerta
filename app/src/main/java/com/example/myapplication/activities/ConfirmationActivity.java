@@ -15,7 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
 import com.example.myapplication.services.ConfigApi;
+import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.async.NotificarMensajesAsync;
+import com.example.myapplication.utils.manager.NavigationManager;
 import com.example.myapplication.utils.manager.SessionManager;
 
 import org.json.JSONException;
@@ -44,82 +46,26 @@ public class ConfirmationActivity extends AppCompatActivity {
         checKButton = findViewById(R.id.idComprobar);
 
         checKButton.setOnClickListener(v -> {
-            //TODO
-
-
             if(codigoText.getText().toString().equals(numeroAleatorio.toString())){
                 sessionManager.verificateEmail();
-
-
-                Intent intent = new Intent(this, CargandoConfiguracionActivity.class);
-                startActivity(intent);
-
+                NavigationManager.getInstance().navigateToDestination(this,CargandoConfiguracionActivity.class);
             }else{
                 Toast.makeText(this,"codigo introducido incorrecto",Toast.LENGTH_LONG).show();
-
             }
-
         });
 
         reenvioButton.setOnClickListener(v -> {
 
             numeroAleatorio = generarNumeroAleatorio();
-            Executor executor = Executors.newSingleThreadExecutor();
-            String urlServidor = ConfigApi.BASE_URL+"pacientes/usuario/validarPaciente";
-
-            JSONObject postData = new JSONObject();
-            try {
-                postData.put("codigo", numeroAleatorio.toString());
-                postData.put("email", sessionManager.getEmail());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            // Realizar la solicitud POST para validar el email del paciente
-            postDataAsync(urlServidor, executor, result -> {
-                runOnUiThread(() -> {
-                    if (result != null) {
-                        Log.d(TAG, "Correo enviado");
-                        Toast.makeText(this, "Correo enviado a " + sessionManager.getEmail(), Toast.LENGTH_LONG).show();
-                    } else {
-                        Log.d(TAG, "Error al enviar correo");
-                        Toast.makeText(this, "Error al enviar correo", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }, "POST", postData.toString());
+            Controller.getInstance().validarPaciente(numeroAleatorio.toString(),sessionManager.getEmail(),this);
 
         });
 
         if (sessionManager.isVerificated()) {
-            Intent intent = new Intent(this, CargandoConfiguracionActivity.class);
-            startActivity(intent);
+            NavigationManager.getInstance().navigateToDestination(this,CargandoConfiguracionActivity.class);
+
         } else {
-
-            Executor executor = Executors.newSingleThreadExecutor();
-            String urlServidor = ConfigApi.BASE_URL+"pacientes/usuario/validarPaciente";
-
-            JSONObject postData = new JSONObject();
-            try {
-                postData.put("codigo", numeroAleatorio.toString());
-                postData.put("email", sessionManager.getEmail());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            // Realizar la solicitud POST para validar el email del paciente
-            postDataAsync(urlServidor, executor, result -> {
-                runOnUiThread(() -> {
-                    if (result != null) {
-                        Log.d(TAG, "Correo enviado");
-                        Toast.makeText(this, "Correo enviado a " + sessionManager.getEmail(), Toast.LENGTH_LONG).show();
-                    } else {
-                        Log.d(TAG, "Error al enviar correo");
-                        Toast.makeText(this, "Error al enviar correo", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }, "POST", postData.toString());
-
-
+            Controller.getInstance().validarPaciente(numeroAleatorio.toString(),sessionManager.getEmail(),this);
         }
 
     }
@@ -135,7 +81,4 @@ public class ConfirmationActivity extends AppCompatActivity {
         return numeroAleatorio;
     }
 
-    private void makeTextToast(String text){
-        Toast.makeText(this,text,Toast.LENGTH_LONG).show();
-    }
 }

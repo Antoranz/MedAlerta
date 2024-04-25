@@ -20,6 +20,7 @@ import com.example.myapplication.utils.async.GetDataAsync;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.async.NotificarMensajesAsync;
+import com.example.myapplication.utils.manager.NavigationManager;
 import com.example.myapplication.utils.manager.SessionManager;
 
 import org.json.JSONArray;
@@ -36,8 +37,6 @@ import java.util.concurrent.Executors;
 
 
 public class CargandoConfiguracionActivity extends AppCompatActivity {
-
-
     private ProgressBar progressBar;
     private int progressStatus = 0;
     SessionManager sessionManager;
@@ -60,17 +59,12 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
                     startService(intentService);
 
                 }else {
-                    Intent intent = new Intent(this, ConfirmationActivity.class);
-                    startActivity(intent);
+                    NavigationManager.getInstance().navigateToDestination(this, ConfirmationActivity.class);
                 }
 
             } else {
-                Intent intent = new Intent(this, IniciarSesionActivity.class);
-                startActivity(intent);
+               NavigationManager.getInstance().navigateToDestination(this,IniciarSesionActivity.class);
             }
-
-
-
     }
 
     public void initAlarms(){

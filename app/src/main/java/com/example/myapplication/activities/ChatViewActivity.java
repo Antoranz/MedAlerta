@@ -77,17 +77,12 @@ public class ChatViewActivity extends AppCompatActivity {
         buttonEnviar.setOnClickListener(v -> {
 
             if(!textoAenviar.getText().toString().isEmpty()){
-
-
                 Controller.getInstance().crearMensaje(consulta.getId(),textoAenviar.getText().toString(),1,timeStamp);
                 textoAenviar.setText("");
 
                 adapter.setMensajesList(Controller.getInstance().getAllMensajes(this, consulta.getId()));
                 adapter.notifyDataSetChanged();
                 rv.postDelayed(() -> rv.smoothScrollToPosition(adapter.getItemCount() - 1), 500);
-
-
-
             }
 
         });

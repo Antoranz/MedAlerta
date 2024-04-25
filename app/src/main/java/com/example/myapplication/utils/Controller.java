@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.myapplication.activities.IniciarSesionActivity;
+import com.example.myapplication.activities.RegistrarActivity;
 import com.example.myapplication.utils.receiver.AlarmReceiver;
 import com.example.myapplication.data.Cita;
 import com.example.myapplication.data.Consulta;
@@ -133,4 +135,28 @@ public class Controller {
     }
 
 
+    public void checkPaciente(String dni, String pass, Context context) {
+        PacienteService service = PacienteServiceImp.getInstance();
+        service.checkPaciente(dni,pass,context);
+    }
+
+    public void editarPassword(String dni, String pass, Context context){
+        PacienteService service = PacienteServiceImp.getInstance();
+        service.editarPassword(dni,pass,context);
+    }
+
+    public void validarPaciente(String numeroAleatorio, String email, Context context){
+        PacienteService service = PacienteServiceImp.getInstance();
+        service.validarPaciente(numeroAleatorio,email,context);
+    }
+
+    public void bajaPaciente(Context context){
+        PacienteService service = PacienteServiceImp.getInstance();
+        service.bajaPaciente(context);
+    }
+
+    public void registrarPaciente(Paciente paciente, Context context) {
+        PacienteService service = PacienteServiceImp.getInstance();
+        service.registrarPaciente(paciente,context);
+    }
 }
