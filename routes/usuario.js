@@ -132,7 +132,17 @@ router.post('/signin' , async function(req,res,next){
       res.json(enfermedades);
     }
     
-});
+  });
+  
+  router.post('/aniadirEnfermedad', async (req, res) => {
+
+    const enfermedad = req.body.enfermedad;
+    console.log("XXXXXXXXXX" + enfermedad)
+    console.log("XXXXXXXXXX" + req.session.currentUser.dni)
+    await dao.aniadirEnfermedad(req.session.currentUser.dni, enfermedad);
+    res.send("Enfermedad añadida");
+
+  });
 
   router.get('/register', function(req, res, next) {
     res.render("register",{error:"", usuario: "",nombre: ""});

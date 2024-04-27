@@ -373,7 +373,6 @@ class DAODoctor{
                     reject(err);
                 }else{
                     console.log("Exito al conectar a la base de datos");
-                    console.log("AAAAAAAAAAAAAAAAAAA", id)
                     var queryobtenerMensajes_consulta ="SELECT * FROM mensajes WHERE id_consulta = ? ORDER BY fecha ASC"
                     connection.query(queryobtenerMensajes_consulta,[id], (err, res) => {
                         connection.release();
@@ -559,6 +558,31 @@ class DAODoctor{
                     console.log("Exito al conectar a la base de datos");
                     var queryCheckDoctor ="SELECT enfermedad FROM enfermedades WHERE doctor_dni = ?"
                     connection.query(queryCheckDoctor,[dni], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    
+    aniadirEnfermedad(doctor_dni, enfermedad){
+        console.log("la enfermedad X es: " + enfermedad)
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryGuardarTratamiento ="INSERT INTO enfermedades (doctor_dni, enfermedad) VALUES (?,?)"
+                    connection.query(queryGuardarTratamiento,[doctor_dni, enfermedad], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);

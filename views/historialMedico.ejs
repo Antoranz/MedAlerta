@@ -195,11 +195,24 @@
                                 divCheckbox.appendChild(checkbox);
                                 divCheckbox.appendChild(label);
 
-                                // Agregar el nuevo checkbox al contenedor dentro del formulario
                                 document.getElementById('enfermedadesContainer').appendChild(divCheckbox);
 
-                                // Limpiar el campo de nueva enfermedad
                                 document.getElementById('nuevaEnfermedad').value = '';
+
+                                console.log("enfermedad añadida: " +nuevaEnfermedad)
+                                $.ajax({
+                                    url: '/doctor/usuario/aniadirEnfermedad', 
+                                    method: 'POST',
+                                    data: { enfermedad: nuevaEnfermedad},
+                                    success: function(data) {
+                                        
+                                        console.log("exito");
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error("Error al obtener datos:", error);
+                                    }
+                                });
+
                             } else {
                                 alert('Por favor, ingrese el nombre de la nueva enfermedad.');
                             }
