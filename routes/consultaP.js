@@ -68,7 +68,9 @@ router.get('/saberSiHayMensajesNoLeidos/:id/:dni', async function(req, res, next
         
         var mensajes = await dao.obtenerMensajesNoLeidos(dni_paciente);
 
-        var hayMensajesNoLeidos = "false";
+        
+
+        var hayMensajesNoLeidos = false;
 
         // Recorrer la lista de mensajes
         for (var i = 0; i < mensajes.length; i++) {
@@ -78,13 +80,13 @@ router.get('/saberSiHayMensajesNoLeidos/:id/:dni', async function(req, res, next
             if (mensajes[i].id_consulta === parseInt(id_consulta)) {
                 
                 console.log("ha detectado un mensaje coincidente")
-                hayMensajesNoLeidos = "true";
+                hayMensajesNoLeidos = true;
                 break;
             }
         }
 
         
-        res.json(hayMensajesNoLeidos);
+        res.json({"leidos":hayMensajesNoLeidos});
     } catch (error) {
         console.error("Error durante la operación:", error);
         res.json(null);
