@@ -100,6 +100,8 @@ public class EditarFragment extends Fragment {
                     phoneText.getText().toString());
             updatePaciente.setDni(sessionManager.getUserId());
             Controller.getInstance().updatePaciente(updatePaciente,requireContext());
+            sessionManager.createSession(sessionManager.getUserId(), sessionManager.getEmail(),nameText.getText().toString());
+
         });
     }
 

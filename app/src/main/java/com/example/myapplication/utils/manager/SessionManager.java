@@ -61,4 +61,7 @@ public class SessionManager {
     public String getName() {
         return sharedPreferences.getString(KEY_NAME, null);
     }
+    public void setName(String name_editado) {
+        editor.putString(KEY_NAME, name_editado);
+    }
 }

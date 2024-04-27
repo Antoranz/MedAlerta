@@ -172,6 +172,7 @@ public class PacienteServiceImp implements PacienteService {
     }
 
     @Override
+
     public void editarPassword(String dni, String pass, Context context) {
         Executor executor = Executors.newSingleThreadExecutor();
         String urlServidor = ConfigApi.BASE_URL+"pacientes/usuario/editarPassword";

@@ -31,7 +31,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
         inicio = findViewById(R.id.editButton);
         inicio.setOnClickListener(v -> {
             if(dni.getText().toString() != "" && password.getText().toString() != ""){
-                Controller.getInstance().checkPaciente(dni.getText().toString(), dni.getText().toString(), this);
+                Controller.getInstance().checkPaciente(dni.getText().toString(), password.getText().toString(), this);
             }else{
                 makeTextToast("No puede haber ningun campo vacio");
             }
