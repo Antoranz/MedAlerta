@@ -88,7 +88,6 @@ router.post("/asignar-cita", async function(req, res, next) {
           horaParts[2] // Segundo
       );
   
-      console.log("Ha entrado en invalid");
   
       nuevoDate = nuevaFechaaaaaaaa;
       console.log(nuevaFechaaaaaaaa)
