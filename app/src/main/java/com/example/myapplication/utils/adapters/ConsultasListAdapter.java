@@ -85,6 +85,7 @@ public class ConsultasListAdapter extends RecyclerView.Adapter<ConsultasListAdap
         @Override
         public void onClick(View v) {
 
+            image_notificacion.setVisibility(View.GONE);
             NavigationManager.getInstance().navigateToDestinationWithData(context, ChatViewActivity.class, e);
 
         }
@@ -92,19 +93,19 @@ public class ConsultasListAdapter extends RecyclerView.Adapter<ConsultasListAdap
             e=b;
 
             boolean flag = Controller.getInstance().getSaberSiHayMensajesNoLeidos(b.getId(),dni);
-            Log.d("FlagValue", "El valor de flag es: " + flag);
+            Log.d("FlagValue_final", "El valor de flag es: " + flag);
 
 
             //LA IMAGEN NO FUNCIONA Y ME PETA, EL RESTO EN PRINCIPIO VA BIEN
-            if(image_notificacion!=null){
 
-                if (flag){
-                    image_notificacion.setVisibility(View.VISIBLE);
 
-                }else{
-                    image_notificacion.setVisibility(View.GONE);
-                }
+            if (flag){
+                image_notificacion.setVisibility(View.VISIBLE);
+
+            }else{
+                image_notificacion.setVisibility(View.GONE);
             }
+
 
 
             if(b.getTitulo().length()>35){

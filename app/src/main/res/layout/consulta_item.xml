@@ -21,6 +21,16 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"/>
 
+        <ImageView
+            android:id="@+id/imageViewMensajesNoLeidos"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/alert_notification_consult"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:visibility="visible" />
+
     </RelativeLayout>
 
     <!-- Línea fina en la parte inferior del CardView -->

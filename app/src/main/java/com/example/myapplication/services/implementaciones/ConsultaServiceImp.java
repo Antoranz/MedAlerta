@@ -143,7 +143,7 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
 
     public boolean getSaberSiHayMensajesNoLeidos(long id,String dni) {
 
-        AtomicBoolean hayNoLeidos = new AtomicBoolean(false);
+        final Boolean[] hayNoLeidos = {false};
 
         Executor executor = Executors.newSingleThreadExecutor();
         String urlServidor = ConfigApi.BASE_URL+"pacientes/consulta/saberSiHayMensajesNoLeidos/"+id+"/"+dni;
@@ -153,10 +153,20 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
 
         getDataAsync(urlServidor, executor, (GetDataAsync.OnTaskCompleted) result -> {
             if (result != null) {
-                hayNoLeidos.set(Boolean.parseBoolean(result.trim()));
 
-                Log.d("FlagValue_service", "El valor de flag es: " + result);
-                Log.d("FlagValue_service", "El valor de flag es: " + hayNoLeidos.get());
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+
+                    hayNoLeidos[0] = (Boolean) jsonObject.get("leidos");
+                    Log.d("FlagValue_service", "El valor de flag es: " + result);
+                    Log.d("FlagValue_service", "El valor de flag es: " + hayNoLeidos[0]);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+
+
 
                 latch.countDown();
             }
@@ -169,7 +179,11 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
             e.printStackTrace();
         }
 
-        return hayNoLeidos.get();
+        if(hayNoLeidos[0] == false){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     @Override
