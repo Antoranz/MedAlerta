@@ -180,26 +180,21 @@
                     const enviarBoton = document.getElementById('enviarBoton');
                     enviarBoton.addEventListener('click', () => {
 
-                        const mensajeInput = document.getElementById('mensajeDoctor');
+                        const mensajeInput = document.getElementById('mensajeDoctor');7
                         const texto = mensajeInput.value;
-
-                        fetch('/doctor/consulta/mandarMensaje', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ texto: texto, consultaId: consultaId })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            campoMensajes.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + texto + '</em></p>');
-                            mensajeInput.value = "";
-                        })
-                        .catch(error => console.error('Error:', error));
-
-
-                    });
-                    
+                        if(texto != "" && texto != null){
+                            fetch('/doctor/consulta/mandarMensaje', {
+                                method: 'POST',
+                                body: JSON.stringify({ texto: texto, consultaId: consultaId })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                campoMensajes.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + texto + '</em></p>');
+                                mensajeInput.value = "";
+                            })
+                            .catch(error => console.error('Error:', error));
+                        }
+                    });        
                 },
                 error: function(xhr, status, error) {
                     
@@ -211,13 +206,39 @@
 
 
         }
+        function actualizarChat(consultaId){
+
+            $.ajax({
+                url: '/doctor/consulta/mensajes/' + consultaId,
+                type: 'GET',
+                data: { consultaId: consultaId },
+                success: function(response) {
+                    fetch('/doctor/consulta/borrarNotificaciones', {
+                            method: 'POST',
+                            body: JSON.stringify({consultaId: consultaId })
+                        })
+                    var campoMensajes = $('#campoMensajes')
+                    campoMensajes.empty();
+                    response.mensajes.forEach(function(element) {
+                        if (element.propietario == 1)
+                            campoMensajes.append('<p><em class="mensajePaciente">' + element.mensaje + '</em></p>');
+                        else
+                            campoMensajes.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + element.mensaje + '</em></p>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    console.log("Error del servidor");
+                }});
+
+
+        }
         window.addEventListener('load', function() {
             const intervalo = 5000;
             setInterval(function() {
                 if(consultaActualId != ""){
-                    getMensajes(consultaActualId, consultaActualTitulo);
+                    actualizarChat(consultaActualId);
                 }
-
             }, intervalo);
         });
     </script>
