@@ -1,5 +1,7 @@
 "use strict";
 
+const fs = require('fs');
+
 class DAODoctor{
     constructor(pool){
         this.pool = pool;
@@ -480,6 +482,83 @@ class DAODoctor{
                     console.log("Exito al conectar a la base de datos");
                     var queryGuardarAlarma ="UPDATE consultas SET notificaciones_doctor = 0 WHERE id = ?"
                     connection.query(queryGuardarAlarma,[consultaId], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    
+    aniadirEnfermedades(dniDoctor){
+        return new Promise((resolve, reject) => {
+            fs.readFile("./public/data/enfermedades.json", "utf8", (err, data) => {
+                if (err) {
+                    console.error(`Error al leer el archivo JSON: ${err.message}`);
+                    reject(err);
+                    return;
+                }
+    
+                const enfermedadesJson = JSON.parse(data);
+                const enfermedades= enfermedadesJson.enfermedades;
+                if (!Array.isArray(enfermedades)) {
+                    reject(new Error("El archivo JSON no contiene un array de enfermedades"));
+                    return;
+                }
+    
+                this.pool.getConnection((err, connection) => {
+                    if (err) {
+                        console.error(`Error al realizar la conexión: ${err.message}`);
+                        reject(err);
+                        return;
+                    }
+    
+                    console.log("Éxito al conectar a la base de datos");
+    
+                    const promises = enfermedades.map(enfermedad => {
+                        const queryGuardarAlarma = "INSERT INTO enfermedades (doctor_dni, enfermedad) VALUES (?, ?)";
+                        return new Promise((resolve, reject) => {
+                            connection.query(queryGuardarAlarma, [dniDoctor, enfermedad], (err, res) => {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    resolve(res);
+                                }
+                            });
+                        });
+                    });
+    
+                    Promise.all(promises)
+                        .then(results => {
+                            connection.release();
+                            resolve(results);
+                        })
+                        .catch(err => {
+                            connection.release();
+                            reject(err);
+                        });
+                });
+            });
+        });
+    }
+
+    getEnfermedades(dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryCheckDoctor ="SELECT enfermedad FROM enfermedades WHERE doctor_dni = ?"
+                    connection.query(queryCheckDoctor,[dni], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);

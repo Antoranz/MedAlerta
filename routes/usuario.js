@@ -54,8 +54,12 @@ function registrarUsuario(req, res, next) {
     dao.aniadirDoctor(dni, email, hashedPassword, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
     .then((resultado) => {
       req.session.currentUser = {dni,email,nombre,apellidos};
-
-      res.render("index",{nombre : ""});
+      dao.aniadirEnfermedades(dni).then(() => {
+        res.render("index",{nombre : ""});
+      }).catch((error) => {
+          console.error("Error interno del servidor" + error);
+        });
+      
     })
     .catch((error) => {
         console.error("Error interno del servidor" + error);
@@ -114,6 +118,21 @@ router.post('/signin' , async function(req,res,next){
       res.render("editarPerfil",{error:"", usuario: usuario,nombre: req.session.currentUser.nombre});
     }
   });
+
+  router.get('/getEnfermedades',async function (req, res){
+    if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+      res.render('index', { nombre:"" });
+    }else{
+
+      const datos = await dao.getEnfermedades(req.session.currentUser.dni);
+      const enfermedades = datos.map(row => {
+        return row.enfermedad ;
+    });
+    console.log(enfermedades);
+      res.json(enfermedades);
+    }
+    
+});
 
   router.get('/register', function(req, res, next) {
     res.render("register",{error:"", usuario: "",nombre: ""});

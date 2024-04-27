@@ -1,0 +1,30 @@
+{
+    "enfermedades": [
+        "Diabetes",
+        "Hipertensión",
+        "Asma",
+        "Artritis",
+        "Gripe",
+        "Neumonía",
+        "Anemia",
+        "Migraña",
+        "Bronquitis",
+        "Depresión",
+        "Insuficiencia cardiaca",
+        "Osteoporosis",
+        "Epilepsia",
+        "Alzheimer",
+        "Parkinson",
+        "Esclerosis múltiple",
+        "Colesterol alto",
+        "Enfermedad de Crohn",
+        "Fibromialgia",
+        "Psoriasis",
+        "Alergia",
+        "Cataratas",
+        "Glaucoma",
+        "Hepatitis",
+        "Eczema"
+    ]
+}
+

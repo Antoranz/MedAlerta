@@ -23,11 +23,22 @@ router.get('/CrearHistorial/', async function(req, res, next) {
       var paciente = await dao.obtenerPaciente(req.query.dni);
       console.log(paciente);
       console.log(paciente[0].dni);
-      res.render('historialMedico', { title: 'Express' ,userData: paciente[0],nombre:req.session.currentUser.nombre});
+      res.render('historialMedico', { title: 'Express' ,userData: paciente[0],nombre:req.session.currentUser.nombre, dni:req.session.currentUser.dni});
     }
 });
     
 router.post('/guardarHistorial', function(req, res){
+
+    const data = req.body;
+
+    // Checkboxes seleccionados
+    const checkboxesSeleccionados = Object.keys(data).filter(key => {
+        // Excluye campos que no sean checkboxes si es necesario
+        return data[key] === 'on'; // 'on' es el valor por defecto de los checkboxes seleccionados
+    });
+
+    // Ahora tienes los checkboxes seleccionados en `checkboxesSeleccionados`
+    console.log('Checkboxes seleccionados:', checkboxesSeleccionados);
 
     const doc = new PDFDocument();
     

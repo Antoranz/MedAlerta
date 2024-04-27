@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-04-2024 a las 15:39:12
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Tiempo de generación: 27-04-2024 a las 16:43:29
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -139,6 +139,7 @@ CREATE TABLE `doctores` (
 
 INSERT INTO `doctores` (`dni`, `email`, `password`, `nombre`, `apellidos`, `fecha_nacimiento`, `domicilio`, `codigo_postal`, `numero_telefono`, `imagen`) VALUES
 ('08366085L', 'frantora@ucm.es', '10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672', 'Francisco Javier', 'Antoranz Esteban', '2002-01-02', 'Calle Ocaña', '28047', '618495616', ''),
+('18366085L', 'carlopen3@ucm.es', 'bf3568b9dcc3ed7da523255bd44e7bbaeaa1ce9343630a80e70cc006159d96fb', 'Carlos3', 'Gimenez Ch', '2007-02-27', 'Calle Guapa', '28001', '654898342', ''),
 ('71042723R', 'sergis13@ucm.es', 'c22cdd06ab5120cbea143d1b73b262195e00403f8e5421f4bbb65b93dd1e9028', 'Sergio', 'chamizo Sánchez', '2000-02-06', 'Calle vicente camaron 44', '28011', '616859670', '');
 
 -- --------------------------------------------------------
@@ -151,6 +152,49 @@ CREATE TABLE `enfermedades` (
   `doctor_dni` varchar(10) NOT NULL,
   `enfermedad` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `enfermedades`
+--
+
+INSERT INTO `enfermedades` (`doctor_dni`, `enfermedad`) VALUES
+('18366085L', 'Diabetes'),
+('18366085L', 'Hipertensión'),
+('18366085L', 'Asma'),
+('18366085L', 'Artritis'),
+('18366085L', 'Gripe'),
+('18366085L', 'Neumonía'),
+('18366085L', 'Anemia'),
+('18366085L', 'Migraña'),
+('18366085L', 'Bronquitis'),
+('18366085L', 'Depresión'),
+('08366085L', 'daltonismo1'),
+('08366085L', 'Daltonismo2'),
+('08366085L', 'Diabetes'),
+('08366085L', 'Hipertensión'),
+('08366085L', 'Asma'),
+('08366085L', 'Artritis'),
+('08366085L', 'Gripe'),
+('08366085L', 'Neumonía'),
+('08366085L', 'Anemia'),
+('08366085L', 'Migraña'),
+('08366085L', 'Bronquitis'),
+('08366085L', 'Depresión'),
+('08366085L', 'Insuficiencia cardiaca'),
+('08366085L', 'Osteoporosis'),
+('08366085L', 'Epilepsia'),
+('08366085L', 'Alzheimer'),
+('08366085L', 'Parkinson'),
+('08366085L', 'Esclerosis múltiple'),
+('08366085L', 'Colesterol alto'),
+('08366085L', 'Enfermedad de Crohn'),
+('08366085L', 'Fibromialgia'),
+('08366085L', 'Psoriasis'),
+('08366085L', 'Alergia'),
+('08366085L', 'Cataratas'),
+('08366085L', 'Glaucoma'),
+('08366085L', 'Hepatitis'),
+('08366085L', 'Eczema');
 
 -- --------------------------------------------------------
 
@@ -301,9 +345,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('8pM_AqWfbH9HMB_ZFx9BRgfskcH_O03v', 1713013040, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-02\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}'),
-('R5khqOkpEwveV7v7-z9wC0VfglXVlDvA', 1713012993, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-02\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}'),
-('ogXwM7ua9ojBItDydmXkORWlANcJwd_a', 1713087967, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-02\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"validado\":true}}');
+('gFgTVMx4Z0PJWNepmKbXlOmsTCIkA3eM', 1714315371, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-02\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"imagen\":\"\",\"validado\":true}}');
 
 -- --------------------------------------------------------
 
