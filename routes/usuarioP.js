@@ -33,10 +33,12 @@ router.post('/registrarPaciente', async function(req, res, next) {
     const {Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,password} = req.body;
 
     try {
-        var hashedPassword = cifrarContrasena(password,email);
+        var hashedPassword = cifrarContrasena(password,DNI + "caminar es bueno para la salud");
 
         console.log("FECHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        console.log(FechaDeNacimiento)
+        console.log(hashedPassword)
+        console.log(DNI)
+        console.log(password)
 
         await dao.registrarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,hashedPassword);
 
@@ -54,9 +56,11 @@ router.post('/checkPaciente', async function(req, res, next) {
         var dni=req.body.dni;
         var password=req.body.password;
 
-        var hashedPassword = cifrarContrasena(password,dni);
+        var hashedPassword = cifrarContrasena(password,dni + "caminar es bueno para la salud");
 
         console.log(hashedPassword)
+        console.log(dni)
+        console.log(password)
 
         var paciente = await dao.checkPaciente(dni,hashedPassword);
 
@@ -123,7 +127,7 @@ router.post('/editarPassword', async function(req, res, next) {
 
         const {password,dni} = req.body;
 
-        var hashedPassword = cifrarContrasena(password,dni);
+        var hashedPassword = cifrarContrasena(password,dni + "caminar es bueno para la salud");
 
         await dao.editarPassword(hashedPassword,dni);
 
