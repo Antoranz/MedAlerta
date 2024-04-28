@@ -409,6 +409,150 @@ class DAODoctor{
         }); 
     }
 
+    bajaDoctor_citas(doctor_dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor_citas ="DELETE FROM citas WHERE doctor_dni = ?"
+                    connection.query(querybajaDoctor_citas,[doctor_dni], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    bajaDoctor_tratamientos(id_doctor){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor_tratamientos ="DELETE FROM tratamiento WHERE id_doctor = ?"
+                    connection.query(querybajaDoctor_tratamientos,[id_doctor], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    bajaDoctor(dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor ="DELETE FROM doctores WHERE dni = ?"
+                    connection.query(querybajaDoctor,[dni], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    bajaDoctor_asignaciones(DNIDoctor){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor_asignaciones ="DELETE FROM asignaciones WHERE DNIDoctor = ?"
+                    connection.query(querybajaDoctor_asignaciones,[DNIDoctor], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    bajaDoctor_consultas(dni_doctor){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor_consultas ="DELETE FROM consultas WHERE dni_doctor = ?"
+                    connection.query(querybajaDoctor_consultas,[dni_doctor], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    bajaDoctor_notificaciones(doctor_dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor_notificaciones ="DELETE FROM notificaciones WHERE doctor_dni = ?"
+                    connection.query(querybajaDoctor_notificaciones,[doctor_dni], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
     checkDoctor(dni,password){
         
         return new Promise((resolve, reject) => {

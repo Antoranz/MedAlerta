@@ -269,6 +269,30 @@ class DAOPaciente{
             });
         }); 
     }
+
+    bajaPaciente_citas(paciente_dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaPaciente_citas ="DELETE FROM citas WHERE paciente_dni = ?"
+                    connection.query(querybajaPaciente_citas,[paciente_dni], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
     
     bajaPaciente(DNI){
         
