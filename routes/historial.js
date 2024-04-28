@@ -180,7 +180,8 @@ router.post('/guardarHistorial', function(req, res){
 });
 
 router.get('/obtenerURLPDF', (req, res) => {
-    const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + req.query.dni + ".pdf";
+    console.log(req.query.dniPaciente);
+    const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + req.query.dniPaciente + ".pdf";
 
     res.json({ downloadURL: pdfURL });
 });

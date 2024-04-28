@@ -42,7 +42,7 @@
                     <div class="card p-2 text-center">
                         <img class="card-img-top" src="/images/historial.png" alt="Descargar Historial">
                         <div class="card-body">
-                          <p class="card-text"><button id="mostrarHistorial" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Descargar historial médico</button></p>
+                          <p class="card-text"><button id="mostrarHistorial" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Ver historial médico</button></p>
                         </div>
                     </div>
                 </div>
@@ -154,7 +154,8 @@
       var dni = "<%= dni %>";
         $("#crearHistorial").on('click', function(){
             window.location.href = '/doctor/historial/CrearHistorial?dni='+dni;
-        }); 
+        });
+        
 
         $("#iniciarTratamiento").on('click', function(){               
             $('#modalIniciarTratamiento').modal('show');
@@ -163,7 +164,7 @@
             $.ajax({
                 url: '/doctor/historial/obtenerURLPDF',
                 type: 'GET',
-                data: $("#paciente").val(),
+                data: {dniPaciente: dni},
                 success: function(response) {
 
                     console.log("Cargado el pdfFFFFFFFFFFFF")
