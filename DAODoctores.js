@@ -48,29 +48,33 @@ class DAODoctor{
         });
     }
     
-    aniadirUsuario(DNIDoctor,DNIPaciente){
-        
-        return new Promise((resolve, reject) => {
-            this.pool.getConnection((err, connection) => {
-                if(err){
-                    console.error(`Error al realizar la conexión: ${err.message}`);
-                    reject(err);
-                }else{
-                    console.log("Exito al conectar a la base de datos");
-                    var queryAnyadirUsuario ="INSERT INTO asignaciones (DNIDoctor, DNIPaciente) VALUES (?, ?)"
-                    connection.query(queryAnyadirUsuario,[DNIDoctor,DNIPaciente], (err, res) => {
-                        connection.release();
-                        if(err){
-                            reject(err);
-                        }
-                        else{
-                            resolve(res);
-                        }
-                    });
-                }
-            });
-        }); 
-    }
+        aniadirUsuario(DNIDoctor,DNIPaciente){
+            
+            return new Promise((resolve, reject) => {
+                this.pool.getConnection((err, connection) => {
+                    if(err){
+                        console.error(`Error al realizar la conexión: ${err.message}`);
+                        reject(err);
+                    }else{
+                        console.log("Exito al conectar a la base de datos");
+                        var queryAnyadirUsuario ="INSERT INTO asignaciones (DNIDoctor, DNIPaciente) VALUES (?, ?)"
+                        connection.query(queryAnyadirUsuario,[DNIDoctor,DNIPaciente], (err, res) => {
+                            connection.release();
+                            if (err) {
+                                if (err.code === 'ER_DUP_ENTRY') {
+                                    reject(new Error("Usuario ya existe en la lista de usuarios"));
+                                } else {
+                                    reject(new Error("Error en el servidor"));
+                                }
+                            }
+                            else{
+                                resolve(res);
+                            }
+                        });
+                    }
+                });
+            }); 
+        }
     
     eliminarAsociacion(DNIDoctor,DNIPaciente){
         

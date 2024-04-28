@@ -56,7 +56,7 @@ router.get('/gestion-usuarios', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
     res.render('index', { nombre:"" });
   }else{
-    res.render('gestionUsuarios', { nombre: req.session.currentUser.nombre });
+    res.render('gestionUsuarios', { nombre: req.session.currentUser.nombre, error:"", confirmacion:"" });
   }
 });
 
@@ -111,32 +111,36 @@ router.get('/obtener-doctores', (req, res) => {
 
 
 
-router.post("/aniadirUsuario", async function(req, res, next) {
-  
-  const usuarioP = req.body.dni;
+router.post("/aniadirUsuario", async function (req, res, next) {
+  try {
+      const usuarioP = req.body.dni;
+      let usuarioAniadido;
 
-  if(usuarioP.includes("@")){ //
-    
-    var paciente = await dao2.obtenerPaciente_email(usuarioP);
-    
-    if(paciente.length!==0){
-      console.log("aniado paciente con dni:" + paciente[0].dni + " al doctor con dni: "+ req.session.currentUser.dni);
-      dao.aniadirUsuario(req.session.currentUser.dni, paciente[0].dni);
+      if (usuarioP.includes("@")) {
+          const paciente = await dao2.obtenerPaciente_email(usuarioP);
 
-    }
+          if (paciente.length !== 0) {
+              console.log("Añadido paciente con DNI: " + paciente[0].dni + " al doctor con DNI: " + req.session.currentUser.dni);
+              usuarioAniadido = await dao.aniadirUsuario(req.session.currentUser.dni, paciente[0].dni);
+          } else {
+              throw new Error("Paciente con email " + usuarioP + " no encontrado.");
+          }
+      } else {
+          const paciente = await dao2.obtenerPaciente(usuarioP);
+          if (paciente.length !== 0) {
+              console.log("Añadido paciente con DNI: " + paciente[0].dni + " al doctor con DNI: " + req.session.currentUser.dni);
+              usuarioAniadido = await dao.aniadirUsuario(req.session.currentUser.dni, usuarioP);
+          } else {
+              throw new Error("Paciente con DNI " + usuarioP + " no encontrado.");
+          }
+      }
 
-  }else{
+      res.render("gestionUsuarios", { nombre: req.session.currentUser.nombre, error: "", confirmacion: "Se ha añadido el usuario" });
 
-    var paciente = await dao2.obtenerPaciente(usuarioP);
-    if(paciente.length !==0){
-      console.log("aniado paciente con dni:" + paciente[0].dni + " al doctor con dni: "+ req.session.currentUser.dni);
-      dao.aniadirUsuario(req.session.currentUser.dni,usuarioP)
-    }
-   
+  } catch (error) {
+
+    res.render("gestionUsuarios", { nombre: req.session.currentUser.nombre, error: error.message, confirmacion: "" });
   }
-
-  res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
-
 });
 
 router.get('/deleteAccount', async function(req, res, next) {
@@ -212,7 +216,7 @@ router.post("/guardarTratamiento", async function(req, res, next) {
     await dao.guardarAlarma(result.insertId, medicamento, dosis, horaPrimeraToma, tomasAlDia, fechaInicio, fechaFin);
 }
 
-  res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
+  res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre, error: "", confirmacion: "Se ha añadido la alarma"});
 
 });
 
@@ -247,13 +251,13 @@ router.get('/eliminarAsociacion/:dni', async function(req, res, next) {
     dao.eliminarAsociacion(req.session.currentUser.dni,dniUsuario)
 
 
-    res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
+    res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre, error:"", confirmacion:"Se ha eliminado al usuario"});
 
 
 
   } catch (error) {
     
-    console.error("Error al obtener usuarios:", error);
+    res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre, error:"No se ha podido eliminar al usuario", confirmacion:""});
   }
 });
 
