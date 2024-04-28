@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+const path = require('path');
 const DAOPaciente = require("../DAOPacientes")
 
 const mysql = require('mysql');
@@ -184,5 +185,38 @@ router.get('/obtenerURLPDF', (req, res) => {
 
     res.json({ downloadURL: pdfURL });
 });
+
+router.delete('/eliminar', (req, res) => {
+
+    const dniPaciente = req.body.dniPaciente; // Acceder al cuerpo de la solicitud
+    console.log(dniPaciente)
+    const pdfURL = path.join(path.dirname(__dirname), 'public', 'historiales', `HM${req.session.currentUser.dni}-${dniPaciente}.pdf`);
+    console.log("la ruta es: "+ pdfURL)
+
+    if (fs.existsSync(pdfURL)) {
+        console.log("existe el pdf")
+      }
+    else{
+        console.log("no existe el pdf")
+    }
+    //const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + dniPaciente + ".pdf";
+    if (!dniPaciente) {
+      res.status(400).send('DNI del paciente es necesario');
+    } else {
+        console.log("se intenta borrar el archivo en: "+pdfURL)
+        fs.unlink(pdfURL, (err) => {
+            if (err) {
+              if (err.code === 'ENOENT') {
+                res.status(404).send('Archivo no encontrado');
+              } else {
+                console.log("falla aqui")
+                res.status(500).send('Error al eliminar el archivo');
+              }
+            } else {
+              res.status(200).send('Archivo eliminado con éxito');
+            }
+          });
+    }
+  });
 
 module.exports = router;
