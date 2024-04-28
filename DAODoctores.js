@@ -28,7 +28,26 @@ class DAODoctor{
             });
         }); 
     }
-
+    updateDoctor(dni, email, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono) {
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    var queryActualizarDoctor = "UPDATE doctores SET email=?, nombre=?, apellidos=?, fecha_nacimiento=?, domicilio=?, codigo_postal=?, numero_telefono=? WHERE dni=?";
+                    connection.query(queryActualizarDoctor, [email, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono, dni], (err, res) => {
+                        connection.release();
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        });
+    }
+    
     aniadirUsuario(DNIDoctor,DNIPaciente){
         
         return new Promise((resolve, reject) => {
@@ -52,7 +71,7 @@ class DAODoctor{
             });
         }); 
     }
-
+    
     eliminarAsociacion(DNIDoctor,DNIPaciente){
         
         return new Promise((resolve, reject) => {

@@ -116,7 +116,40 @@ router.post('/signin' , async function(req,res,next){
       res.render("editarPerfil",{error:"", usuario: usuario,nombre: req.session.currentUser.nombre});
     }
   });
-
+  router.post('/editando',async function(req,res,next){
+    if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
+      res.render('index', { nombre:"" });
+    }else{
+      const {dni,email,nombre,apellidos,fecha_nacimiento,domicilio,codigo_postal,numero_telefono} = req.body;
+      var usuario = {dni: req.session.currentUser.dni,email: req.session.currentUser.email,nombre: nombre,apellidos: apellidos,fecha_nacimiento: fecha_nacimiento,domicilio: domicilio,codigo_postal: codigo_postal,numero_telefono: numero_telefono};
+      const fechaNacimiento = new Date(fecha_nacimiento);
+      const fechaActual = new Date();
+      if (fechaNacimiento >= fechaActual) {
+        usuario.fecha_nacimiento = req.session.currentUser.fecha_nacimiento;
+        res.render("editarPerfil",{error:"La fecha de nacimiento debe ser anterior a la fecha actual", usuario: usuario,nombre: req.session.currentUser.nombre});
+      }
+      if (!/^\d{9}$/.test(numero_telefono)) {
+        usuario.numero_telefono = req.session.currentUser.numero_telefono;
+        res.render("editarPerfil",{error:"El número de teléfono no es válido", usuario: usuario,nombre: req.session.currentUser.nombre});
+      }
+      await dao.updateDoctor(dni, email, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
+      .then((resultado) => {
+        console.log(resultado);
+        req.session.currentUser.nombre=nombre;
+        req.session.currentUser.apellidos=apellidos;
+        req.session.currentUser.fecha_nacimiento=fecha_nacimiento;
+        req.session.currentUser.domicilio=domicilio;
+        req.session.currentUser.codigo_postal=codigo_postal;
+        req.session.currentUser.numero_telefono=numero_telefono;
+        res.redirect('/');
+      })
+      .catch((error) => {
+        res.render("editarPerfil",{error:"Error interno del servidor", usuario: usuario,nombre: req.session.currentUser.nombre});
+        console.error("Error interno del servidor" + error);
+    });
+      
+    }
+  })
   router.get('/getEnfermedades',async function (req, res){
     if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
       res.render('index', { nombre:"" });
