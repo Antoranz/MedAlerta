@@ -115,9 +115,10 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
                         JSONObject jsonConsulta = jsonArray.getJSONObject(i);
 
                         String nombre = jsonConsulta.getString("nombre");
+                        String apellidos = jsonConsulta.getString("apellidos");
                         String dniDoctor = jsonConsulta.getString("dni");
 
-                        Doctor doctor = new Doctor(nombre, dniDoctor);
+                        Doctor doctor = new Doctor(nombre,apellidos,dniDoctor);
                         listaDoctores.add(doctor);
                     }
 

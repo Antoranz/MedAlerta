@@ -32,6 +32,15 @@
             android:textAlignment="center"
             android:textSize="16sp" />
 
+        <Spinner
+            android:id="@+id/myspinnerCitas"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:prompt="@string/select_doctor"
+            android:spinnerMode="dialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <EditText
             android:id="@+id/motivoConsulta"
             android:layout_width="match_parent"
@@ -70,17 +79,6 @@
             android:layout_marginBottom="5dp"
             android:clickable="true"
             android:focusableInTouchMode="false" />
-
-        <EditText
-            android:id="@+id/duracionCita"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:ems="10"
-            android:hint="@string/duracionCita"
-            android:inputType="textPostalAddress"
-            android:minHeight="48dp"
-            android:autofillHints="" />
 
         <EditText
             android:id="@+id/tipoCita"

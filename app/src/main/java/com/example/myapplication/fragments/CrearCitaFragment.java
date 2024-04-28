@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.MainActivity;
+import com.example.myapplication.data.Doctor;
 import com.example.myapplication.services.ConfigApi;
+import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.utils.manager.SessionManager;
 
@@ -26,14 +30,19 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class CrearCitaFragment extends Fragment {
 
-    private EditText editTextDate, editTextTime, motivoConsulta, duracion, tipo;
+    private EditText editTextDate, editTextTime, motivoConsulta, tipo;
     private Button confirmarCita;
+
+    Spinner spinner;
+
+    LinkedList<Doctor> listaDoctores;
     private SessionManager sessionManager;
 
     @Nullable
@@ -56,22 +65,34 @@ public class CrearCitaFragment extends Fragment {
 
         motivoConsulta = rootView.findViewById(R.id.motivoConsulta);
         tipo = rootView.findViewById(R.id.tipoCita);
-        duracion = rootView.findViewById(R.id.duracionCita);
 
         confirmarCita = rootView.findViewById(R.id.botonConfirmarCita);
 
+        spinner = rootView.findViewById(R.id.myspinnerCitas);
+
+        listaDoctores = Controller.getInstance().getDoctoresParaConsulta(requireContext(),sessionManager.getUserId());
+
+
+        ArrayAdapter<Doctor> adapter = new ArrayAdapter<>(requireContext(), com.google.android.material.R.layout.support_simple_spinner_dropdown_item, listaDoctores);
+
+        spinner.setAdapter(adapter);
+
         confirmarCita.setOnClickListener(v -> {
+
+            // Obtener el doctor seleccionado del Spinner
+            Doctor doctorSeleccionado = (Doctor) spinner.getSelectedItem();
+            String dniDoctorSeleccionado = doctorSeleccionado.getDni();
 
             Executor executor2 = Executors.newSingleThreadExecutor();
             String urlServidor2 = ConfigApi.BASE_URL + "pacientes/crearNotificacionCita/" + sessionManager.getUserId();
 
             JSONObject postData = new JSONObject();
             try {
+                postData.put("doctor_dni", dniDoctorSeleccionado);
                 postData.put("tipo", tipo.getText().toString());
                 postData.put("motivo", motivoConsulta.getText().toString());
                 postData.put("fecha", editTextDate.getText().toString());
                 postData.put("hora", editTextTime.getText().toString());
-                postData.put("duracion", duracion.getText().toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
