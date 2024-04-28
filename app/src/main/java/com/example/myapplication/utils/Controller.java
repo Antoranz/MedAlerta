@@ -2,6 +2,7 @@ package com.example.myapplication.utils;
 
 import static android.content.Context.ALARM_SERVICE;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -140,9 +141,9 @@ public class Controller {
         service.checkPaciente(dni,pass,context);
     }
 
-    public void editarPassword(String dni, String pass, Context context){
+    public <T> void editarPassword(String dni, String pass, Context context, Class<T> activity){
         PacienteService service = PacienteServiceImp.getInstance();
-        service.editarPassword(dni,pass,context);
+        service.editarPassword(dni,pass,context,activity);
     }
 
     public void validarPaciente(String numeroAleatorio, String email, Context context){

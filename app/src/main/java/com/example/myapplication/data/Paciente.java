@@ -1,9 +1,10 @@
 package com.example.myapplication.data;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Paciente {
+public class Paciente implements Serializable {
     private String dni;
     private String email;
     private String Nombre;
@@ -26,8 +27,9 @@ public class Paciente {
         this.telefono = telefono;
         this.password = password;
     }
-    public Paciente(String nombre, String apellidos, String codigoPostal, Date fechaDeNacimiento, String direccion, String telefono) {
+    public Paciente(String nombre,String email, String apellidos, String codigoPostal, Date fechaDeNacimiento, String direccion, String telefono) {
         Nombre = nombre;
+        this.email = email;
         Apellidos = apellidos;
         CodigoPostal = codigoPostal;
         FechaDeNacimiento = fechaDeNacimiento;

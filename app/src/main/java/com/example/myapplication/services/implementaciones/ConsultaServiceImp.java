@@ -158,8 +158,7 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
                     JSONObject jsonObject = new JSONObject(result);
 
                     hayNoLeidos[0] = (Boolean) jsonObject.get("leidos");
-                    Log.d("FlagValue_service", "El valor de flag es: " + result);
-                    Log.d("FlagValue_service", "El valor de flag es: " + hayNoLeidos[0]);
+
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }

@@ -1,6 +1,5 @@
 package com.example.myapplication.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,22 +8,34 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
+import com.example.myapplication.data.Consulta;
+import com.example.myapplication.data.Paciente;
 import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.manager.SessionManager;
+
 import java.util.Random;
 
 
-public class ChangePasswordActivity extends AppCompatActivity {
+public class ForgottenPasswordActivity extends AppCompatActivity {
 
     SessionManager sessionManager ;
     Button reenvioButton, checKButton;
     EditText codigoText,password1,password2;
+
+    Paciente paciente;
     Integer numeroAleatorio = generarNumeroAleatorio();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+
+        if (android.os.Build.VERSION.SDK_INT >= 31) {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                paciente = (Paciente) extras.getSerializable("data");
+            }
+        }
 
         sessionManager = new SessionManager(this);
         codigoText = findViewById(R.id.editTextCodigo);
@@ -39,7 +50,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             if(!password1.getText().toString().equals(password2.getText().toString())){
                 Toast.makeText(this,"Las contraseñas no coinciden",Toast.LENGTH_LONG).show();
             }else if(codigoText.getText().toString().equals(numeroAleatorio.toString())){
-                Controller.getInstance().editarPassword(sessionManager.getUserId(),password1.getText().toString(),this,MainActivity.class);
+                Controller.getInstance().editarPassword(paciente.getDni(),password1.getText().toString(),this,IniciarSesionActivity.class);
             }else{
                 Toast.makeText(this,"codigo introducido incorrecto",Toast.LENGTH_LONG).show();
             }
@@ -49,10 +60,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
         reenvioButton.setOnClickListener(v -> {
 
             numeroAleatorio = generarNumeroAleatorio();
-            Controller.getInstance().validarPaciente(numeroAleatorio.toString(),sessionManager.getEmail(),this);
+            Controller.getInstance().validarPaciente(numeroAleatorio.toString(),paciente.getEmail(),this);
 
         });
-        Controller.getInstance().validarPaciente(numeroAleatorio.toString(),sessionManager.getEmail(),this);
+        Controller.getInstance().validarPaciente(numeroAleatorio.toString(),paciente.getEmail(),this);
     }
 
 

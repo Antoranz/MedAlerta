@@ -1,9 +1,10 @@
 package com.example.myapplication.data;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Cita {
+public class Cita implements Serializable {
 
     private long id;
     private String doctor_dni;

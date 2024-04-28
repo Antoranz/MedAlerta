@@ -3,11 +3,14 @@ package com.example.myapplication.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.myapplication.data.Paciente;
 import com.example.myapplication.utils.Controller;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.manager.NavigationManager;
@@ -41,17 +44,26 @@ public class IniciarSesionActivity extends AppCompatActivity {
             NavigationManager.getInstance().navigateToDestination(this,RegistrarActivity.class);
         });
 
-
         changePassword = findViewById(R.id.changePasswordId);
         changePassword.setOnClickListener(v -> {
             if(!dni.getText().toString().isEmpty()){
 
-                //TODO falta por implementar el cambio de contraseña
+                Paciente paciente = Controller.getInstance().getPaciente(dni.getText().toString());
 
-                Intent intent = new Intent(this, IniciarSesionActivity.class);
-                startActivity(intent);
+                if(paciente != null){
+
+                    Log.d("paciente en cambiar contraseña", "Paciente es: " + paciente.getEmail());
+
+                    NavigationManager.getInstance().navigateToDestinationWithData(this, ForgottenPasswordActivity.class,paciente);
+
+
+                }else{
+                    makeTextToast("Credenciales incorrectas");
+                }
+
+
             }else{
-                makeTextToast("Añade un correo en el campo para cambiar la contraseña");
+                makeTextToast("Añade un dni en el campo DNI para que se te envíe un correo a tu email asociado");
             }
 
         });

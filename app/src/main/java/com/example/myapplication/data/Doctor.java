@@ -1,6 +1,8 @@
 package com.example.myapplication.data;
 
-public class Doctor {
+import java.io.Serializable;
+
+public class Doctor implements Serializable {
     private String nombre;
     private String dni;
 

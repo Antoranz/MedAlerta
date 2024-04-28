@@ -96,9 +96,6 @@ public class ConsultasListAdapter extends RecyclerView.Adapter<ConsultasListAdap
             Log.d("FlagValue_final", "El valor de flag es: " + flag);
 
 
-            //LA IMAGEN NO FUNCIONA Y ME PETA, EL RESTO EN PRINCIPIO VA BIEN
-
-
             if (flag){
                 image_notificacion.setVisibility(View.VISIBLE);
 

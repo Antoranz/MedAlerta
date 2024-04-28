@@ -1,8 +1,9 @@
 package com.example.myapplication.data;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Mensaje {
+public class Mensaje implements Serializable {
 
     private long id_consulta;
     private String mensaje;

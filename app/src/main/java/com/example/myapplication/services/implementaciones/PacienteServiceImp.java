@@ -66,6 +66,7 @@ public class PacienteServiceImp implements PacienteService {
                         Date nuevaFecha = calendar.getTime();
                         paciente[0] = new Paciente(
                                 firstObject.getString("Nombre"),
+                                firstObject.getString("email"),
                                 firstObject.getString("Apellidos"),
                                 firstObject.getString("CodigoPostal"),
                                 nuevaFecha,
@@ -173,7 +174,7 @@ public class PacienteServiceImp implements PacienteService {
 
     @Override
 
-    public void editarPassword(String dni, String pass, Context context) {
+    public <T> void editarPassword(String dni, String pass, Context context, Class<T> activity) {
         Executor executor = Executors.newSingleThreadExecutor();
         String urlServidor = ConfigApi.BASE_URL+"pacientes/usuario/editarPassword";
 
@@ -191,7 +192,7 @@ public class PacienteServiceImp implements PacienteService {
                 if (result != null) {
                     Log.d(TAG, "Contraseña cambiada correctamente");
                     Toast.makeText(context, "Contraseña cambiada correctamente", Toast.LENGTH_LONG).show();
-                    NavigationManager.getInstance().navigateToDestination(context,MainActivity.class);
+                    NavigationManager.getInstance().navigateToDestination(context,activity);
                 } else {
                     Log.d(TAG, "Error al cambiar password");
                     Toast.makeText(context, "Error al cambiar password", Toast.LENGTH_LONG).show();
