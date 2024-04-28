@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-04-2024 a las 21:51:08
+-- Tiempo de generación: 28-04-2024 a las 23:52:04
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `medalerta`
+-- Base de datos: `medalerta2`
 --
 
 DELIMITER $$
@@ -103,10 +103,7 @@ INSERT INTO `citas` (`id`, `fecha_hora`, `duracion`, `doctor_dni`, `paciente_dni
 (25, '2024-04-30 17:30:00', 20, '08366085L', '49249480V'),
 (26, '2024-04-30 18:30:00', 12, '08366085L', '49249480V'),
 (27, '2024-04-30 20:30:00', 12, '08366085L', '49249480V'),
-(29, '2024-05-14 05:32:00', 12, '08366085L', '49249480V'),
-(30, '2024-04-30 19:30:00', 15, '08366085L', '49249480V'),
-(31, '2024-04-30 16:00:00', 15, '08366085L', '49249480V'),
-(36, '2024-04-30 09:26:00', 10, '08366085L', '49249480V');
+(29, '2024-05-14 05:32:00', 12, '08366085L', '49249480V');
 
 -- --------------------------------------------------------
 
@@ -224,6 +221,14 @@ CREATE TABLE `notificaciones` (
   `paciente_dni` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `notificaciones`
+--
+
+INSERT INTO `notificaciones` (`id`, `tipo`, `motivo`, `fecha_hora`, `doctor_dni`, `paciente_dni`) VALUES
+(47, 'Cita', 'asdfasdfasdf', '2024-04-30 16:30:00', '08366085L', '49249480V'),
+(49, 'Cita', 'asdfasdfasfd', '2024-04-30 19:30:00', '08366085L', '49249480V');
+
 -- --------------------------------------------------------
 
 --
@@ -267,8 +272,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('otRYJ4fULDFXKTgUfyU8obSFuAR3ouQv', 1714409867, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"sergiosan112@gmail.com\",\"nombre\":\"Sergio\",\"apellidos\":\"Sánchez Frantora\",\"fecha_nacimiento\":\"2000-01-08\",\"domicilio\":\"Calle vicente camaron 44\",\"codigo_postal\":\"06700\",\"numero_telefono\":\"616859670\",\"imagen\":\"\",\"validado\":true}}'),
-('4OJyHmjr5SGg2ef5_yizGMOQZ3KQE9m2', 1714420228, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"sergiosan112@gmail.com\",\"nombre\":\"Sergio\",\"apellidos\":\"Sánchez Frantora\",\"fecha_nacimiento\":\"2000-01-08\",\"domicilio\":\"Calle vicente camaron 44\",\"codigo_postal\":\"06700\",\"numero_telefono\":\"616859670\",\"imagen\":\"\",\"validado\":true}}');
+('otRYJ4fULDFXKTgUfyU8obSFuAR3ouQv', 1714409867, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"sergiosan112@gmail.com\",\"nombre\":\"Sergio\",\"apellidos\":\"Sánchez Frantora\",\"fecha_nacimiento\":\"2000-01-08\",\"domicilio\":\"Calle vicente camaron 44\",\"codigo_postal\":\"06700\",\"numero_telefono\":\"616859670\",\"imagen\":\"\",\"validado\":true}}');
 
 -- --------------------------------------------------------
 
@@ -319,14 +323,100 @@ ALTER TABLE `citas`
   ADD KEY `paciente_dni` (`paciente_dni`);
 
 --
+-- Indices de la tabla `consultas`
+--
+ALTER TABLE `consultas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `doctores`
+--
+ALTER TABLE `doctores`
+  ADD PRIMARY KEY (`dni`);
+
+--
+-- Indices de la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `pacientes`
+--
+ALTER TABLE `pacientes`
+  ADD PRIMARY KEY (`dni`);
+
+--
+-- Indices de la tabla `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`session_id`);
+
+--
+-- Indices de la tabla `tratamiento`
+--
+ALTER TABLE `tratamiento`
+  ADD PRIMARY KEY (`id_tratamiento`),
+  ADD KEY `id_paciente` (`id_paciente`),
+  ADD KEY `id_doctor` (`id_doctor`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `alarma`
+--
+ALTER TABLE `alarma`
+  MODIFY `id_alarma` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT de la tabla `consultas`
+--
+ALTER TABLE `consultas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+
+--
+-- AUTO_INCREMENT de la tabla `tratamiento`
+--
+ALTER TABLE `tratamiento`
+  MODIFY `id_tratamiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `alarma`
+--
+ALTER TABLE `alarma`
+  ADD CONSTRAINT `alarma_ibfk_1` FOREIGN KEY (`id_tratamiento`) REFERENCES `tratamiento` (`id_tratamiento`);
+
+--
+-- Filtros para la tabla `citas`
+--
+ALTER TABLE `citas`
+  ADD CONSTRAINT `citas_ibfk_1` FOREIGN KEY (`doctor_dni`) REFERENCES `doctores` (`dni`),
+  ADD CONSTRAINT `citas_ibfk_2` FOREIGN KEY (`paciente_dni`) REFERENCES `pacientes` (`dni`);
+
+--
+-- Filtros para la tabla `tratamiento`
+--
+ALTER TABLE `tratamiento`
+  ADD CONSTRAINT `tratamiento_ibfk_1` FOREIGN KEY (`id_paciente`) REFERENCES `pacientes` (`dni`),
+  ADD CONSTRAINT `tratamiento_ibfk_2` FOREIGN KEY (`id_doctor`) REFERENCES `doctores` (`dni`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
