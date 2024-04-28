@@ -172,6 +172,8 @@ class DAODoctor{
     
         // Formatear la fecha y hora para la consulta SQL
         const fecha_hora_formateada = fecha + ' ' + hora;
+        
+        console.log("fecha de las citas coincidentes que he pasado:" + fecha_hora_formateada)
     
         return new Promise((resolve, reject) => {
             this.pool.getConnection((err, connection) => {

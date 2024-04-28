@@ -50,7 +50,8 @@ function confirmarCita(button) {
 
         },
         error: function(xhr, status, error) {
-            console.error('Error al asignar la cita:', error);
+            var errorMessage = xhr.responseText;
+            alert('Error al eliminar la cita: '+ errorMessage);
         }
     });
 
@@ -76,7 +77,8 @@ function rechazarCita(button) {
             
         },
         error: function(xhr, status, error) {
-            console.error('Error al eliminar la cita:', error);
+            var errorMessage = xhr.responseText;
+            console.error('Error al eliminar la cita:', errorMessage);
         }
     });
 

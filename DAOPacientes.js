@@ -245,6 +245,30 @@ class DAOPaciente{
             });
         }); 
     }
+
+    bajaPaciente_asignaciones(DNIPaciente){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaPaciente_asignaciones ="DELETE FROM asignaciones WHERE DNIPaciente = ?"
+                    connection.query(querybajaPaciente_asignaciones,[DNIPaciente], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
     
     bajaPaciente(DNI){
         
