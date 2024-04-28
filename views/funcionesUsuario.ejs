@@ -40,12 +40,20 @@
                 </div>
                 <div class="col-4">
                     <div class="card p-2 text-center">
-                        <img class="card-img-top" src="/images/historial.png" alt="Descargar Historial">
+                        <img class="card-img-top" src="/images/historial.png" alt="Ver Historial">
                         <div class="card-body">
                           <p class="card-text"><button id="mostrarHistorial" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Ver historial médico</button></p>
                         </div>
                     </div>
                 </div>
+                <div class="col-4">
+                  <div class="card p-2 text-center">
+                      <img class="card-img-top" src="/images/historial.png" alt="Eliminar Historial">
+                      <div class="card-body">
+                        <p class="card-text"><button id="eliminarHistorial" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Eliminar historial médico</button></p>
+                      </div>
+                  </div>
+              </div>
                 <div class="col-4 mt-2">
                   <div class="card p-2 text-center">
                       <img class="card-img-top" src="/images/cita-medica.jpg" alt="Cita Medica">
@@ -178,6 +186,26 @@
                 }
             });
         });
+        $('#eliminarHistorial').on('click', function() {
+          $.ajax({
+            url: '/doctor/historial/eliminar', 
+            type: 'DELETE',
+            contentType: 'application/json', // Especifica que envías JSON
+            data: JSON.stringify({ dniPaciente: dni }), // Convierte el objeto a JSON
+            success: function() {
+              alert('Historial médico eliminado con éxito');
+            },
+            error: function(xhr, status, error) {
+              if (xhr.status === 404) {
+                alert('Archivo no encontrado');
+              } else {
+                console.log(error)
+                alert('Error al eliminar el historial médico');
+              }
+            }
+          });
+        });
+
         $("#btnAgregarFila").click(function() {
             var nuevaFila = $("<tr><td><input type='text' class='form-control' name='medicamento[]'></td><td><input type='text' class='form-control' name='dosis[]'></td><td><input type='time' class='form-control' name='hora_primera_toma[]'></td><td><input type='number' class='form-control' name='tomas_al_dia[]'></td><td><input type='date' class='form-control' name='fecha_inicio[]'></td><td><input type='date' class='form-control' name='fecha_fin[]'></td><td><button type='button' class='btn btn-danger btnEliminarFila'>-</button></td></tr>");
             $("#tablaTratamiento tbody").append(nuevaFila); // Usa el identificador único
