@@ -28,7 +28,7 @@ function registrarUsuario(req, res, next) {
     res.render("register",{error:"Las contraseñas no coinciden", usuario: usuario,email:"",nombre: ""});
   }
 
-  if (!/^\d{8}[a-zA-Z]$/.test(dni)) {
+  if (!validateNif(dni)) {
     valido = false;
     usuario.dni = "";
     res.render("register",{error:"El DNI no es válido", usuario: usuario,email:"",nombre: ""});
@@ -59,10 +59,10 @@ function registrarUsuario(req, res, next) {
       }).catch((error) => {
           console.error("Error interno del servidor" + error);
         });
-      
     })
     .catch((error) => {
         console.error("Error interno del servidor" + error);
+        res.render("register",{error:"Error Interno del Servidor", usuario: usuario,email:"",nombre: ""});
     });
   }
 
@@ -190,7 +190,18 @@ router.post('/signin' , async function(req,res,next){
         return ""; 
     }
   }
-
+function validateNif(nif){ 
+  let long = /^[0-9]{8}[a-zA-Z]$/.test(nif)
+  console.log(long)
+  return long && nif[8]==calcularLetraDNI(nif.substr(0,8));
+}
+function calcularLetraDNI(numeros){
+    console.log(numeros)
+    var letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+    var indice = numeros%23;
+    console.log(letras.charAt(indice))
+    return letras.charAt(indice);
+}
   function cifrarContrasena(contrasena, salt) {
     // Crea un nuevo objeto Hash
     const hash = crypto.createHash('sha256');
