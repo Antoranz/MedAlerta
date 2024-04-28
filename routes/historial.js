@@ -107,7 +107,6 @@ router.post('/guardarHistorial', function(req, res){
     { titulo: 'Apellido', valor: req.body.apellido },
     { titulo: 'Sexo', valor: req.body.sexo },
     { titulo: 'Fecha de Nacimiento', valor: req.body.fechaNacimiento },
-    { titulo: 'Edad', valor: req.body.edad },
     { titulo: 'Peso (kg)', valor: req.body.peso },
     { titulo: 'Altura (cm)', valor: req.body.altura },
     { titulo: 'Alergias', valor: req.body.alergias },
