@@ -41,20 +41,16 @@ router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
         console.log("Dni Doctor:" + dni_doctor[0].DNIDoctor);
 
 
-        const fechaHoraString = fecha + ' ' + hora; // Combinar fecha y hora en una sola cadena
-        const nuevoDate = new Date(fechaHoraString);
 
-        // Sumar una hora a la fecha
-        nuevoDate.setHours(nuevoDate.getHours() + 1);
-
-        // Convertir la fecha ajustada a una cadena en formato ISO
-        const fecha_hora = nuevoDate.toISOString();
+        const fechaHoraString = fecha + ' ' + hora + ':00'; // Combinar fecha y hora en una sola cadena, en formato ISO 8601 y UTC
+        
+       
 
         console.log(fechaHoraString);
-        console.log(fecha_hora);
+       
 
 
-        await dao.crearNotificacionCita(tipo,motivo,fecha_hora,dni_doctor[0].DNIDoctor,dni_paciente);
+        await dao.crearNotificacionCita(tipo,motivo,fechaHoraString,dni_doctor[0].DNIDoctor,dni_paciente);
 
 
         res.json(true)
@@ -65,7 +61,6 @@ router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
       }
    
 });
-
 
 
 router.get('/obtenerAlarmas/:dni', async function(req, res, next) {
