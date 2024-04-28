@@ -29,16 +29,14 @@ router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
 
         var dni_paciente=req.params.dni;
 
-        const {tipo,motivo,fecha,hora,duracion} = req.body;
-
-        var dni_doctor = await dao.obtenerDoctorDelPaciente(dni_paciente);
+        const {doctor_dni,tipo,motivo,fecha,hora,duracion} = req.body;
 
         console.log(tipo);
         console.log(motivo);
         console.log(fecha);
         console.log(hora);
         console.log(duracion);
-        console.log("Dni Doctor:" + dni_doctor[0].DNIDoctor);
+        console.log(doctor_dni);
 
 
 
@@ -50,7 +48,7 @@ router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
        
 
 
-        await dao.crearNotificacionCita(tipo,motivo,fechaHoraString,dni_doctor[0].DNIDoctor,dni_paciente);
+        await dao.crearNotificacionCita(tipo,motivo,fechaHoraString,doctor_dni,dni_paciente);
 
 
         res.json(true)

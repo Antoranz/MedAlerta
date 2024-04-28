@@ -177,6 +177,6 @@ $(document).ready(function () {
         cargarBuscador();
         mostrarUsuarios();
     });
-    $contenedor.append($button);
+    //$contenedor.append($button); Boton para refrescar (No lo utilizamos en esta iteración del proyecto)
     getUsuarios();    
 });
