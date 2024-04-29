@@ -53,7 +53,15 @@
                         <p class="card-text"><button id="eliminarHistorial" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Eliminar historial médico</button></p>
                       </div>
                   </div>
-              </div>
+                </div>
+                <div class="col-4">
+                  <div class="card p-2 text-center">
+                      <img class="card-img-top" src="/images/historial.png" alt="Aniadir Detalles Historial">
+                      <div class="card-body">
+                        <p class="card-text"><button id="aniadirDetalles" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Añadir detalles al historial médico</button></p>
+                      </div>
+                  </div>
+                </div>
                 <div class="col-4 mt-2">
                   <div class="card p-2 text-center">
                       <img class="card-img-top" src="/images/cita-medica.jpg" alt="Cita Medica">
@@ -154,6 +162,28 @@
           </div>         
         </div>
       </div>
+    </div>
+      
+    <div class="modal fade" id="modalAniadirDetalles" tabindex="-1" aria-labelledby="modalAniadirDetallesLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalAniadirDetallesLabel">Añadir detalles al historial</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/doctor/historial/aniadirDetalles" method="post">
+              <input type="hidden" name="dni" value="<%= dni %>">
+              <label for="detalles">Detalles:</label>
+              <textarea class="form-control" id="detalles" name="detalles" rows="3"></textarea>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+            </form>
+          </div>         
+        </div>
+      </div>
       
 </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -167,6 +197,9 @@
 
         $("#iniciarTratamiento").on('click', function(){               
             $('#modalIniciarTratamiento').modal('show');
+        });
+        $("#aniadirDetalles").on('click', function(){               
+            $('#modalAniadirDetalles').modal('show');
         });
         $("#mostrarHistorial").on('click', async function(){
             $.ajax({
