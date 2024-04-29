@@ -113,15 +113,9 @@ router.delete('/eliminar', (req, res) => {
     const dniPaciente = req.body.dniPaciente; // Acceder al cuerpo de la solicitud
     console.log(dniPaciente)
     const pdfURL = path.join(path.dirname(__dirname), 'public', 'historiales', `HM${req.session.currentUser.dni}-${dniPaciente}.pdf`);
+    const filePath =  path.join(path.dirname(__dirname), 'public', 'historiales', 'json', `HM${req.session.currentUser.dni}-${dniPaciente}.json`);
     console.log("la ruta es: "+ pdfURL)
 
-    if (fs.existsSync(pdfURL)) {
-        console.log("existe el pdf")
-      }
-    else{
-        console.log("no existe el pdf")
-    }
-    //const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + dniPaciente + ".pdf";
     if (!dniPaciente) {
       res.status(400).send('DNI del paciente es necesario');
     } else {
@@ -135,7 +129,18 @@ router.delete('/eliminar', (req, res) => {
                 res.status(500).send('Error al eliminar el archivo');
               }
             } else {
-              res.status(200).send('Archivo eliminado con éxito');
+              fs.unlink(filePath, (err) => {
+                if (err) {
+                  if (err.code === 'ENOENT') {
+                    res.status(404).send('Archivo no encontrado');
+                  } else {
+                    console.log("falla aqui")
+                    res.status(500).send('Error al eliminar el archivo');
+                  }
+                } else {
+                  res.status(200).send('Archivo eliminado con éxito');
+                }
+              });
             }
           });
     }
