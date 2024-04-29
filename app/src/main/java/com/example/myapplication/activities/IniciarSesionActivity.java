@@ -52,7 +52,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
                 if(paciente != null){
 
-                    Log.d("paciente en cambiar contraseña", "Paciente es: " + paciente.getEmail());
+                    Log.d("paciente en cambiar contraseña", "Paciente es: " + paciente.getDni());
 
                     NavigationManager.getInstance().navigateToDestinationWithData(this, ForgottenPasswordActivity.class,paciente);
 
@@ -63,7 +63,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
 
             }else{
-                makeTextToast("Añade un dni en el campo DNI para que se te envíe un correo a tu email asociado");
+                makeTextToast("Añade un DNI en el campo DNI para enviarte un correo");
             }
 
         });

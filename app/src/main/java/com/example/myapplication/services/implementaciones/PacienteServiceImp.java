@@ -65,6 +65,7 @@ public class PacienteServiceImp implements PacienteService {
                         calendar.add(Calendar.DAY_OF_MONTH, 1);
                         Date nuevaFecha = calendar.getTime();
                         paciente[0] = new Paciente(
+                                firstObject.getString("dni"),
                                 firstObject.getString("Nombre"),
                                 firstObject.getString("email"),
                                 firstObject.getString("Apellidos"),

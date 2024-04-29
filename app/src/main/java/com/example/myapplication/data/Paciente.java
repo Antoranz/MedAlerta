@@ -27,7 +27,8 @@ public class Paciente implements Serializable {
         this.telefono = telefono;
         this.password = password;
     }
-    public Paciente(String nombre,String email, String apellidos, String codigoPostal, Date fechaDeNacimiento, String direccion, String telefono) {
+    public Paciente(String dni, String nombre,String email, String apellidos, String codigoPostal, Date fechaDeNacimiento, String direccion, String telefono) {
+        this.dni=dni;
         Nombre = nombre;
         this.email = email;
         Apellidos = apellidos;

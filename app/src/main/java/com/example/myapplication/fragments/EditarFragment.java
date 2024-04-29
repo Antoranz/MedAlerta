@@ -92,6 +92,7 @@ public class EditarFragment extends Fragment {
                 fecha = null;
             }
             Paciente updatePaciente = new Paciente(
+                    paciente.getDni(),
                     nameText.getText().toString(),
                     paciente.getEmail(),
                     surnameText.getText().toString(),
