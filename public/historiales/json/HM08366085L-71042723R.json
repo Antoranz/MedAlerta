@@ -1,0 +1,20 @@
+{
+  "dni": "71042723R",
+  "nombre": "javi",
+  "apellido": "Antoranz",
+  "sexo": "masculino",
+  "fechaNacimiento": "2024-04-05",
+  "peso": "111",
+  "altura": "222",
+  "Alzheimer": "on",
+  "Parkinson": "on",
+  "Enfermedad de Crohn": "on",
+  "Hepatitis": "on",
+  "alergias": "A",
+  "notas": "B",
+  "detalles": [
+    "C",
+    "D",
+    "E"
+  ]
+}

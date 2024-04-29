@@ -30,28 +30,134 @@ router.get('/CrearHistorial/', async function(req, res, next) {
     
 router.post('/guardarHistorial', function(req, res){
 
-    const data = req.body;
+  const data = req.body;
+  
+  aniadirJson(req.session.currentUser.dni, data);
 
-    // Checkboxes seleccionados
-    const checkboxesSeleccionados = Object.keys(data).filter(key => {
-        // Excluye campos que no sean checkboxes si es necesario
-        return data[key] === 'on'; // 'on' es el valor por defecto de los checkboxes seleccionados
-    });
+  try{
+    crearPDF(req.session.currentUser.dni, data);
+    res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
+  }
+  catch(error){
+    console.log(error.message)
+    res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
+  }
 
-    // Ahora tienes los checkboxes seleccionados en `checkboxesSeleccionados`
-    console.log('Checkboxes seleccionados:', checkboxesSeleccionados);
+ 
+});
 
-    const doc = new PDFDocument();
-    
-    
-    function obtenerFechaActual() {
-    const fecha = new Date();
-    const dia = fecha.getDate();
-    const mes = fecha.getMonth() + 1;
-    const anio = fecha.getFullYear();
-    return `${dia}/${mes}/${anio}`;
+router.post('/aniadirDetalles', (req, res) => {
+  const dniPaciente = req.body.dni
+  const nuevoDetalle = req.body.detalles; 
+
+  const filePath =  path.join(path.dirname(__dirname), 'public', 'historiales', 'json', `HM${req.session.currentUser.dni}-${dniPaciente}.json`);
+
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error al leer el archivo JSON:', err);
+      res.status(500).json({ error: 'Error al leer el historial' });
+      return;
     }
 
+    // Convertimos el archivo leído a un objeto JSON
+    let historial = JSON.parse(data);
+
+    // Chequeamos si "detalles" existe y cómo está estructurado
+    if (typeof historial.detalles === 'undefined') {
+      historial.detalles = []; // Si no existe, creamos un array
+    } else if (!Array.isArray(historial.detalles)) {
+      // Si es un valor único, lo convertimos a array manteniendo el valor original
+      historial.detalles = [historial.detalles];
+    }
+
+    // Agregamos el nuevo detalle al campo "detalles"
+    historial.detalles.push(nuevoDetalle);
+
+    // Guardamos los datos actualizados de nuevo en el archivo JSON
+    fs.writeFile(filePath, JSON.stringify(historial, null, 2), (err) => {
+      if (err) {
+        console.error('Error al escribir en el archivo JSON:', err);
+      }
+      else{
+        fs.readFile(filePath, 'utf8', (err, data) => {
+          if (err) {
+            console.error('Error al leer el archivo JSON:', err);
+          }else{
+            let historial = JSON.parse(data);
+            try{
+              crearPDF(req.session.currentUser.dni, historial);
+            }
+            catch(error){
+              console.log(error.message)
+            }
+            
+          }
+        });
+      }
+    });
+  });
+  res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
+
+
+});
+
+router.get('/obtenerURLPDF', (req, res) => {
+    console.log(req.query.dniPaciente);
+    const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + req.query.dniPaciente + ".pdf";
+
+    res.json({ downloadURL: pdfURL });
+});
+
+router.delete('/eliminar', (req, res) => {
+
+    const dniPaciente = req.body.dniPaciente; // Acceder al cuerpo de la solicitud
+    console.log(dniPaciente)
+    const pdfURL = path.join(path.dirname(__dirname), 'public', 'historiales', `HM${req.session.currentUser.dni}-${dniPaciente}.pdf`);
+    console.log("la ruta es: "+ pdfURL)
+
+    if (fs.existsSync(pdfURL)) {
+        console.log("existe el pdf")
+      }
+    else{
+        console.log("no existe el pdf")
+    }
+    //const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + dniPaciente + ".pdf";
+    if (!dniPaciente) {
+      res.status(400).send('DNI del paciente es necesario');
+    } else {
+        console.log("se intenta borrar el archivo en: "+pdfURL)
+        fs.unlink(pdfURL, (err) => {
+            if (err) {
+              if (err.code === 'ENOENT') {
+                res.status(404).send('Archivo no encontrado');
+              } else {
+                console.log("falla aqui")
+                res.status(500).send('Error al eliminar el archivo');
+              }
+            } else {
+              res.status(200).send('Archivo eliminado con éxito');
+            }
+          });
+    }
+  });
+
+  function aniadirJson(dniDoctor, data){
+
+    const jsonPath = path.join(path.dirname(__dirname), 'public', 'historiales', 'json', `HM${dniDoctor}-${data.dni}.json`);
+  
+    fs.writeFile(jsonPath, JSON.stringify(data, null, 2), (err) => {
+      if (err) {
+        console.error('Error al escribir en el archivo JSON:', err);
+      }
+    });
+  }
+
+  function crearPDF(dniDoctor, data){
+    const checkboxesSeleccionados = Object.keys(data).filter(key => {
+        return data[key] === 'on';
+    });
+    const doc = new PDFDocument();
+    
     const tituloRectX = 50;
     const tituloRectY = 50;
     const tituloRectWidth = 500;
@@ -104,14 +210,14 @@ router.post('/guardarHistorial', function(req, res){
 
 
     const campos = [
-    { titulo: 'Nombre', valor: req.body.nombre },
-    { titulo: 'Apellido', valor: req.body.apellido },
-    { titulo: 'Sexo', valor: req.body.sexo },
-    { titulo: 'Fecha de Nacimiento', valor: req.body.fechaNacimiento },
-    { titulo: 'Peso (kg)', valor: req.body.peso },
-    { titulo: 'Altura (cm)', valor: req.body.altura },
-    { titulo: 'Alergias', valor: req.body.alergias },
-    { titulo: 'Notas', valor: req.body.notas },
+    { titulo: 'Nombre', valor: data.nombre },
+    { titulo: 'Apellido', valor: data.apellido },
+    { titulo: 'Sexo', valor: data.sexo },
+    { titulo: 'Fecha de Nacimiento', valor: data.fechaNacimiento },
+    { titulo: 'Peso (kg)', valor: data.peso },
+    { titulo: 'Altura (cm)', valor: data.altura },
+    { titulo: 'Alergias', valor: data.alergias },
+    { titulo: 'Notas', valor: data.notas },
     { titulo: 'Fecha Actual', valor: obtenerFechaActual() }
     ];
 
@@ -128,7 +234,7 @@ router.post('/guardarHistorial', function(req, res){
     actual = yPos;
     });
 
-    const enfermedades = Object.keys(req.body).filter(key => key !== "_csrf").slice(7);
+    const enfermedades = Object.keys(data).filter(key => key !== "_csrf").slice(7);
     const enfermedadesMarcadas = enfermedades.slice(0,enfermedades.length-2);
     console.log(enfermedadesMarcadas);
 
@@ -160,63 +266,56 @@ router.post('/guardarHistorial', function(req, res){
     }
 
     xPos += enfermedadWidth + spaceBetweenElements; 
-});
+  });
 
-    const filePath = "../MedAlerta/public/historiales/HM"+req.session.currentUser.dni + "-" + req.body.dni + ".pdf";
+    doc.addPage(); 
+
+    doc.font('Helvetica-Bold')
+    doc.fontSize(18);
+    doc.text("Detalles", { align: 'center', lineGap: 10 });
+
+    doc.font('Helvetica').fontSize(12);
+
+    const detalles = data.detalles;
+
+    if (Array.isArray(detalles)) {
+      detalles.forEach((detalle) => {
+        doc.fillColor('grey')
+        doc.text("-----" + obtenerFechaActual() + "-----")
+        doc.fillColor('black')
+        doc.text(detalle, { align: 'left', lineGap: 10 });
+      });
+    } else {
+      doc.fillColor('grey')
+      doc.text("-----" + obtenerFechaActual() + "-----")
+      doc.fillColor('black')
+      doc.text(detalles, { align: 'left', lineGap: 10 });
+    }
+
+    const filePath = path.join(path.dirname(__dirname), 'public', 'historiales', `HM${dniDoctor}-${data.dni}.pdf`);
     const writeStream = fs.createWriteStream(filePath);
 
     writeStream.on('finish', () => {
-    res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
+    
     });
 
     writeStream.on('error', (err) => {
-        console.error('Error al guardar el PDF:', err);
-        res.status(500).send('Error al guardar el PDF.');
+      console.log('Error al guardar el PDF.')
+      throw(new Error('Error al guardar el PDF'))
     });
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 
     doc.pipe(writeStream); 
 
     doc.end();
-});
+  }
 
-router.get('/obtenerURLPDF', (req, res) => {
-    console.log(req.query.dniPaciente);
-    const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + req.query.dniPaciente + ".pdf";
-
-    res.json({ downloadURL: pdfURL });
-});
-
-router.delete('/eliminar', (req, res) => {
-
-    const dniPaciente = req.body.dniPaciente; // Acceder al cuerpo de la solicitud
-    console.log(dniPaciente)
-    const pdfURL = path.join(path.dirname(__dirname), 'public', 'historiales', `HM${req.session.currentUser.dni}-${dniPaciente}.pdf`);
-    console.log("la ruta es: "+ pdfURL)
-
-    if (fs.existsSync(pdfURL)) {
-        console.log("existe el pdf")
-      }
-    else{
-        console.log("no existe el pdf")
+  function obtenerFechaActual() {
+    const fecha = new Date();
+    const dia = fecha.getDate();
+    const mes = fecha.getMonth() + 1;
+    const anio = fecha.getFullYear();
+    return `${dia}/${mes}/${anio}`;
     }
-    //const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + dniPaciente + ".pdf";
-    if (!dniPaciente) {
-      res.status(400).send('DNI del paciente es necesario');
-    } else {
-        console.log("se intenta borrar el archivo en: "+pdfURL)
-        fs.unlink(pdfURL, (err) => {
-            if (err) {
-              if (err.code === 'ENOENT') {
-                res.status(404).send('Archivo no encontrado');
-              } else {
-                console.log("falla aqui")
-                res.status(500).send('Error al eliminar el archivo');
-              }
-            } else {
-              res.status(200).send('Archivo eliminado con éxito');
-            }
-          });
-    }
-  });
 
 module.exports = router;
