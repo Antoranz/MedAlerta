@@ -169,16 +169,15 @@ class DAODoctor{
             });
         }); 
     }
-    checkearCitasCoincidentes(DNIDoctor, fecha_hora, duracion) {
+    checkearCitasCoincidentes(DNIDoctor, fecha_hora2, duracion) {
         // Obtener los componentes de fecha y hora
-        const fecha = fecha_hora.split(' ')[0]; // Extraer la parte de la fecha (YYYY-MM-DD)
-        const hora = fecha_hora.split(' ')[1]; // Extraer la parte de la hora (HH:MM:SS)
-    
+        const fecha = fecha_hora2.split(' ')[0]; // Extraer la parte de la fecha (YYYY-MM-DD)
+        const hora2 = fecha_hora2.split(' ')[1]; // Extraer la parte de la hora (HH:MM:SS)
+        console.log(DNIDoctor);
         // Formatear la fecha y hora para la consulta SQL
-        const fecha_hora_formateada = fecha + ' ' + hora;
+        const fecha_hora_formateada = fecha + ' ' + hora2;
+        console.log("fecha de las citas coincidentes que he pasado:" + fecha_hora_formateada);
         
-        console.log("fecha de las citas coincidentes que he pasado:" + fecha_hora_formateada)
-    
         return new Promise((resolve, reject) => {
             this.pool.getConnection((err, connection) => {
                 if (err) {
@@ -186,60 +185,22 @@ class DAODoctor{
                     reject(err);
                 } else {
                     console.log("Conexión exitosa a la base de datos");
-                    var query = `SELECT paciente_dni, fecha_hora
-                        FROM citas
-                        WHERE doctor_dni = ? 
-                        AND (
-                            -- Verificar que la fecha y hora de inicio de la cita esté dentro del intervalo de una cita existente
-                            EXISTS (
-                                SELECT *
-                                FROM citas c
-                                WHERE c.doctor_dni = ? 
-                                AND c.fecha_hora <= ?
-                                AND ADDTIME(c.fecha_hora, SEC_TO_TIME(c.duracion * 60)) > ?
-                            )
-                            OR
-                            -- Verificar que la fecha y hora de fin de la cita esté dentro del intervalo de una cita existente
-                            EXISTS (
-                                SELECT *
-                                FROM citas c
-                                WHERE c.doctor_dni = ? 
-                                AND ADDTIME(c.fecha_hora, SEC_TO_TIME(c.duracion * 60)) > ?
-                                AND c.fecha_hora < ?
-                            )
-                            OR
-                            -- Verificar que la fecha y hora de inicio de la cita y la fecha y hora de fin de la cita abarquen una cita existente
-                            EXISTS (
-                                SELECT *
-                                FROM citas c
-                                WHERE c.doctor_dni = ? 
-                                AND c.fecha_hora >= ?
-                                AND ADDTIME(c.fecha_hora, SEC_TO_TIME(c.duracion * 60)) <= ?
-                            )
-                            OR
-                            -- Verificar que la fecha y hora de inicio de la cita esté después del final de la cita actual
-                            EXISTS (
-                                SELECT *
-                                FROM citas c
-                                WHERE c.doctor_dni = ? 
-                                AND c.fecha_hora > ?
-                                AND c.fecha_hora < ADDTIME(?, SEC_TO_TIME(? * 60))
-                            )
-                        )
-                        ORDER BY fecha_hora;`;
-    
-                    connection.query(query, [DNIDoctor, DNIDoctor, fecha_hora_formateada, fecha_hora_formateada, DNIDoctor, fecha_hora_formateada, fecha_hora_formateada, DNIDoctor, fecha_hora_formateada, fecha_hora_formateada, DNIDoctor, fecha_hora_formateada, fecha_hora_formateada, fecha_hora_formateada, duracion], (err, res) => {
-                        connection.release();
-                        if (err) {
-                            reject(err);
+                    
+                    connection.query('CALL ComprobarCita(?, ?, ?)', [fecha_hora_formateada, duracion, DNIDoctor], function (error, results, fields) {
+                        if (error) {
+                            console.error('Error al llamar al procedimiento almacenado:', error);
+                            reject(error);
                         } else {
-                            resolve(res);
+                            console.log('Citas coincidentes:', results[0]);
+                            resolve(results[0]);
                         }
                     });
+                    
                 }
             });
         });
     }
+    
     
     
     guardarTratamiento(id_doctor,id_paciente,diagnostico){
@@ -400,6 +361,150 @@ class DAODoctor{
                     console.log("Exito al conectar a la base de datos");
                     var queryobtenerMensajes_consulta ="SELECT * FROM mensajes WHERE id_consulta = ? ORDER BY fecha ASC"
                     connection.query(queryobtenerMensajes_consulta,[id], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    bajaDoctor_citas(doctor_dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor_citas ="DELETE FROM citas WHERE doctor_dni = ?"
+                    connection.query(querybajaDoctor_citas,[doctor_dni], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    bajaDoctor_tratamientos(id_doctor){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor_tratamientos ="DELETE FROM tratamiento WHERE id_doctor = ?"
+                    connection.query(querybajaDoctor_tratamientos,[id_doctor], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    bajaDoctor(dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor ="DELETE FROM doctores WHERE dni = ?"
+                    connection.query(querybajaDoctor,[dni], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    bajaDoctor_asignaciones(DNIDoctor){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor_asignaciones ="DELETE FROM asignaciones WHERE DNIDoctor = ?"
+                    connection.query(querybajaDoctor_asignaciones,[DNIDoctor], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    bajaDoctor_consultas(dni_doctor){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor_consultas ="DELETE FROM consultas WHERE dni_doctor = ?"
+                    connection.query(querybajaDoctor_consultas,[dni_doctor], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    bajaDoctor_notificaciones(doctor_dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var querybajaDoctor_notificaciones ="DELETE FROM notificaciones WHERE doctor_dni = ?"
+                    connection.query(querybajaDoctor_notificaciones,[doctor_dni], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);

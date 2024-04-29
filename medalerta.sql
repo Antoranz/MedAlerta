@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-04-2024 a las 16:43:29
+-- Tiempo de generación: 28-04-2024 a las 23:52:04
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -18,8 +18,32 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `medalerta`
+-- Base de datos: `medalerta2`
 --
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ComprobarCita` (IN `nueva_fecha_hora` DATETIME, IN `nueva_duracion` INT, IN `dniDoctor` VARCHAR(20))   BEGIN
+    DECLARE nueva_fecha_fin DATETIME;
+
+    -- Calcula la fecha de finalización de la nueva cita sumando la duración
+    SET nueva_fecha_fin = ADDTIME(nueva_fecha_hora, SEC_TO_TIME(nueva_duracion * 60));
+
+    -- Devuelve las citas coincidentes en el intervalo de tiempo
+    SELECT *
+    FROM citas
+    WHERE doctor_dni = dniDoctor
+    AND (
+        -- Verifica si la nueva cita se superpone con alguna cita existente
+        (nueva_fecha_hora BETWEEN fecha_hora AND ADDTIME(fecha_hora, SEC_TO_TIME(duracion * 60)))
+        OR(nueva_fecha_fin BETWEEN fecha_hora AND ADDTIME(fecha_hora, SEC_TO_TIME(duracion * 60)))
+        OR(nueva_fecha_hora <= fecha_hora AND nueva_fecha_fin >= ADDTIME(fecha_hora, SEC_TO_TIME(duracion * 60)))
+    );
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -38,13 +62,6 @@ CREATE TABLE `alarma` (
   `fecha_fin` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `alarma`
---
-
-INSERT INTO `alarma` (`id_alarma`, `id_tratamiento`, `medicamento`, `dosis`, `hora_primera_toma`, `tomas_al_dia`, `fecha_inicio`, `fecha_fin`) VALUES
-(23, 16, 'enantyum', '5 petas', '22:42:00', 3, '2024-02-26', '2024-02-27');
-
 -- --------------------------------------------------------
 
 --
@@ -61,9 +78,7 @@ CREATE TABLE `asignaciones` (
 --
 
 INSERT INTO `asignaciones` (`DNIDoctor`, `DNIPaciente`) VALUES
-('08366085L', '08366085L'),
-('08366085L', '71042723R'),
-('71042723R', '08366085L');
+('08366085L', '49249480V');
 
 -- --------------------------------------------------------
 
@@ -75,16 +90,20 @@ CREATE TABLE `citas` (
   `id` int(11) NOT NULL,
   `fecha_hora` datetime DEFAULT NULL,
   `duracion` int(11) DEFAULT NULL,
-  `doctor_dni` varchar(20) DEFAULT NULL,
-  `paciente_dni` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `doctor_dni` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `paciente_dni` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `citas`
 --
 
 INSERT INTO `citas` (`id`, `fecha_hora`, `duracion`, `doctor_dni`, `paciente_dni`) VALUES
-(6, '2024-02-28 14:26:00', 30, '08366085L', '08366085L');
+(24, '2024-04-30 15:30:00', 20, '08366085L', '49249480V'),
+(25, '2024-04-30 17:30:00', 20, '08366085L', '49249480V'),
+(26, '2024-04-30 18:30:00', 12, '08366085L', '49249480V'),
+(27, '2024-04-30 20:30:00', 12, '08366085L', '49249480V'),
+(29, '2024-05-14 05:32:00', 12, '08366085L', '49249480V');
 
 -- --------------------------------------------------------
 
@@ -102,17 +121,6 @@ CREATE TABLE `consultas` (
   `notificaciones_doctor` int(11) NOT NULL DEFAULT 0,
   `notificaciones_paciente` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `consultas`
---
-
-INSERT INTO `consultas` (`id`, `dni_doctor`, `dni_paciente`, `titulo`, `ultima_fecha`, `mensajes_totales`, `notificaciones_doctor`, `notificaciones_paciente`) VALUES
-(1, '', '', '', '0000-00-00 00:00:00', 0, 0, 0),
-(2, '08366085L', '08366085L', 'Daltonismo', '2024-03-19 00:00:00', 2, 2, 0),
-(7, '71042723R', '08366085L', 'espartaco', '2024-04-11 01:15:26', 0, 0, 0),
-(8, '08366085L', '08366085L', 'buenas', '2024-04-10 23:17:27', 0, 0, 0),
-(9, '08366085L', '08366085L', 'crack', '2024-04-11 08:52:36', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -138,9 +146,7 @@ CREATE TABLE `doctores` (
 --
 
 INSERT INTO `doctores` (`dni`, `email`, `password`, `nombre`, `apellidos`, `fecha_nacimiento`, `domicilio`, `codigo_postal`, `numero_telefono`, `imagen`) VALUES
-('08366085L', 'frantora@ucm.es', '10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672', 'Francisco Javier', 'Antoranz Esteban', '2002-01-02', 'Calle Ocaña', '28047', '618495616', ''),
-('18366085L', 'carlopen3@ucm.es', 'bf3568b9dcc3ed7da523255bd44e7bbaeaa1ce9343630a80e70cc006159d96fb', 'Carlos3', 'Gimenez Ch', '2007-02-27', 'Calle Guapa', '28001', '654898342', ''),
-('71042723R', 'sergis13@ucm.es', 'c22cdd06ab5120cbea143d1b73b262195e00403f8e5421f4bbb65b93dd1e9028', 'Sergio', 'chamizo Sánchez', '2000-02-06', 'Calle vicente camaron 44', '28011', '616859670', '');
+('08366085L', 'sergiosan112@gmail.com', '42fe64654aaa1c13db56c624f436d5b56dae74155ba69bbc03c7338896edbe12', 'Sergio', 'Sánchez Frantora', '2000-01-08', 'Calle vicente camaron 44', '06700', '616859670', '');
 
 -- --------------------------------------------------------
 
@@ -158,18 +164,6 @@ CREATE TABLE `enfermedades` (
 --
 
 INSERT INTO `enfermedades` (`doctor_dni`, `enfermedad`) VALUES
-('18366085L', 'Diabetes'),
-('18366085L', 'Hipertensión'),
-('18366085L', 'Asma'),
-('18366085L', 'Artritis'),
-('18366085L', 'Gripe'),
-('18366085L', 'Neumonía'),
-('18366085L', 'Anemia'),
-('18366085L', 'Migraña'),
-('18366085L', 'Bronquitis'),
-('18366085L', 'Depresión'),
-('08366085L', 'daltonismo1'),
-('08366085L', 'Daltonismo2'),
 ('08366085L', 'Diabetes'),
 ('08366085L', 'Hipertensión'),
 ('08366085L', 'Asma'),
@@ -194,7 +188,8 @@ INSERT INTO `enfermedades` (`doctor_dni`, `enfermedad`) VALUES
 ('08366085L', 'Cataratas'),
 ('08366085L', 'Glaucoma'),
 ('08366085L', 'Hepatitis'),
-('08366085L', 'Eczema');
+('08366085L', 'Eczema'),
+('08366085L', 'Ansiedad');
 
 -- --------------------------------------------------------
 
@@ -211,75 +206,6 @@ CREATE TABLE `mensajes` (
   `leido_paciente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `mensajes`
---
-
-INSERT INTO `mensajes` (`id_consulta`, `mensaje`, `propietario`, `fecha`, `leido_doctor`, `leido_paciente`) VALUES
-(2, 'Sufro de daltonismo (soy paciente)', 1, '2024-03-19 21:15:45', 0, 0),
-(2, 'Sufro de daltonismo (soy paciente)', 1, '2024-03-19 21:15:45', 0, 0),
-(2, 'hola soy el medico', 0, '2024-03-20 21:15:45', 0, 0),
-(2, 'este es un mensaje de prueba largo para ver como queda lo que quiero vale crack', 0, '2024-03-21 21:15:45', 0, 0),
-(2, 'hola', 1, '2024-04-11 01:03:03', 0, 0),
-(2, 'adios', 0, '2024-04-11 01:03:38', 0, 0),
-(7, 'heyyy', 0, '2024-04-11 01:06:08', 0, 0),
-(2, 'buenas', 0, '2024-04-11 01:07:26', 0, 0),
-(2, 'czczczczdasdasdasd', 0, '2024-04-11 01:57:15', 0, 0),
-(2, 'sadfasdf', 1, '2024-04-11 01:57:52', 0, 0),
-(2, 'asdfasdf', 1, '2024-04-11 01:57:59', 0, 0),
-(2, 'asdasdasd', 1, '2024-04-11 01:58:07', 0, 0),
-(2, 'hola buenas', 1, '2024-04-11 01:58:31', 0, 0),
-(2, 'holsd', 1, '2024-04-11 07:21:18', 0, 0),
-(8, 'hgolasdasdf', 1, '2024-04-11 07:24:12', 0, 0),
-(7, 'buenas', 1, '2024-04-11 07:24:50', 0, 0),
-(7, 'soy', 1, '2024-04-11 07:24:56', 0, 0),
-(7, 'hola buenos dias', 1, '2024-04-11 07:27:39', 0, 0),
-(7, '', 1, '2024-04-11 07:27:42', 0, 0),
-(7, '', 1, '2024-04-11 07:27:43', 0, 0),
-(2, '', 1, '2024-04-11 07:30:25', 0, 0),
-(2, '', 1, '2024-04-11 07:30:27', 0, 0),
-(2, 'gdnyeg', 1, '2024-04-11 07:30:32', 0, 0),
-(2, 'asdfasfasdfasfd', 1, '2024-04-11 07:33:32', 0, 0),
-(2, 'a', 1, '2024-04-11 07:36:53', 0, 0),
-(2, 'holasdas', 1, '2024-04-11 07:46:10', 0, 0),
-(2, 'hola', 1, '2024-04-11 07:47:17', 0, 0),
-(2, 'buenos dias', 1, '2024-04-11 07:47:25', 0, 0),
-(2, 'adios', 1, '2024-04-11 07:47:36', 0, 0),
-(2, 'heyyyyy', 1, '2024-04-11 07:49:35', 0, 0),
-(2, 'a', 1, '2024-04-11 07:49:42', 0, 0),
-(2, 'hola javi', 1, '2024-04-11 07:50:47', 0, 0),
-(2, 'hey', 1, '2024-04-11 07:54:57', 0, 0),
-(2, 'asdfhibaosifdbuasdf', 1, '2024-04-11 07:55:14', 0, 0),
-(2, 'maaaaadriiiiiiiid', 1, '2024-04-11 07:56:08', 0, 0),
-(2, 'alaaaa madriiiiid', 1, '2024-04-11 07:57:13', 0, 0),
-(2, 'sfdgsdfg', 1, '2024-04-11 07:57:26', 0, 0),
-(2, 'asdfasdfasdfasdf', 1, '2024-04-11 07:57:33', 0, 0),
-(2, 'asdfasdfasfasfasdfasf', 1, '2024-04-11 07:57:40', 0, 0),
-(2, 'hola buenos dias charck', 1, '2024-04-11 07:57:49', 0, 0),
-(2, 'asdasdasdf', 1, '2024-04-11 07:57:57', 0, 0),
-(2, 'asdfasfd', 1, '2024-04-11 07:58:04', 0, 0),
-(2, '.....', 1, '2024-04-11 07:58:13', 0, 0),
-(2, 'mira esto', 1, '2024-04-11 07:58:29', 0, 0),
-(2, 'que chuol', 1, '2024-04-11 07:58:33', 0, 0),
-(2, 'mira que guapo esto', 1, '2024-04-11 07:59:58', 0, 0),
-(2, 'hola', 1, '2024-04-11 08:01:10', 0, 0),
-(2, 'mria como funciona tonto', 1, '2024-04-11 08:01:38', 0, 0),
-(2, 'me molesta', 1, '2024-04-11 08:02:19', 0, 0),
-(2, 'hoal', 1, '2024-04-11 08:04:27', 0, 0),
-(2, 'mi viejoooo chamartinnn', 1, '2024-04-11 08:04:56', 0, 0),
-(2, 'hola', 1, '2024-04-11 08:05:38', 0, 0),
-(2, 'adios', 1, '2024-04-11 08:05:46', 0, 0),
-(2, 'asdfasd', 1, '2024-04-11 08:08:12', 0, 0),
-(2, 'holiwi', 1, '2024-04-11 08:08:58', 0, 0),
-(2, 'hry', 1, '2024-04-11 08:10:00', 0, 0),
-(2, 'adios', 1, '2024-04-11 08:10:41', 0, 0),
-(2, 'fdgsdgsdfg', 1, '2024-04-11 08:11:26', 0, 0),
-(2, 'rfsfgrgsdfe', 1, '2024-04-11 08:15:07', 0, 0),
-(8, 'asdfasd', 1, '2024-04-11 08:15:48', 0, 0),
-(2, 'holaaaaa', 1, '2024-04-11 08:15:57', 0, 0),
-(2, 'dsfg', 1, '2024-04-11 08:16:53', 0, 0),
-(8, 'fdfhrtdy', 1, '2024-04-11 08:59:11', 0, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -289,6 +215,7 @@ INSERT INTO `mensajes` (`id_consulta`, `mensaje`, `propietario`, `fecha`, `leido
 CREATE TABLE `notificaciones` (
   `id` int(11) NOT NULL,
   `tipo` varchar(255) DEFAULT NULL,
+  `motivo` varchar(255) NOT NULL,
   `fecha_hora` datetime DEFAULT NULL,
   `doctor_dni` varchar(20) DEFAULT NULL,
   `paciente_dni` varchar(20) DEFAULT NULL
@@ -298,8 +225,9 @@ CREATE TABLE `notificaciones` (
 -- Volcado de datos para la tabla `notificaciones`
 --
 
-INSERT INTO `notificaciones` (`id`, `tipo`, `fecha_hora`, `doctor_dni`, `paciente_dni`) VALUES
-(6, 'Cita', '2024-02-28 03:50:00', '08366085L', '08366085L');
+INSERT INTO `notificaciones` (`id`, `tipo`, `motivo`, `fecha_hora`, `doctor_dni`, `paciente_dni`) VALUES
+(47, 'Cita', 'asdfasdfasdf', '2024-04-30 16:30:00', '08366085L', '49249480V'),
+(49, 'Cita', 'asdfasdfasfd', '2024-04-30 19:30:00', '08366085L', '49249480V');
 
 -- --------------------------------------------------------
 
@@ -325,8 +253,7 @@ CREATE TABLE `pacientes` (
 --
 
 INSERT INTO `pacientes` (`email`, `Apellidos`, `CodigoPostal`, `dni`, `Direccion`, `FechaDeNacimiento`, `Nombre`, `telefono`, `password`, `imagen`) VALUES
-('sergiosan112@gmail.com', 'Sanchez Chamizo ', '28012', '08366085L', 'calle las rosas ', '2000-01-08', 'Sergio ', '616859670', '10fa80f84cd4f98785f5865c0b5da7dbc73d605cbf24d3766bbdb05fd9651672', ''),
-('fjavierantoranz@gmail.com', 'Antoranz', '28012', '71042723R', 'calle las rosas ', '2024-01-29', 'javi', '', '7e3e5098c7f185c615c158ccfcf736bd857ed540e4b6da185452e7afe76c6651', '');
+('frantora@ucm.es', 'Antoranz', '06700', '49249480V', 'Calle las rosas', '2001-04-19', 'Francisc0o Javier', '616859670', 'f3981b64446c3bcca20de6cd1dda123b9ab1796cf163c9e1b162fe3080180520', '');
 
 -- --------------------------------------------------------
 
@@ -345,7 +272,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('gFgTVMx4Z0PJWNepmKbXlOmsTCIkA3eM', 1714315371, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"frantora@ucm.es\",\"nombre\":\"Francisco Javier\",\"apellidos\":\"Antoranz Esteban\",\"fecha_nacimiento\":\"2002-01-02\",\"domicilio\":\"Calle Ocaña\",\"codigo_postal\":\"28047\",\"numero_telefono\":\"618495616\",\"imagen\":\"\",\"validado\":true}}');
+('otRYJ4fULDFXKTgUfyU8obSFuAR3ouQv', 1714409867, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":{\"dni\":\"08366085L\",\"email\":\"sergiosan112@gmail.com\",\"nombre\":\"Sergio\",\"apellidos\":\"Sánchez Frantora\",\"fecha_nacimiento\":\"2000-01-08\",\"domicilio\":\"Calle vicente camaron 44\",\"codigo_postal\":\"06700\",\"numero_telefono\":\"616859670\",\"imagen\":\"\",\"validado\":true}}');
 
 -- --------------------------------------------------------
 
@@ -365,7 +292,10 @@ CREATE TABLE `tratamiento` (
 --
 
 INSERT INTO `tratamiento` (`id_tratamiento`, `id_paciente`, `id_doctor`, `diagnostico`) VALUES
-(16, '08366085L', '08366085L', 'fiebre tochita');
+(17, '49249480V', '08366085L', 'javi tiene fiebre'),
+(18, '49249480V', '08366085L', 'prueba2'),
+(19, '49249480V', '08366085L', 'prueba 4'),
+(20, '49249480V', '08366085L', 'paracetamol');
 
 --
 -- Índices para tablas volcadas
@@ -438,31 +368,31 @@ ALTER TABLE `tratamiento`
 -- AUTO_INCREMENT de la tabla `alarma`
 --
 ALTER TABLE `alarma`
-  MODIFY `id_alarma` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_alarma` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de la tabla `consultas`
 --
 ALTER TABLE `consultas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `notificaciones`
 --
 ALTER TABLE `notificaciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT de la tabla `tratamiento`
 --
 ALTER TABLE `tratamiento`
-  MODIFY `id_tratamiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_tratamiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Restricciones para tablas volcadas

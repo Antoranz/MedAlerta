@@ -89,10 +89,12 @@ router.post('/bajaPaciente', async function(req, res, next) {
     try {
 
 
+        await dao.bajaPaciente_citas(req.body.dniPaciente);
         await dao.bajaPaciente_alarmas(req.body.dniPaciente)
         await dao.bajaPaciente_tratamientos(req.body.dniPaciente)
         await dao.bajaPaciente(req.body.dniPaciente);
         await dao.bajaPaciente_asignaciones(req.body.dniPaciente);
+        
         res.json(true)
     } catch (error) {
         console.error("Error durante la operación:", error);

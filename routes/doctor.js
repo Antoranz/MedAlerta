@@ -143,6 +143,27 @@ router.post("/aniadirUsuario", async function (req, res, next) {
   }
 });
 
+router.get('/deleteAccount', async function(req, res, next) {
+
+  try {
+
+    console.log("DELETEEEACCROUNTTT___usuario")
+
+      await dao.bajaDoctor_notificaciones(req.session.currentUser.dni);
+      await dao.bajaDoctor_consultas(req.session.currentUser.dni);
+      await dao.bajaDoctor_citas(req.session.currentUser.dni);
+      await dao.bajaDoctor_tratamientos(req.session.currentUser.dni)
+      await dao.bajaDoctor(req.session.currentUser.dni);
+      await dao.bajaDoctor_asignaciones(req.session.currentUser.dni);
+      
+      res.render('index', { nombre:"" });
+  } catch (error) {
+      console.error("Error durante la operación:", error);
+      
+    }
+ 
+});
+
 
 router.post("/guardarTratamiento", async function(req, res, next) {
 
