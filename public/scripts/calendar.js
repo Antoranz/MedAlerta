@@ -48,10 +48,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
-        // Mostrar modal con información del evento
-        var modal = new bootstrap.Modal(document.getElementById('myModal'));
-        document.querySelector('.modal-body').innerHTML = modalContent;
-        modal.show();
+        var modalElement = document.getElementById('myModal'); // Obtener el elemento del modal por su id
+        var modalBody = modalElement.querySelector('.modal-body'); // Obtener el cuerpo del modal dentro del elemento modal
+        modalBody.innerHTML = modalContent; // Establecer el contenido en el cuerpo del modal
+        var modal = new bootstrap.Modal(modalElement); // Crear la instancia del modal con el elemento obtenido
+        modal.show(); // Mostrar el modal
+        
         
         // Agregar manejador de clic para el botón de eliminar cita
         document.getElementById('eliminarCitaBtn').addEventListener('click', function() {

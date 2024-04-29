@@ -130,6 +130,11 @@ router.post('/editarPassword', async function(req, res, next) {
 
         const {password,dni} = req.body;
 
+        console.log("EDITAAAAAAAAAAAAAAAAAAAAAAAAAAR")
+        console.log(password)
+        console.log(dni)
+        console.log("EDITAAAAAAAAAAAAAAAAAAAAAAAAAAR")
+
         var hashedPassword = cifrarContrasena(password,dni + "caminar es bueno para la salud");
 
         await dao.editarPassword(hashedPassword,dni);
