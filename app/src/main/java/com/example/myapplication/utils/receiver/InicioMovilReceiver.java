@@ -21,10 +21,7 @@ public class InicioMovilReceiver extends BroadcastReceiver {
         Log.i("MedAlerta", "Dispositivo Iniciadoooorro");
 
 
-
         sessionManager = new SessionManager(context);
-
-
 
         if(sessionManager.isLoggedIn()){
 

@@ -30,6 +30,16 @@
             android:exported="true" >
         </activity>
 
+        <receiver
+            android:name=".utils.receiver.NotificationButtonReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="ACTION_STOP_MEDIA_PLAYER" />
+            </intent-filter>
+        </receiver>
+
+
         <activity
             android:name=".activities.ChangePasswordActivity"
             android:exported="true" >

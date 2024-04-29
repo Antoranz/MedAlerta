@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Handler;
@@ -17,11 +18,15 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.MainActivity;
+import com.example.myapplication.utils.receiver.NotificationButtonReceiver;
 
 public class NotificacionesManager {
 
     private static final String NOTIFICATION_CHANNEL_ID = "nombrecanal2";
     private static final String CHANNEL_NAME = "idcanal2";
+
+    public static MediaPlayer mp;
+
     private static final String NOMBRE_CANAL = "nombrecanal1";
     private static final String ID_CANAL = "idcanal1";
     private static NotificationChannel crearCanalNotificaciones(Context context,String nombre_canal, String id_canal){
@@ -48,19 +53,26 @@ public class NotificacionesManager {
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
+        Intent stopIntent = new Intent(context, NotificationButtonReceiver.class);
+        stopIntent.setAction("ACTION_STOP_MEDIA_PLAYER");
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(context, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+
         NotificationCompat.Builder nb = new NotificationCompat.Builder(context,ID_CANAL);
-        nb.setDefaults(Notification.DEFAULT_ALL);
-        nb.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        nb.setPriority(NotificationCompat.PRIORITY_HIGH);
         nb.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         nb.setSmallIcon(android.R.drawable.ic_dialog_info);
-
         nb.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher_round));
-
         nb.setContentTitle(medicamento + ", dosis: " + dosis);
+        nb.setDeleteIntent(stopPendingIntent);
+        nb.addAction(android.R.drawable.ic_media_pause, "Detener", stopPendingIntent);
 
-        Intent actividad_destino = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,actividad_destino,PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
-        nb.setContentIntent(pendingIntent);
+
+        mp = MediaPlayer.create(context,R.raw.alarmclock);
+        mp.setLooping(true);
+        mp.start();
+
+        nb.setContentIntent(stopPendingIntent);
         nb.setAutoCancel(true);
         Notification notification = nb.build();
 
