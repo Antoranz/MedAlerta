@@ -208,15 +208,11 @@
                 type: 'GET',
                 data: {dniPaciente: dni},
                 success: function(response) {
-
-                    console.log("Cargado el pdfFFFFFFFFFFFF")
                     var win = window.open(response.downloadURL, '_blank');
                     win.focus();
                 },
-                error: function() {
-                    console.error('Error al obtener la URL del PDF');
-                    console.log(error);
-                    alert('Error al cargar el PDF');
+                error: function(response) {
+                    alert(response.responseJSON.error);
                 }
             });
         });

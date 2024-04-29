@@ -102,10 +102,19 @@ router.post('/aniadirDetalles', (req, res) => {
 });
 
 router.get('/obtenerURLPDF', (req, res) => {
-    console.log(req.query.dniPaciente);
+    
+  console.log(req.query.dniPaciente);
+
     const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + req.query.dniPaciente + ".pdf";
 
-    res.json({ downloadURL: pdfURL });
+    fs.access(pdfURL, fs.constants.F_OK, (err) => {
+      if (err) {
+        res.status(404).json({ error: "No existe el historial de este paciente"});
+      } else {
+        res.json({ downloadURL: pdfURL });
+      }
+    });
+
 });
 
 router.delete('/eliminar', (req, res) => {

@@ -87,7 +87,7 @@ router.post('/signin' , async function(req,res,next){
         res.render('index', {error: 'Las credenciales son incorrectas', confirmacion: '',nombre:""});
   
       }else{
-  
+        console.log(doctor);
         doctor[0].validado = true;
         req.session.currentUser = doctor[0]
         delete req.session.currentUser.password;
@@ -116,6 +116,7 @@ router.post('/signin' , async function(req,res,next){
       res.render("editarPerfil",{error:"", usuario: usuario,nombre: req.session.currentUser.nombre});
     }
   });
+
   router.post('/editando',async function(req,res,next){
     if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
       res.render('index', { nombre:"" });
