@@ -90,7 +90,7 @@ router.get('/funciones-paciente/:dni', (req, res) => {
     res.render('index', { nombre:"" });
   }else{
     const dniUsuario = req.params.dni;
-    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,dni:dniUsuario});
+    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,dni:dniUsuario, correct:"", error:""});
   }
 });
 router.get('/obtener-doctores', (req, res) => {

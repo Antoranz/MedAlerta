@@ -103,11 +103,13 @@ router.post('/aniadirDetalles', (req, res) => {
 
 router.get('/obtenerURLPDF', (req, res) => {
     
-  console.log(req.query.dniPaciente);
+    const dniPaciente = req.query.dniPaciente;
+    console.log(dniPaciente);
 
-    const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + req.query.dniPaciente + ".pdf";
-
-    fs.access(pdfURL, fs.constants.F_OK, (err) => {
+    const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + dniPaciente + ".pdf";
+    const filePath = path.join(path.dirname(__dirname), 'public', pdfURL);
+    console.log("la ruta es: " + pdfURL)
+    fs.access(filePath, fs.constants.F_OK, (err) => {
       if (err) {
         res.status(404).json({ error: "No existe el historial de este paciente"});
       } else {
@@ -119,11 +121,9 @@ router.get('/obtenerURLPDF', (req, res) => {
 
 router.delete('/eliminar', (req, res) => {
 
-    const dniPaciente = req.body.dniPaciente; // Acceder al cuerpo de la solicitud
-    console.log(dniPaciente)
+    const dniPaciente = req.body.dniPaciente;
     const pdfURL = path.join(path.dirname(__dirname), 'public', 'historiales', `HM${req.session.currentUser.dni}-${dniPaciente}.pdf`);
     const filePath =  path.join(path.dirname(__dirname), 'public', 'historiales', 'json', `HM${req.session.currentUser.dni}-${dniPaciente}.json`);
-    console.log("la ruta es: "+ pdfURL)
 
     if (!dniPaciente) {
       res.status(400).send('DNI del paciente es necesario');
@@ -143,7 +143,6 @@ router.delete('/eliminar', (req, res) => {
                   if (err.code === 'ENOENT') {
                     res.status(404).send('Archivo no encontrado');
                   } else {
-                    console.log("falla aqui")
                     res.status(500).send('Error al eliminar el archivo');
                   }
                 } else {

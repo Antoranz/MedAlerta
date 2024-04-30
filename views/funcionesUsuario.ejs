@@ -7,7 +7,16 @@
     <title>Gestion Usuarios</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script> 
+
+
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
      <style>
         .custom-dropdown-toggle::after {
@@ -21,6 +30,16 @@
     <input id="paciente" type="hidden" value="<%= dni %>">
     <main>
         <div class="container mt-2">
+              <% if (typeof correct !== 'undefined' && correct !== '') { %>
+                <div class="message-container-validated text-center">
+                  <label class="form-label message"><%= correct %></label>
+                </div>
+              <% } %>
+              <% if (typeof error !== 'undefined' && error !== '') { %>
+                <div class="message-container-error text-center">
+                  <label class="form-label message"><%= error %></label>
+                </div>
+              <% } %>
             <div class="row">
 
                 <div class="col-4">
@@ -185,64 +204,104 @@
           </div>         
         </div>
       </div>
-      
-</div>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>   
+    </div>
+
+    <div class="modal fade" id="exitoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+          </div>
+          <button id="ExitoModalCerrar" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+          </div>
+          <button id="ErrorModalCerrar" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+
+
+  
     <script>
       var dni = "<%= dni %>";
         $("#crearHistorial").on('click', function(){
             window.location.href = '/doctor/historial/CrearHistorial?dni='+dni;
+        });
+
+        $("#ErrorModalCerrar").on('click', function(){
+          $('#errorModal').modal('hide');
+        });
+
+        $("#ExitoModalCerrar").on('click', function(){
+          $('#exitoModal').modal('hide');
         });
         
 
         $("#iniciarTratamiento").on('click', function(){               
             $('#modalIniciarTratamiento').modal('show');
         });
+
         $("#aniadirDetalles").on('click', function(){               
             $('#modalAniadirDetalles').modal('show');
         });
+
         $("#mostrarHistorial").on('click', async function(){
-            $.ajax({
-                url: '/doctor/historial/obtenerURLPDF',
-                type: 'GET',
-                data: {dniPaciente: dni},
-                success: function(response) {
-                    var win = window.open(response.downloadURL, '_blank');
-                    win.focus();
-                },
-                error: function(response) {
-                    alert(response.responseJSON.error);
-                }
-            });
+          $.ajax({
+            url: '/doctor/historial/obtenerURLPDF',
+            type: 'GET',
+            contentType: 'application/json', 
+            data: { dniPaciente: dni }, 
+            success: function(response) {
+              if (response.downloadURL) {
+                 window.location.href = response.downloadURL; 
+              }
+            },
+            error: function(response) {
+                var errorModal = $('#errorModal');
+                errorModal.find('.modal-body').text('Historial del paciente no existe');
+                errorModal.modal('show');
+            }
         });
+
+        });
+
         $('#eliminarHistorial').on('click', function() {
           $.ajax({
             url: '/doctor/historial/eliminar', 
             type: 'DELETE',
-            contentType: 'application/json', // Especifica que envías JSON
-            data: JSON.stringify({ dniPaciente: dni }), // Convierte el objeto a JSON
+            contentType: 'application/json',
+            data: JSON.stringify({ dniPaciente: dni }),
             success: function() {
-              alert('Historial médico eliminado con éxito');
+              var exitoModal = $('#exitoModal');
+              exitoModal.find('.modal-body').text('Historial médico eliminado con éxito');
+              exitoModal.modal('show');
             },
             error: function(xhr, status, error) {
+              var errorModal = $('#errorModal');
               if (xhr.status === 404) {
-                alert('Archivo no encontrado');
+                errorModal.find('.modal-body').text('Historial no Existe');
               } else {
-                console.log(error)
-                alert('Error al eliminar el historial médico');
+                errorModal.find('.modal-body').text('Error al eliminar el historial médico');
+                console.log(error);
               }
+              errorModal.modal('show');
             }
           });
         });
 
         $("#btnAgregarFila").click(function() {
             var nuevaFila = $("<tr><td><input type='text' class='form-control' name='medicamento[]'></td><td><input type='text' class='form-control' name='dosis[]'></td><td><input type='time' class='form-control' name='hora_primera_toma[]'></td><td><input type='number' class='form-control' name='tomas_al_dia[]'></td><td><input type='date' class='form-control' name='fecha_inicio[]'></td><td><input type='date' class='form-control' name='fecha_fin[]'></td><td><button type='button' class='btn btn-danger btnEliminarFila'>-</button></td></tr>");
-            $("#tablaTratamiento tbody").append(nuevaFila); // Usa el identificador único
+            $("#tablaTratamiento tbody").append(nuevaFila);
         
         });
 
-        // Cambia la línea que elimina una fila dentro de la función click
         $(".table").on("click", ".btnEliminarFila", function() {
             $(this).closest("tr").remove();        
         });
