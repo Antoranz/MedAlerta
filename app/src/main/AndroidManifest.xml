@@ -27,13 +27,15 @@
         tools:targetApi="31">
         <activity
             android:name=".activities.ConfirmationActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:screenOrientation="portrait">
         </activity>
 
         <receiver
             android:name=".utils.receiver.NotificationButtonReceiver"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="ACTION_STOP_MEDIA_PLAYER" />
             </intent-filter>
@@ -42,22 +44,26 @@
 
         <activity
             android:name=".activities.ChangePasswordActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".activities.ForgottenPasswordActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".activities.ChatViewActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".activities.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
 
 
         </activity>
@@ -66,14 +72,16 @@
             android:name=".utils.async.NotificarMensajesAsync"
             android:enabled="true"
             android:exported="false"
-            android:permission="TODO">
+            android:permission="TODO"
+            android:screenOrientation="portrait">
         </service>
 
 
         <receiver
             android:name=".utils.receiver.InicioMovilReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
@@ -90,14 +98,15 @@
 
         <activity
             android:name=".activities.IniciarSesionActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <activity
             android:name=".activities.CargandoConfiguracionActivity"
-            android:exported="true">
-
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -106,7 +115,8 @@
         </activity>
         <activity
             android:name=".activities.RegistrarActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
         </activity>
 
     </application>
