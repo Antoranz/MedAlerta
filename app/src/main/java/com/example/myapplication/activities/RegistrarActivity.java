@@ -64,6 +64,8 @@ public class RegistrarActivity extends AppCompatActivity  {
         registerButton = findViewById(R.id.idRegisterButton);
 
         registerButton.setOnClickListener(v -> {
+
+
            if(!passwordText.getText().toString().equals(repitPasswordText.getText().toString())){
                makeTextToast("Las contraseñas no coinciden");
            }else if(passwordText.getText().toString().isEmpty() || emailText.getText().toString().isEmpty()){
@@ -74,12 +76,23 @@ public class RegistrarActivity extends AppCompatActivity  {
            } else if(!esDniValido(dniText.getText().toString())){
                makeTextToast("DNI inválido");
            }
+           else if(phoneText.getText().toString().length() != 9){
+               makeTextToast("El teléfono debe tener 9 dígitos");
+           }
+           else if(nameText.getText().toString().isEmpty() || surnameText.getText().toString().isEmpty() || domicilioText.getText().toString().isEmpty() || postalAddressText.getText().toString().isEmpty()){
+               makeTextToast("Todos los campos son obligatorios");
+           }
            else{
                String fechaString = editTextDate.getText().toString();
                DateFormat formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
                Date fecha = null;
+               Date fechaActual = new Date();
                try {
                    fecha = formatoSalida.parse(fechaString);
+                   if(fecha.after(fechaActual)){
+                       makeTextToast("La fecha de nacimiento no puede ser posterior a la fecha actual");
+                       return;
+                   }
                } catch (ParseException e) {
                    throw new RuntimeException(e);
                }
