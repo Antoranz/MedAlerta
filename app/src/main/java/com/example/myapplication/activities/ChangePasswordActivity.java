@@ -35,14 +35,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
         checKButton = findViewById(R.id.idComprobar);
 
         checKButton.setOnClickListener(v -> {
-            //TODO
-            if(!password1.getText().toString().equals(password2.getText().toString())){
+
+            if(password1.getText().toString().isEmpty() || password2.getText().toString().isEmpty()) {
+                Toast.makeText(this,"Los campos de contraseña no pueden estar vacíos",Toast.LENGTH_LONG).show();
+            } else if(!password1.getText().toString().equals(password2.getText().toString())) {
                 Toast.makeText(this,"Las contraseñas no coinciden",Toast.LENGTH_LONG).show();
-            }else if(codigoText.getText().toString().equals(numeroAleatorio.toString())){
+            } else if(codigoText.getText().toString().equals(numeroAleatorio.toString())) {
                 Controller.getInstance().editarPassword(sessionManager.getUserId(),password1.getText().toString(),this,MainActivity.class);
-            }else{
-                Toast.makeText(this,"codigo introducido incorrecto",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this,"Código introducido incorrecto",Toast.LENGTH_LONG).show();
             }
+
 
         });
 

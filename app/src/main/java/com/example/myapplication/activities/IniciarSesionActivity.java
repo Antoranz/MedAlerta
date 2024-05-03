@@ -47,7 +47,6 @@ public class IniciarSesionActivity extends AppCompatActivity {
         changePassword = findViewById(R.id.changePasswordId);
         changePassword.setOnClickListener(v -> {
             if(!dni.getText().toString().isEmpty()){
-
                 Paciente paciente = Controller.getInstance().getPaciente(dni.getText().toString());
 
                 if(paciente != null){
