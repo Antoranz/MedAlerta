@@ -74,11 +74,11 @@ public class Controller {
         service.crearMensaje(id,mensaje,propietario,fecha);
     }
 
-    public void postCrearConsulta(String dni_doctor,String dni_paciente, String titulo, String fecha) {
+    public void postCrearConsulta(Context context,String dni_doctor,String dni_paciente, String titulo, String fecha) {
 
         ConsultaService service = ConsultaServiceImp.getInstance();
 
-        service.postCrearConsulta(dni_doctor,dni_paciente, titulo, fecha);
+        service.postCrearConsulta(context,dni_doctor,dni_paciente, titulo, fecha);
     }
 
     public LinkedList<String> obtenerMensajesNoLeidos(String dni) {

@@ -8,6 +8,9 @@ import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.GetDataAsync;
 import com.example.myapplication.utils.async.PostDataAsync;
 
+import android.app.Activity;
+import android.content.Context;
+import android.service.credentials.Action;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -187,7 +190,7 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
     }
 
     @Override
-    public void postCrearConsulta(String dni_doctor, String dni_paciente, String titulo, String fecha) {
+    public void postCrearConsulta(Context context, String dni_doctor, String dni_paciente, String titulo, String fecha) {
         Executor executor = Executors.newSingleThreadExecutor();
         String urlServidor = ConfigApi.BASE_URL+"pacientes/consulta/crearConsulta";
 
@@ -204,7 +207,10 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
         }
 
         postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
-            runOnUiThread(() -> {
+            ((Activity)context).runOnUiThread(() -> {
+                if(result!=null){
+                    Toast.makeText(context,"La consulta ha sido creada correctamente",Toast.LENGTH_LONG).show();
+                }
             });
         }, "POST", postData.toString());
 
@@ -212,9 +218,7 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
     }
 
 
-    private void makeTextToast(String text){
-        Toast.makeText(this,text,Toast.LENGTH_LONG).show();
-    }
+
 
 
 }

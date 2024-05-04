@@ -1,5 +1,7 @@
 package com.example.myapplication.services;
 
+import android.content.Context;
+
 import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Doctor;
 
@@ -11,7 +13,7 @@ public interface ConsultaService {
 
     public LinkedList<Doctor> getDoctoresParaConsulta(String idPaciente);
 
-    void postCrearConsulta(String dni_doctor,String dni_paciente, String titulo, String fecha);
+    void postCrearConsulta(Context context, String dni_doctor, String dni_paciente, String titulo, String fecha);
 
     boolean getSaberSiHayMensajesNoLeidos(long id,String dni);
 }

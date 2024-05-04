@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -71,13 +72,15 @@ public class CrearConsultaFragment extends Fragment {
             String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
             String titulo = tituloConsulta.getText().toString();
 
-            // Obtener el doctor seleccionado del Spinner
             Doctor doctorSeleccionado = (Doctor) spinner.getSelectedItem();
             String dniDoctorSeleccionado = doctorSeleccionado.getDni();
+            if(titulo.isEmpty()){
+                Toast.makeText(getContext(),"El título no puede ser vacio",Toast.LENGTH_LONG).show();
+            }else{
+                Controller.getInstance().postCrearConsulta(getContext(),dniDoctorSeleccionado,sessionManager.getUserId().toString(),titulo,timeStamp);
+                NavigationManager.getInstance().navigateToDestination(requireContext(), MainActivity.class);
+            }
 
-            Controller.getInstance().postCrearConsulta(dniDoctorSeleccionado,sessionManager.getUserId().toString(),titulo,timeStamp);
-
-            NavigationManager.getInstance().navigateToDestination(requireContext(), MainActivity.class);
         });
 
 
