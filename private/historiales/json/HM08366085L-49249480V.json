@@ -1,0 +1,17 @@
+{
+  "dni": "49249480V",
+  "nombre": "Francisc0o Javier",
+  "apellido": "Antoranz",
+  "sexo": "masculino",
+  "fechaNacimiento": "2024-04-29",
+  "peso": "111",
+  "altura": "222",
+  "Diabetes": "on",
+  "Hipertensión": "on",
+  "alergias": "A",
+  "notas": "B",
+  "detalles": [
+    "C",
+    "kkkkk"
+  ]
+}

@@ -66,8 +66,6 @@ $(document).ready(function () {
 
     }
     function mostrarUsuarios() {
-        console.log("xxxx");
-        console.log(usuariosFiltrados)
         var $tabla = $('#tablaHistorial');
         $tabla.empty();
         usuariosFiltrados.forEach(function(usuario, index) {          
@@ -124,7 +122,6 @@ $(document).ready(function () {
     }
     function nuevaListaFiltrada(){
         usuariosFiltrados= [];
-        console.log(usuarios);
         switch (filtro) {
             case "Apellidos":
                 usuarios.forEach(function (u){
@@ -171,13 +168,14 @@ $(document).ready(function () {
         }
         mostrarUsuarios();
     }
-    var $contenedor = $('#Contenedor');
+    
     var $button = $('<button type="button" class="btn" style="background-color: rgb(18,70,85); color: white;">' + "Refrescar Usuarios" + '</button>');
     $button.on('click', function(){
         getUsuarios();
         cargarBuscador();
         mostrarUsuarios();
     });
+    //var $contenedor = $('#Contenedor');
     //$contenedor.append($button); Boton para refrescar (No lo utilizamos en esta iteración del proyecto)
     getUsuarios();    
 });

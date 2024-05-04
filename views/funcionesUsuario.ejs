@@ -250,25 +250,31 @@
             $('#modalAniadirDetalles').modal('show');
         });
 
-        $("#mostrarHistorial").on('click', async function(){
-          $.ajax({
-            url: '/doctor/historial/obtenerURLPDF',
-            type: 'GET',
-            contentType: 'application/json', 
-            data: { dniPaciente: dni }, 
-            success: function(response) {
-              if (response.downloadURL) {
-                 window.location.href = response.downloadURL; 
-              }
-            },
-            error: function(response) {
-                var errorModal = $('#errorModal');
-                errorModal.find('.modal-body').text('Historial del paciente no existe');
-                errorModal.modal('show');
-            }
-        });
+        $("#mostrarHistorial").on('click', async function() {
+        const dniPaciente = $("#dniPaciente").val(); 
 
+        $.ajax({
+          url: '/doctor/historial/obtenerPDF',
+          type: 'GET',
+          contentType: 'application/json',
+          data: { dniPaciente: dni },
+          success: function(response) {
+
+            const downloadLink = document.createElement('a');
+            downloadLink.href = '/doctor/historial/obtenerPDF?dniPaciente=' + dni;
+            downloadLink.download = 'Historial-' + dni + '.pdf';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+          },
+          error: function(response) {
+            var errorModal = $('#errorModal');
+            errorModal.find('.modal-body').text('El historial del paciente no se pudo encontrar');
+            errorModal.modal('show');
+          }
         });
+      });
+
 
         $('#eliminarHistorial').on('click', function() {
           $.ajax({

@@ -1,0 +1,13 @@
+{
+  "dni": "49249481V",
+  "nombre": "Carlos",
+  "apellido": "Peña",
+  "sexo": "masculino",
+  "fechaNacimiento": "2024-05-02",
+  "peso": "11",
+  "altura": "111",
+  "Anemia": "on",
+  "alergias": "A",
+  "notas": "B",
+  "detalles": "C"
+}

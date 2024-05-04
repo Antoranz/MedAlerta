@@ -31,16 +31,16 @@ router.get('/CrearHistorial/', async function(req, res, next) {
 router.post('/guardarHistorial', function(req, res){
 
   const data = req.body;
-  
+  console.log("los datos son: ",data)
   aniadirJson(req.session.currentUser.dni, data);
 
   try{
     crearPDF(req.session.currentUser.dni, data);
-    res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
+    res.redirect('/doctor/funciones-paciente/'+data.dni);
   }
   catch(error){
     console.log(error.message)
-    res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
+    res.redirect('/doctor/funciones-paciente/'+data.dni);
   }
 
  
@@ -50,7 +50,7 @@ router.post('/aniadirDetalles', (req, res) => {
   const dniPaciente = req.body.dni
   const nuevoDetalle = req.body.detalles; 
 
-  const filePath =  path.join(path.dirname(__dirname), 'public', 'historiales', 'json', `HM${req.session.currentUser.dni}-${dniPaciente}.json`);
+  const filePath =  path.join(path.dirname(__dirname), 'private', 'historiales', 'json', `HM${req.session.currentUser.dni}-${dniPaciente}.json`);
 
   fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
@@ -59,21 +59,16 @@ router.post('/aniadirDetalles', (req, res) => {
       return;
     }
 
-    // Convertimos el archivo leído a un objeto JSON
     let historial = JSON.parse(data);
 
-    // Chequeamos si "detalles" existe y cómo está estructurado
     if (typeof historial.detalles === 'undefined') {
-      historial.detalles = []; // Si no existe, creamos un array
+      historial.detalles = [];
     } else if (!Array.isArray(historial.detalles)) {
-      // Si es un valor único, lo convertimos a array manteniendo el valor original
       historial.detalles = [historial.detalles];
     }
 
-    // Agregamos el nuevo detalle al campo "detalles"
     historial.detalles.push(nuevoDetalle);
 
-    // Guardamos los datos actualizados de nuevo en el archivo JSON
     fs.writeFile(filePath, JSON.stringify(historial, null, 2), (err) => {
       if (err) {
         console.error('Error al escribir en el archivo JSON:', err);
@@ -90,7 +85,6 @@ router.post('/aniadirDetalles', (req, res) => {
             catch(error){
               console.log(error.message)
             }
-            
           }
         });
       }
@@ -100,7 +94,7 @@ router.post('/aniadirDetalles', (req, res) => {
 
 
 });
-
+/*
 router.get('/obtenerURLPDF', (req, res) => {
     
     const dniPaciente = req.query.dniPaciente;
@@ -118,12 +112,28 @@ router.get('/obtenerURLPDF', (req, res) => {
     });
 
 });
+*/
+router.get('/obtenerPDF', (req, res) => {
+
+  const dniPaciente = req.query.dniPaciente;
+  console.log(dniPaciente);
+
+  const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + dniPaciente + ".pdf";
+  const filePath = path.join(path.dirname(__dirname), 'private', pdfURL);
+  console.log("la ruta es: " + filePath)
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).send('Archivo no encontrado');
+  }
+
+  res.sendFile(filePath);
+});
 
 router.delete('/eliminar', (req, res) => {
 
     const dniPaciente = req.body.dniPaciente;
-    const pdfURL = path.join(path.dirname(__dirname), 'public', 'historiales', `HM${req.session.currentUser.dni}-${dniPaciente}.pdf`);
-    const filePath =  path.join(path.dirname(__dirname), 'public', 'historiales', 'json', `HM${req.session.currentUser.dni}-${dniPaciente}.json`);
+    const pdfURL = path.join(path.dirname(__dirname), 'private', 'historiales', `HM${req.session.currentUser.dni}-${dniPaciente}.pdf`);
+    const filePath =  path.join(path.dirname(__dirname), 'private', 'historiales', 'json', `HM${req.session.currentUser.dni}-${dniPaciente}.json`);
 
     if (!dniPaciente) {
       res.status(400).send('DNI del paciente es necesario');
@@ -156,7 +166,7 @@ router.delete('/eliminar', (req, res) => {
 
   function aniadirJson(dniDoctor, data){
 
-    const jsonPath = path.join(path.dirname(__dirname), 'public', 'historiales', 'json', `HM${dniDoctor}-${data.dni}.json`);
+    const jsonPath = path.join(path.dirname(__dirname), 'private', 'historiales', 'json', `HM${dniDoctor}-${data.dni}.json`);
   
     fs.writeFile(jsonPath, JSON.stringify(data, null, 2), (err) => {
       if (err) {
@@ -305,7 +315,7 @@ router.delete('/eliminar', (req, res) => {
       doc.text(detalles, { align: 'left', lineGap: 10 });
     }
 
-    const filePath = path.join(path.dirname(__dirname), 'public', 'historiales', `HM${dniDoctor}-${data.dni}.pdf`);
+    const filePath = path.join(path.dirname(__dirname), 'private', 'historiales', `HM${dniDoctor}-${data.dni}.pdf`);
     const writeStream = fs.createWriteStream(filePath);
 
     writeStream.on('finish', () => {
