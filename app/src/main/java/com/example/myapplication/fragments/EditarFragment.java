@@ -28,6 +28,7 @@ import com.example.myapplication.utils.manager.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -82,27 +83,47 @@ public class EditarFragment extends Fragment {
         phoneText.setText(paciente.getTelefono());
 
         editButton.setOnClickListener(v -> {
-            String fechaString = editTextDate.getText().toString();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // Define el formato de fecha esperado
-            Date fecha;
-            try {
-                fecha = sdf.parse(fechaString);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                fecha = null;
+
+            if (nameText.getText().toString().isEmpty() || surnameText.getText().toString().isEmpty() || domicilioText.getText().toString().isEmpty() || postalAddressText.getText().toString().isEmpty()) {
+                makeTextToast("Todos los campos son obligatorios");
+            } else if (phoneText.getText().toString().length() != 9) {
+                makeTextToast("El teléfono debe tener 9 dígitos");
+            }else {
+                String fechaString = editTextDate.getText().toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // Define el formato de fecha esperado
+                Date fecha;
+                Date fechaActual = new Date();
+
+                try {
+                    fecha = sdf.parse(fechaString);
+                    if(fecha.after(fechaActual)){
+                        makeTextToast("La fecha de nacimiento no puede ser posterior a la fecha actual");
+                        return;
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    fecha = null;
+                }
+                Paciente updatePaciente = new Paciente(
+                        paciente.getDni(),
+                        nameText.getText().toString(),
+                        paciente.getEmail(),
+                        surnameText.getText().toString(),
+                        postalAddressText.getText().toString(),
+                        fecha,
+                        domicilioText.getText().toString(),
+                        phoneText.getText().toString());
+                updatePaciente.setDni(sessionManager.getUserId());
+                Controller.getInstance().updatePaciente(updatePaciente,requireContext());
+                sessionManager.createSession(sessionManager.getUserId(), sessionManager.getEmail(),nameText.getText().toString());
+                sessionManager.verificateEmail();
+
+
             }
-            Paciente updatePaciente = new Paciente(
-                    paciente.getDni(),
-                    nameText.getText().toString(),
-                    paciente.getEmail(),
-                    surnameText.getText().toString(),
-                    postalAddressText.getText().toString(),
-                    fecha,
-                    domicilioText.getText().toString(),
-                    phoneText.getText().toString());
-            updatePaciente.setDni(sessionManager.getUserId());
-            Controller.getInstance().updatePaciente(updatePaciente,requireContext());
-            sessionManager.createSession(sessionManager.getUserId(), sessionManager.getEmail(),nameText.getText().toString());
+
+
+
+
 
         });
     }

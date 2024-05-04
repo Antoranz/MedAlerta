@@ -64,4 +64,5 @@ public class SessionManager {
     public void setName(String name_editado) {
         editor.putString(KEY_NAME, name_editado);
     }
+
 }
