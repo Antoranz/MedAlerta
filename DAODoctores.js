@@ -335,7 +335,7 @@ class DAODoctor{
                     reject(err);
                 }else{
                     console.log("Exito al conectar a la base de datos");
-                    var queryobtenerConsultas_doctor ="SELECT DISTINCT id, dni_paciente, dni_doctor, titulo, ultima_fecha, notificaciones_doctor FROM consultas WHERE dni_doctor = ? ORDER BY ultima_fecha DESC"
+                    var queryobtenerConsultas_doctor ="SELECT DISTINCT c.id, c.dni_paciente, c.dni_doctor, c.titulo, c.ultima_fecha, c.notificaciones_doctor, p.Nombre FROM consultas c JOIN pacientes p on c.dni_paciente = p.dni WHERE c.dni_doctor = ? ORDER BY ultima_fecha DESC"
                     connection.query(queryobtenerConsultas_doctor,[DNIDoctor], (err, res) => {
                         connection.release();
                         if(err){

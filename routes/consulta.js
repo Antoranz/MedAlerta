@@ -19,7 +19,6 @@ router.get('/', async function(req, res, next) {
     }else{
   
       var consultas = await dao.obtenerConsultas_doctor(req.session.currentUser.dni);
-  
       res.render('consultas', { nombre: req.session.currentUser.nombre, listaConsultas: consultas });
     }
 });

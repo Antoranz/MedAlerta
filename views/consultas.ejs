@@ -109,7 +109,7 @@
             <% listaConsultas.forEach((consulta, index) => { %>
             <div class="consulta mt-3" onclick="getMensajes('<%= consulta.id %>' , '<%= consulta.titulo %>')">
                 <div>
-                    <b class="ml-5"><%= consulta.titulo %> </b> 
+                    <b class="ml-5"><%= consulta.titulo %> | <%= consulta.Nombre %> </b> 
                     <% if( consulta.notificaciones_doctor > 0 ) { %>
                     <span class="badge rounded-circle bg-danger text-white "> <%= consulta.notificaciones_doctor %> </span>
                     <% } %>
