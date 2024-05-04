@@ -97,8 +97,9 @@ $(document).ready(function () {
         $fila.find('td').eq(1).append(usuario.Apellidos);
         $fila.find('td').eq(2).append(usuario.email);
         $fila.find('td').eq(3).append(usuario.dni);
-        $fila.find('td').eq(4).append($buttonEliminar);
-        $fila.find('td').eq(5).append($buttonFuncionesPaciente);
+        $fila.find('td').eq(4).append($buttonFuncionesPaciente);
+        $fila.find('td').eq(5).append($buttonEliminar);
+        
         
         $('#tablaHistorial').append($fila);
         

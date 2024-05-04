@@ -62,7 +62,7 @@ router.get('/gestion-usuarios', function(req, res, next) {
 
 
 
-router.get('/gestion-notificaciones', async function(req, res, next) {
+router.get('/gestion-citas', async function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
     res.render('index', { nombre:"" });
   }else{
@@ -71,7 +71,6 @@ router.get('/gestion-notificaciones', async function(req, res, next) {
 
     notificaciones.forEach(notificacion => {
       const fechaHora = new Date(notificacion.fecha_hora);
-      // Asignar la fecha y la hora por separado a la notificación
       notificacion.fecha = fechaHora.toLocaleDateString();
       notificacion.hora = fechaHora.toLocaleTimeString();
 
@@ -81,7 +80,7 @@ router.get('/gestion-notificaciones', async function(req, res, next) {
 
   console.log(notificaciones)
 
-    res.render('gestionNotificaciones', { nombre: req.session.currentUser.nombre, notificaciones:notificaciones });
+    res.render('gestionCitas', { nombre: req.session.currentUser.nombre, notificaciones:notificaciones });
   }
 });
 

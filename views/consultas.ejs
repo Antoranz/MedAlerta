@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultas</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheets/style.css">
     <style>
@@ -79,16 +77,35 @@
             width:94%;
             padding: 0.5%;
         }
+        .imagenContainer {
+            display: flex;   
+            justify-content: center;
+            align-items: center;
+        }
+        .separadorDia {
+            text-align: center;
+            color: darkgrey;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
 
     </style>
 </head>
 
-<body>
+<body style="zoom: 1.5;">
     <% include nav.ejs %>
 
     <div class="container center">
         <h1 id="TituloConsultas" class="text-center m-4 tituloFont">Consultas</h1>
-        <div id="consultas">
+        <hr>
+        <div id="consultas" class="text-center">
+            <div class="imagenContainer">
+                <% if (listaConsultas.length === 0){ %>
+                    <img src="/images/consultasVacias2.png">
+                <% } %>
+            </div>
             <% listaConsultas.forEach((consulta, index) => { %>
             <div class="consulta mt-3" onclick="getMensajes('<%= consulta.id %>' , '<%= consulta.titulo %>')">
                 <div>
@@ -117,133 +134,9 @@
 
             </div>
         </div>
-        
-        
     </div>
-    
-
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> 
-
-    <script>
-        var consultaActualId = "";
-        var consultaActualTitulo = "";
-        function getMensajes(consultaId, consultaTitulo) {
-            
-            consultaActualId = consultaId;
-            consultaActualTitulo = consultaTitulo;
-            $.ajax({
-                url: '/doctor/consulta/mensajes/' + consultaId,
-                type: 'GET',
-                data: { consultaId: consultaId, consultaTitulo: consultaTitulo },
-                success: function(response) {
-
-                    fetch('/doctor/consulta/borrarNotificaciones', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({consultaId: consultaId })
-                        })
-                        
-                    var mensajesDiv = $('#mensajes'); 
-                    var consultasDiv = $('#consultas'); 
-                    var campoMensajes = $('#campoMensajes')
-                    consultasDiv.empty();
-                    mensajesDiv.show();
-                    mensajesDiv.children().show();
-                    
-
-                    var TituloConsultas = $('#TituloConsultas'); 
-                    TituloConsultas.empty();
-
-                    var TituloDiv = $('#titulo'); 
-                    TituloDiv.text(consultaTitulo);
-
-                    var FechaDiv = $('#fecha'); 
-                    FechaDiv.text(new Date().toLocaleDateString('es-ES'));
-
-                    var InputMensajesDiv = $('#inputMensajes'); 
-                    InputMensajesDiv.empty();
-                    
-                    campoMensajes.empty();
-                    response.mensajes.forEach(function(element) {
-                        if (element.propietario == 1)
-                            campoMensajes.append('<p><em class="mensajePaciente">' + element.mensaje + '</em></p>');
-                        else
-                            campoMensajes.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + element.mensaje + '</em></p>');
-                    });
-                    InputMensajesDiv.append('<form class="form-inline" action="/doctor/consulta/mandarMensaje" method="post">');
-                    InputMensajesDiv.append('<input type="text" id="mensajeDoctor" placeholder="Escribe tu mensaje...">');
-                    InputMensajesDiv.append('<button id="enviarBoton" class="btn btn-primary" type="submit">Enviar</button>');
-                    InputMensajesDiv.append('</form>');
-
-                    const enviarBoton = document.getElementById('enviarBoton');
-                    enviarBoton.addEventListener('click', () => {
-
-                        const mensajeInput = document.getElementById('mensajeDoctor');7
-                        const texto = mensajeInput.value;
-                        if(texto != "" && texto != null){
-                            fetch('/doctor/consulta/mandarMensaje', {
-                                method: 'POST',
-                                body: JSON.stringify({ texto: texto, consultaId: consultaId })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                campoMensajes.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + texto + '</em></p>');
-                                mensajeInput.value = "";
-                            })
-                            .catch(error => console.error('Error:', error));
-                        }
-                    });        
-                },
-                error: function(xhr, status, error) {
-                    
-                    console.error(xhr.responseText);
-                    console.log("Error del servidor");
-                }
-            });
-
-
-
-        }
-        function actualizarChat(consultaId){
-
-            $.ajax({
-                url: '/doctor/consulta/mensajes/' + consultaId,
-                type: 'GET',
-                data: { consultaId: consultaId },
-                success: function(response) {
-                    fetch('/doctor/consulta/borrarNotificaciones', {
-                            method: 'POST',
-                            body: JSON.stringify({consultaId: consultaId })
-                        })
-                    var campoMensajes = $('#campoMensajes')
-                    campoMensajes.empty();
-                    response.mensajes.forEach(function(element) {
-                        if (element.propietario == 1)
-                            campoMensajes.append('<p><em class="mensajePaciente">' + element.mensaje + '</em></p>');
-                        else
-                            campoMensajes.append('<p class="casillaDoctor"><em class="mensajeDoctor">' + element.mensaje + '</em></p>');
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    console.log("Error del servidor");
-                }});
-
-
-        }
-        window.addEventListener('load', function() {
-            const intervalo = 5000;
-            setInterval(function() {
-                if(consultaActualId != ""){
-                    actualizarChat(consultaActualId);
-                }
-            }, intervalo);
-        });
-    </script>
-
-
+    <script src="/scripts/consultas.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

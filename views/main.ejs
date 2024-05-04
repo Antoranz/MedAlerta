@@ -1,25 +1,152 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion Usuarios</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
+    <title>Main Page</title>
 
-<body>
-    <% include nav.ejs %>
-    <div style="display: flex; justify-content: center; align-items: center;">
-        <% if(nombre =="") {%>
-            <img src="/images/imagenFondo.png" alt="" style="width: 100%; height: auto;" ></div>
-        <%} else{  %>
-            <img src="/images/fondoAlternativo.png" alt="" style="width: 100%; height: auto;" ></div>
-        <% } %>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <style>
+
+      .main-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Full height of viewport */
+      }
+
+      .content {
+        flex: 1;
+      }
+  
+      .footer {
+        background-color: #f8f9fa;
+        text-align: center;
+        padding: 1rem;
+      }
+    </style>
+</head>
+<body style="zoom: 1.5;">
+    <% if (typeof nombre !== 'undefined' && nombre !== '') { %>
+        <% include nav.ejs %>
+        <div class="container mt-4">
+            <div class="text-center mb-5 pb-3">
+                <h1>Funciones y Servicios</h1>
+            </div>
+
+            <div class="row">
+                
+        <div class="card mb-3 border-0">
+            <div class="row g-0">
+                <div class="col-md-4 d-flex align-items-center justify-content-center">
+                    <img src="/images/gestionUsuariosIcon.jpg" class="img-fluid rounded-circle" style="width: 200px; height: 200px;" alt="Gestión de Usuarios">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Usuarios</h5>
+                        <p class="card-text">Administra a los usuarios y gestiona sus permisos y detalles personales de manera eficiente.</p>
+                        <a href="/doctor/gestion-usuarios/" class="btn btn-primary">Ir a Gestión de Usuarios</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+
+        <div class="card mb-3 border-0">
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Consultas</h5>
+                        <p class="card-text">Accede a las consultas médicas y realiza un seguimiento detallado de los pacientes.</p>
+                        <a href="/doctor/consulta/" class="btn btn-info">Ir a Consultas</a>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex align-items-center justify-content-center">
+                    <img src="/images/gestionConsultasIcon.jpg" class="img-fluid rounded-circle" style="width: 200px; height: 200px;" alt="Consultas">
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <div class="card mb-3 border-0">
+            <div class="row g-0">
+                <div class="col-md-4 d-flex align-items-center justify-content-center">
+                    <img src="/images/calendarioIcon.jpg" class="img-fluid rounded-circle" style="width: 200px; height: 200px;" alt="Calendario">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Calendario</h5>
+                        <p class="card-text">Consulta el calendario de citas y eventos importantes para mantenerte organizado.</p>
+                        <a href="/doctor/calendario/" class="btn btn-success">Ir al Calendario</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <div class="card mb-3 border-0">
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Citas</h5>
+                        <p>Administra las citas médicas, organiza horarios y accede a detalles importantes.</p>
+                        <a href="/doctor/gestion-citas/" class="btn btn-warning">Ir a Gestión de Citas</a>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex align-items-center justify-content-center">
+                    <img src="/images/gestionCitasIcon.jpg" class="img-fluid rounded-circle" style="width: 200px; height: 200px;" alt="Gestión de Citas">
+                </div>
+            </div>
+        </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+
+    <% }  else { %>  
+        <div class="main-container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">MedAlerta</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/iniciar-sesion/">Inicia Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="content">
+            <div class="jumbotron text-center text-white p-5" style="background-color: rgb(18,70,85);">
+                <h1>¡Bienvenido a MedAlerta!</h1>
+                <p>Cuide la salud de sus pacientes</p>
+                <a href="#sobreMedAlerta" class="btn btn-light btn-lg">Aprender más</a>
+            </div>
+            <hr>
+            <div class="text-center p-5">
+                <h2 class="p-2">¿Eres un doctor?</h2>
+                <a href="/iniciar-sesion/" class="btn text-white" style="background-color: rgb(18,70,85);" >Inicia Sesión</a>
+            </div>
+            <hr>
+            <div id="sobreMedAlerta" class="text-center p-5">
+                <h2 class="p-2">Sobre MedAlerta</h2>
+                <p>AÑADIR AQUI TEXTACO DE LO QUE ES MEDALERTA QUE PONDREMOS EN EL TFG:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>2024 MedAlerta</p>
+        </footer>
+    <% } %>
+
+
+    </div>
+
+  
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    
 </body>
 </html>

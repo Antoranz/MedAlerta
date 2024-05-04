@@ -573,11 +573,12 @@ class DAODoctor{
                     console.error(`Error al realizar la conexión: ${err.message}`);
                     reject(err);
                 } else {
-                    console.log("Exito al conectar a la base de datos");
+                    console.log("Exito al conectar a la base de datos con los datos: " + consultaId);
 
                     var queryInsertar = "INSERT INTO mensajes (id_consulta, mensaje, propietario, fecha) VALUES (?, ?, ?, ?)";
                     connection.query(queryInsertar, [consultaId, texto, propietario, fecha], (err, resInsert) => {
                         if (err) {
+                            console.log(err)
                             connection.release();
                             reject(err);
                         } else {

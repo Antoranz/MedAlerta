@@ -8,18 +8,13 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheets/style.css">
-
-     <style>
-        .custom-dropdown-toggle::after {
-            display: none; 
-        }
-    </style>
 </head>
 
-<body>
-    <% include nav.ejs %>
+<body style="zoom: 1.5;">
+  <% include nav.ejs %>
+    
     <main>
-      <div id="Contenedor" class="container mt-5">  
+      <div class="container mt-5">  
         <div style="display: flex; gap: 1%; margin-bottom: 3%">  
         <h4>Lista de Usuarios </h4>
 
@@ -46,20 +41,24 @@
             </div>
           </div>
         </div> 
-
-        <table class="table table-responsive" style="background-color:  rgb(235,243,243)">
-          <thead>
-            <tr>
-              <th> </th>
-              <th>Nombre</th>
-              <th>Apellidos</th>
-              <th>Correo</th>
-              <th>DNI</th>
-            </tr>
-          </thead>
-          <tbody id="tablaHistorial">
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table id="tablaUsuarios" class="table custom-table" style="background-color: rgb(235,243,243)">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Correo</th>
+                <th>DNI</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tablaHistorial">
+            </tbody>
+          </table>
+        </div>
+        
         <% if (typeof error !== 'undefined' && error !== '') { %>
           <div class="message-container-error">
             <label for="exampleInputEmail1" class="form-label message"><%= error %></label>
