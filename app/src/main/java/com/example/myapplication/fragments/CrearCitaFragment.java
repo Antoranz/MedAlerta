@@ -78,33 +78,13 @@ public class CrearCitaFragment extends Fragment {
         spinner.setAdapter(adapter);
 
         confirmarCita.setOnClickListener(v -> {
-
-            // Obtener el doctor seleccionado del Spinner
             Doctor doctorSeleccionado = (Doctor) spinner.getSelectedItem();
             String dniDoctorSeleccionado = doctorSeleccionado.getDni();
-
-            Executor executor2 = Executors.newSingleThreadExecutor();
-            String urlServidor2 = ConfigApi.BASE_URL + "pacientes/crearNotificacionCita/" + sessionManager.getUserId();
-
-            JSONObject postData = new JSONObject();
-            try {
-                postData.put("doctor_dni", dniDoctorSeleccionado);
-                postData.put("tipo", tipo.getText().toString());
-                postData.put("motivo", motivoConsulta.getText().toString());
-                postData.put("fecha", editTextDate.getText().toString());
-                postData.put("hora", editTextTime.getText().toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if(dniDoctorSeleccionado.isEmpty() || tipo.getText().toString().isEmpty() || motivoConsulta.getText().toString().isEmpty() || editTextDate.getText().toString().isEmpty() || editTextTime.getText().toString().isEmpty()){
+                Toast.makeText(requireContext(), "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+            }else {
+                Controller.getInstance().crearNotificacionCita(getContext(), dniDoctorSeleccionado, tipo.getText().toString(), motivoConsulta.getText().toString(), editTextDate.getText().toString(), editTextTime.getText().toString());
             }
-
-            PostDataAsync.postDataAsync(urlServidor2, executor2, result -> requireActivity().runOnUiThread(() -> {
-                if (result != null) {
-                    Toast.makeText(requireContext(), "Consulta solicitada correctamente", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(requireContext(), MainActivity.class));
-                } else {
-                    Toast.makeText(requireContext(), "Error al solicitar la consulta", Toast.LENGTH_SHORT).show();
-                }
-            }), "POST", postData.toString());
         });
     }
 

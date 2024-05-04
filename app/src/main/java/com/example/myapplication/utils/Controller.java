@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.example.myapplication.activities.IniciarSesionActivity;
 import com.example.myapplication.activities.RegistrarActivity;
+import com.example.myapplication.fragments.CrearCitaFragment;
 import com.example.myapplication.utils.receiver.AlarmReceiver;
 import com.example.myapplication.data.Cita;
 import com.example.myapplication.data.Consulta;
@@ -159,5 +160,10 @@ public class Controller {
     public void registrarPaciente(Paciente paciente, Context context) {
         PacienteService service = PacienteServiceImp.getInstance();
         service.registrarPaciente(paciente,context);
+    }
+
+    public void crearNotificacionCita(Context context, String dniDoctorSeleccionado, String tipo, String motivo, String date, String time) {
+        CitaService service = CitaServiceImp.getInstance();
+        service.crearNotificacionCita(context,dniDoctorSeleccionado,tipo,motivo,date,time);
     }
 }
