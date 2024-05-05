@@ -3,17 +3,13 @@
   "nombre": "Carlos",
   "apellido": "Peña",
   "sexo": "masculino",
-  "fechaNacimiento": "2024-04-30",
-  "peso": "222",
-  "altura": "111",
-  "Diabetes": "on",
-  "Hipertensión": "on",
-  "Asma": "on",
-  "Artritis": "on",
-  "alergias": "A",
-  "notas": "B",
-  "detalles": [
-    "TRW",
-    "ssss"
-  ]
+  "fechaNacimiento": "2024-05-08",
+  "peso": "32",
+  "altura": "2313",
+  "Depresión": "on",
+  "Epilepsia": "on",
+  "sddsdsds": "on",
+  "alergias": "sasaas",
+  "notas": "saas",
+  "detalles": "asaas"
 }
