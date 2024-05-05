@@ -21,7 +21,7 @@ import com.example.myapplication.utils.manager.SessionManager;
 
 import java.util.LinkedList;
 
-public class ConsultasFragment extends Fragment {
+public class AlarmFragment extends Fragment {
 
     private SessionManager sessionManager;
 

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
+import com.example.myapplication.fragments.AlarmFragment;
 import com.example.myapplication.fragments.CalendarCitasFragment;
 import com.example.myapplication.fragments.ConsultasFragment;
 import com.example.myapplication.fragments.CrearCitaFragment;
@@ -70,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             } else if (item.getItemId() == R.id.anadir_cita) {
                 replaceFragment(new CrearCitaFragment());
+                return true;
+            } else if (item.getItemId() == R.id.ver_alarmas) {
+                replaceFragment(new AlarmFragment());
                 return true;
             } else {
                 return false;
