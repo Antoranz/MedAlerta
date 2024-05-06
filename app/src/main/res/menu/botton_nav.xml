@@ -16,8 +16,4 @@
         android:icon="@drawable/anadir_cita"
         android:id="@+id/anadir_cita"/>
 
-    <item android:title="Alarmas"
-        android:icon="@drawable/visualizar_alarmas"
-        android:id="@+id/ver_alarmas"/>
-
 </menu>

@@ -72,9 +72,6 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.anadir_cita) {
                 replaceFragment(new CrearCitaFragment());
                 return true;
-            } else if (item.getItemId() == R.id.ver_alarmas) {
-                replaceFragment(new AlarmFragment());
-                return true;
             } else {
                 return false;
             }
