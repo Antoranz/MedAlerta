@@ -84,7 +84,6 @@ public class CitaServiceImp implements CitaService{
             e.printStackTrace();
         }
 
-
         return listaCitas;
     }
 
