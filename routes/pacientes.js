@@ -29,16 +29,13 @@ router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
 
         var dni_paciente=req.params.dni;
 
-        const {doctor_dni,tipo,motivo,fecha,hora,duracion} = req.body;
+        const {doctor_dni,tipo,motivo,fecha,hora} = req.body;
 
         console.log(tipo);
         console.log(motivo);
         console.log(fecha);
         console.log(hora);
-        console.log(duracion);
         console.log(doctor_dni);
-
-
 
         const fechaHoraString = fecha + ' ' + hora + ':00'; // Combinar fecha y hora en una sola cadena, en formato ISO 8601 y UTC
         

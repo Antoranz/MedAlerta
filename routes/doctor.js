@@ -71,7 +71,11 @@ router.get('/gestion-citas', async function(req, res, next) {
 
     notificaciones.forEach(notificacion => {
       const fechaHora = new Date(notificacion.fecha_hora);
-      notificacion.fecha = fechaHora.toLocaleDateString();
+            // Suponiendo que fechaHora es una instancia de Date
+      var fechaFormateada = fechaHora.toISOString().split('T')[0]; // Obtener la fecha en formato ISO y quitar la parte de la hora
+
+      notificacion.fecha = fechaFormateada;
+
       notificacion.hora = fechaHora.toLocaleTimeString();
 
       notificacion.id = notificacion.id;
@@ -243,6 +247,7 @@ router.get('/eliminarAsociacion/:dni', async function(req, res, next) {
   try {
 
     const dniUsuario = req.params.dni;
+  
 
     console.log(dniUsuario)
 

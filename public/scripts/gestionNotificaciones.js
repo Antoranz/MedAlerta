@@ -8,16 +8,11 @@ function mostrarModal(id) {
 function confirmarCita(button) {
     // Recopilar los valores del formulario utilizando los identificadores únicos
     var id = button.getAttribute('data-id');
-    console.log(id)
     var dni = document.getElementById('dni_' + id).innerText.split(': ')[1];
-    var fecha = document.getElementById('fecha_' + id).innerText.split(': ')[1];
-    var hora = document.getElementById('hora_' + id).innerText.split(': ')[1];
+    var fecha = document.getElementById('fecha_' + id).value;
+    var hora = document.getElementById('hora_' + id).value;
     var duracion = document.getElementById('duracion').value;
 
-    console.log("esta es la fechaaaaaaa:" + fecha)
-
-
-    console.log(hora)
     // Enviar los datos al servidor utilizando AJAX
     $.ajax({
         url: '/doctor/citas/asignar-cita', // Ruta en el servidor para asignar la cita

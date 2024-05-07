@@ -35,8 +35,12 @@
                                 <div class="card-body">
                                     <h5 class="card-title"><%= notificacion.motivo %></h5>
                                     <p class="card-text" id="dni_<%= notificacion.id %>">DNI: <%= notificacion.paciente_dni %></p>
-                                    <p class="card-text" id="fecha_<%= notificacion.id %>">Fecha: <%= notificacion.fecha %></p>
-                                    <p class="card-text" id="hora_<%= notificacion.id %>">Hora: <%= notificacion.hora %></p>                                                            
+                                    <p> 
+                                        Fecha: 
+                                        <input type="date" name="fecha" class="form-control" id="fecha_<%= notificacion.id %>" value="<%= notificacion.fecha %>" readonly>
+                                        Hora:
+                                        <input type="time" name="time" class="form-control" id="hora_<%= notificacion.id %>" value="<%= notificacion.hora %>" readonly>
+                                    </p>
                                     <button type="button" class="btn btn-primary" onclick="mostrarModal('<%= notificacion.id %>')">Confirmar / Rechazar Cita</button>
                                 </div>
                             </div>

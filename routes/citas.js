@@ -91,14 +91,14 @@ router.post("/asignar-cita", async function(req, res, next) {
 
     var errorMessage;
 
-    console.log(fechaHoraString)
-    console.log(fecha)
-    console.log(hora)
+    console.log("11111111---------------"+fechaHoraString)
+    console.log("2222222---------------"+fecha)
+    console.log("3333333333---------------"+hora)
     
     if (nuevoDate == "Invalid Date") {
   
       var fechaFormateada = formatearFecha(fecha,hora);
-      console.log(fechaFormateada)
+      console.log("44444444444---------------"+fechaFormateada)
       fecha_hora = fechaFormateada;
 
   
@@ -112,6 +112,11 @@ router.post("/asignar-cita", async function(req, res, next) {
       const minutes = String(nuevoDate.getMinutes()).padStart(2, '0'); // Añade cero al principio si es necesario
       const seconds = String(nuevoDate.getSeconds()).padStart(2, '0'); // Añade cero al principio si es necesario
 
+      console.log("CAAAAAAARLOS"+day)
+      console.log("jaaaaaaaaaavi"+month)
+
+      console.log("SERGIOOOOOOOO",nuevoDate)
+
       const fechaParaBD = `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
 
       console.log("fechaParaBD: " + fechaParaBD); // Esto mostrará la fecha en formato 'YYYY-MM-DD HH:MM:SS'
@@ -120,11 +125,8 @@ router.post("/asignar-cita", async function(req, res, next) {
     
   
     }
-  
-    console.log(fecha)
-    console.log(hora)
 
-    console.log(fecha_hora)
+    console.log("77777777---------------"+fecha_hora)
   
     try {
       if (!/^\d{8}[a-zA-Z]$/.test(dni)) {
@@ -148,9 +150,7 @@ router.post("/asignar-cita", async function(req, res, next) {
         throw new Error("La fecha y hora seleccionadas deben ser posteriores a la fecha y hora actual");
       }
      
-      
       var citasCoincidentes = await dao.checkearCitasCoincidentes(req.session.currentUser.dni, fecha_hora, duracion);
-      console.log("citas coincidentes:", citasCoincidentes);
       if (citasCoincidentes.length > 0) {
         errorMessage = "Ya existe una cita en ese intervalo de tiempo"
         throw new Error("Ya existe una cita en ese intervalo de tiempo");
@@ -158,10 +158,10 @@ router.post("/asignar-cita", async function(req, res, next) {
       
       await dao.asignarCita(req.session.currentUser.dni, dni, fecha_hora, duracion);
       
-      res.status(200).send("Cita asignada correctamente");
+      res.render('calendario', { nombre: req.session.currentUser.nombre });
     } catch (error) {
       console.error("Error al asignar cita: "+ errorMessage);
-      res.status(400).send(errorMessage);
+      res.render('gestionUsuarios', { nombre: req.session.currentUser.nombre, error:errorMessage, confirmacion:""});
     }
   });
 
