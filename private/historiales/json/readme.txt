@@ -1,0 +1,1 @@
+Aquí se almacenan los json de los historiales médicos de los pacientes.
