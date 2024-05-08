@@ -257,8 +257,9 @@ router.delete('/eliminar', (req, res) => {
     actual = yPos;
     });
 
-    const enfermedades = Object.keys(data).filter(key => key !== "_csrf").slice(7);
-    const enfermedadesMarcadas = enfermedades.slice(0,enfermedades.length-2);
+    const enfermedades = Object.keys(data).filter(key => key !== "_csrf").slice(6);
+    console.log("enfermedades es: ", enfermedades)
+    const enfermedadesMarcadas = enfermedades.slice(0,enfermedades.length-3);
     console.log(enfermedadesMarcadas);
 
     let xPos = 80;
