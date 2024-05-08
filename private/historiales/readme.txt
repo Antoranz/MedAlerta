@@ -1,0 +1,1 @@
+Aquí se almacenan los documentos pdf de los historiales médicos de los pacientes.
