@@ -90,7 +90,8 @@ router.post('/aniadirDetalles', (req, res) => {
       }
     });
   });
-  res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre});
+  res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,dni:dniPaciente, correct:"Detalle añadido correctamente", error:""});
+
 
 
 });
