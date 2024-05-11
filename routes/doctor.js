@@ -159,9 +159,7 @@ router.get('/deleteAccount', async function(req, res, next) {
       console.error("Error durante la operación:", error);
       
     }
- 
 });
-
 
 router.post("/guardarTratamiento", async function(req, res, next) {
 
