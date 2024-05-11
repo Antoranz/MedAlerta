@@ -104,20 +104,19 @@ router.post('/aniadirDetalles', (req, res) => {
   });
 });
 
-router.get('/obtenerPDF', (req, res) => {
+router.get('/obtenerPDF', async (req, res) => {
 
   const dniPaciente = req.query.dniPaciente;
-  const nombrePaciente = req.query.nombrePaciente;
-  const apellidosPaciente = req.query.apellidosPaciente;
 
   const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + dniPaciente + ".pdf";
   const filePath = path.join(path.dirname(__dirname), 'private', pdfURL);
-
-  if (!fs.existsSync(filePath)) {
-    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Archivo no encontrado"});
+  let filePathExiste = await fs.existsSync(filePath);
+  if ( !filePathExiste) {
+    res.status(404).send("No existe el historial");
   }
-
-  res.sendFile(filePath);
+  else{
+    res.sendFile(filePath);
+  }
 });
 
 router.delete('/eliminar', (req, res) => {
