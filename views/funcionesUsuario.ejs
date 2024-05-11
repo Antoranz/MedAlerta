@@ -42,60 +42,106 @@
                 </div>
               <% } %>
 
-              <div class="row">
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="card p-2 text-center">
-                        <img class="card-img-top" src="/images/tratamiento.png" alt="Iniciar tratamiento imagen">
-                        <div class="card-body">
-                            <p class="card-text"><button id="iniciarTratamiento" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Iniciar tratamiento</button></p>
-                        </div>
-                    </div>
+              <div class="container mt-4">
+                <div class="text-center mb-1 pb-3">
+                    <h4>Funciones de <%= nombrePaciente %> <%=apellidosPaciente%></h4>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mt-2">
-                    <div class="card p-2 text-center">
-                        <img class="card-img-top" src="/images/cita-medica.jpg" alt="Cita Medica">
-                        <div class="card-body">
-                            <p class="card-text"><button id="Pedir Cita" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;" data-bs-toggle="modal" data-bs-target="#modalAgregarCita">Añadir una cita</button></p>
-                        </div>
+    
+                <div class="row">
+                    
+            <div class="card mb-3 p-3 border-0">
+                <div class="row g-0">
+                    <div class="col-md-4 d-flex align-items-center justify-content-center">
+                        <img src="/images/tratamiento.jpg" class="img-fluid rounded-circle border" style="width: 200px; height: 200px;" alt="Iniciar tratamiento">
                     </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="card p-2 text-center">
-                        <img class="card-img-top" src="/images/historial.png" alt="Historial Médico">
+                    <div class="col-md-8">
                         <div class="card-body">
-                            <p class="card-text"><button id="crearHistorial" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Crear historial médico</button></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="card p-2 text-center">
-                        <img class="card-img-top" src="/images/watchIcon.png" alt="Ver Historial">
-                        <div class="card-body">
-                            <p class="card-text"><button id="mostrarHistorial" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Ver historial médico</button></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="card p-2 text-center">
-                        <img class="card-img-top" src="/images/addDocument.png" alt="Añadir Detalles Historial">
-                        <div class="card-body">
-                            <p class="card-text"><button id="aniadirDetalles" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Añadir detalles al historial médico</button></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="card p-2 text-center">
-                        <img class="card-img-top" src="/images/trashIcon.png" alt="Eliminar Historial">
-                        <div class="card-body">
-                            <p class="card-text"><button id="eliminarHistorial" class="btn" type="button" style="background-color: rgb(18,70,85); color: white;">Eliminar historial médico</button></p>
+                            <h5 class="card-title">Iniciar tratamiento</h5>
+                            <p class="card-text">Inicia un tratamiento con <%= nombrePaciente %> <%=apellidosPaciente%></p>
+                            <button id="iniciarTratamiento" class="btn btn-primary" type="button">Iniciar tratamiento</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <hr>
+
+            <div class="card mb-3 p-3 border-0">
+              <div class="row g-0">
+                  <div class="col-md-4 d-flex align-items-center justify-content-center">
+                      <img src="/images/cita-medica.jpg" class="img-fluid rounded-circle border" style="width: 200px; height: 200px;" alt="Pedir Cita">
+                  </div>
+                  <div class="col-md-8">
+                      <div class="card-body">
+                          <h5 class="card-title">Pedir Cita</h5>
+                          <p class="card-text">Pedir una cita con <%= nombrePaciente %> <%=apellidosPaciente%></p>
+                          <button id="Pedir Cita" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalAgregarCita">Añadir una cita</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+
+          <div class="card mb-3 p-3 border-0">
+            <div class="row pb-3 g-0">
+                <div class="col-md-4 d-flex align-items-center justify-content-center">
+                    <img src="/images/historial.jpg" class="img-fluid rounded-circle border" style="width: 200px; height: 200px;" alt="Crear historial">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Crear historial</h5>
+                        <p class="card-text">Crea un historial para <%= nombrePaciente %> <%=apellidosPaciente%></p>
+                        <button id="crearHistorial" class="btn btn-primary" type="button">Crear historial médico</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row g-0">
+              <div class="col-md-8">
+                  <div class="card-body">
+                      <h5 class="card-title">Ver historial</h5>
+                      <p class="card-text">Ver historial de <%= nombrePaciente %> <%=apellidosPaciente%></p>
+                      <button id="mostrarHistorial" class="btn btn-primary" type="button">Ver historial médico</button>
+                  </div>
+              </div>
+              <div class="col-md-4 d-flex align-items-center justify-content-center">
+                <img src="/images/watchIcon.jpg" class="img-fluid rounded-circle border" style="width: 200px; height: 200px;" alt="Ver historial">
+              </div>
+            </div>
+            <hr>
+            <div class="row pb-3 g-0">
+              <div class="col-md-4 d-flex align-items-center justify-content-center">
+                  <img src="/images/addDocument.jpg" class="img-fluid rounded-circle border" style="width: 200px; height: 200px;" alt="Añadir detalles">
+              </div>
+              <div class="col-md-8">
+                  <div class="card-body">
+                      <h5 class="card-title">Añadir detalles</h5>
+                      <p class="card-text">Añade detalles al historial de <%= nombrePaciente %> <%=apellidosPaciente%></p>
+                      <button id="aniadirDetalles" class="btn btn-primary" type="button">Añadir detalles al historial médico</button>
+                  </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row pb-3 g-0">
+              <div class="col-md-8">
+                  <div class="card-body">
+                      <h5 class="card-title">Eliminar Historial Médico</h5>
+                      <p class="card-text">Elimina el historial de <%= nombrePaciente %> <%=apellidosPaciente%></p>
+                      <button id="eliminarHistorial" class="btn btn-danger" type="button">Eliminar historial médico</button>
+                  </div>
+              </div>
+              <div class="col-md-4 d-flex align-items-center justify-content-center">
+                <img src="/images/trashIcon.png" class="img-fluid rounded-circle border" style="width: 200px; height: 200px;" alt="Eliminar historial médico">
+              </div>
+            </div>
+          
+          </div>
+          <hr>
         </div>
     </main>
+
+
     <div class="modal fade" id="modalIniciarTratamiento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document"> <!-- Utilizamos modal-xl para un modal extra grande -->
+        <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Formulario de Tratamiento</h5>
@@ -194,6 +240,8 @@
           <div class="modal-body">
             <form action="/doctor/historial/aniadirDetalles" method="post">
               <input type="hidden" name="dni" value="<%= dni %>">
+              <input type="hidden" name="nombrePaciente" value="<%= nombrePaciente %>">
+              <input type="hidden" name="apellidosPaciente" value="<%=apellidosPaciente%>">
               <label for="detalles">Detalles:</label>
               <textarea class="form-control" id="detalles" name="detalles" rows="3"></textarea>
               <div class="modal-footer">

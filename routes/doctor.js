@@ -87,12 +87,13 @@ router.get('/gestion-citas', async function(req, res, next) {
   }
 });
 
-router.get('/funciones-paciente/:dni', (req, res) => {
+router.get('/funciones-paciente/:dni', async (req, res) => {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
     res.render('index', { nombre:"" });
   }else{
     const dniUsuario = req.params.dni;
-    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,dni:dniUsuario, correct:"", error:""});
+    const paciente = await dao2.obtenerPaciente(dniUsuario);
+    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre, nombrePaciente:paciente[0].Nombre, apellidosPaciente:paciente[0].Apellidos,dni:dniUsuario, correct:"", error:""});
   }
 });
 router.get('/obtener-doctores', (req, res) => {
@@ -242,7 +243,6 @@ router.use('/consulta', consultaRouter);
 
 var historialRouter = require('./historial');
 router.use('/historial', historialRouter);
-
 
 module.exports = {
   router

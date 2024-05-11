@@ -31,7 +31,7 @@ router.get('/CrearHistorial/', async function(req, res, next) {
 router.post('/guardarHistorial', function(req, res){
 
   const data = req.body;
-  console.log("los datos son: ",data)
+
   aniadirJson(req.session.currentUser.dni, data);
 
   try{
@@ -48,6 +48,8 @@ router.post('/guardarHistorial', function(req, res){
 
 router.post('/aniadirDetalles', (req, res) => {
   const dniPaciente = req.body.dni
+  const nombrePaciente = req.body.nombrePaciente
+  const apellidosPaciente = req.body.apellidosPaciente
   const nuevoDetalle = req.body.detalles; 
 
   const filePath =  path.join(path.dirname(__dirname), 'private', 'historiales', 'json', `HM${req.session.currentUser.dni}-${dniPaciente}.json`);
@@ -90,7 +92,7 @@ router.post('/aniadirDetalles', (req, res) => {
       }
     });
   });
-  res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,dni:dniPaciente, correct:"Detalle añadido correctamente", error:""});
+  res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"Detalle añadido correctamente", error:""});
 
 
 
