@@ -165,6 +165,8 @@ router.get('/deleteAccount', async function(req, res, next) {
 router.post("/guardarTratamiento", async function(req, res, next) {
 
   const dniPaciente = req.body.dniPaciente;
+  const nombrePaciente = req.body.nombrePaciente
+  const apellidosPaciente = req.body.apellidosPaciente
   const descripcion = req.body.descripcion;
 
   const result = await dao.guardarTratamiento(req.session.currentUser.dni,dniPaciente,descripcion)
@@ -191,8 +193,7 @@ router.post("/guardarTratamiento", async function(req, res, next) {
 
     await dao.guardarAlarma(result.insertId, medicamento, dosis, horaPrimeraToma, tomasAlDia, fechaInicio, fechaFin);
 }
-
-  res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre, error: "", confirmacion: "Se ha añadido la alarma"});
+res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"Se ha añadido la alarma", error:""});
 
 });
 

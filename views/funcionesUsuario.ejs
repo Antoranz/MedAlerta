@@ -155,10 +155,12 @@
                   <label for="descripcion">Descripción:</label>
                   <textarea class="form-control" id="descripcion" name="descripcion" placeholder="Síntomas o razón de la consulta" required></textarea>
                   <input type="hidden" id="dniPacienteInput" name="dniPaciente" value="<%= dni %>">
+                  <input type="hidden" name="nombrePaciente" value="<%= nombrePaciente %>">
+                  <input type="hidden" name="apellidosPaciente" value="<%= apellidosPaciente%>">
                   <input type="hidden" id="contadorFilas" name="contadorFilas">
                 </div>
       
-                <div class="table-responsive"> <!-- Agregamos el contenedor responsive a la tabla -->
+                <div class="table-responsive">
                   <table class="table" id="tablaTratamiento">
                     <thead>
                       <tr>
@@ -168,7 +170,7 @@
                         <th>Tomas al Día</th>
                         <th>Fecha Inicio</th>
                         <th>Fecha Fin</th>
-                        <th></th> <!-- Columna para el botón de eliminar fila -->
+                        <th></th><!--Columna para los botones-->
                       </tr>
                     </thead>
                     <tbody>
@@ -193,7 +195,7 @@
           </div>
         </div>
       </div>
-      <!-- Modal Pedir Cita -->
+
     <div class="modal fade" id="modalAgregarCita" tabindex="-1" aria-labelledby="modalAgregarCitaLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -203,6 +205,11 @@
           </div>
           <div class="modal-body">
             <form action="/doctor/citas/asignar-cita" method="post">
+              <input type="hidden" name="apellidosPaciente" value="<%= apellidosPaciente%>">
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Paciente:</label>
+                <input type="text" name="nombrePaciente" class="form-control" id="nombrePaciente" value="<%= nombrePaciente %>" readonly required>
+              </div>
               <div class="mb-3">
                 <label for="nombre" class="form-label">DNI Paciente:</label>
                 <input type="text" name="dni" class="form-control" id="dni" value="<%= dni %>" readonly required>

@@ -81,6 +81,8 @@ function agregarCero(numero) {
 
 router.post("/asignar-cita", async function(req, res, next) {
     const dni = req.body.dni;
+    const nombrePaciente = req.body.nombrePaciente
+    const apellidosPaciente = req.body.apellidosPaciente
     const fecha = req.body.fecha;
     const hora = req.body.hora;
     const duracion = req.body.duracion;
@@ -160,8 +162,8 @@ router.post("/asignar-cita", async function(req, res, next) {
       
       res.render('calendario', { nombre: req.session.currentUser.nombre });
     } catch (error) {
-      console.error("Error al asignar cita: "+ errorMessage);
-      res.render('gestionUsuarios', { nombre: req.session.currentUser.nombre, error:errorMessage, confirmacion:""});
+      errorMessage= "Error al asignar cita: "+ errorMessage
+      res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:errorMessage});
     }
   });
 
