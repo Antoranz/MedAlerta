@@ -56,9 +56,7 @@ router.post('/aniadirDetalles', (req, res) => {
 
   fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
-      console.error('Error al leer el archivo JSON:', err);
-      res.status(500).json({ error: 'Error al leer el historial' });
-      return;
+      res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Error al leer el historial"});
     }
 
     let historial = JSON.parse(data);
@@ -73,19 +71,19 @@ router.post('/aniadirDetalles', (req, res) => {
 
     fs.writeFile(filePath, JSON.stringify(historial, null, 2), (err) => {
       if (err) {
-        console.error('Error al escribir en el archivo JSON:', err);
+        res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Error al escribir el historial"});
       }
       else{
         fs.readFile(filePath, 'utf8', (err, data) => {
           if (err) {
-            console.error('Error al leer el archivo JSON:', err);
+            res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Error al escribir el historial"});
           }else{
             let historial = JSON.parse(data);
             try{
               crearPDF(req.session.currentUser.dni, historial);
             }
             catch(error){
-              console.log(error.message)
+              res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"ha surgido un error al crear el historial"});
             }
           }
         });
@@ -97,36 +95,18 @@ router.post('/aniadirDetalles', (req, res) => {
 
 
 });
-/*
-router.get('/obtenerURLPDF', (req, res) => {
-    
-    const dniPaciente = req.query.dniPaciente;
-    console.log(dniPaciente);
 
-    const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + dniPaciente + ".pdf";
-    const filePath = path.join(path.dirname(__dirname), 'public', pdfURL);
-    console.log("la ruta es: " + pdfURL)
-    fs.access(filePath, fs.constants.F_OK, (err) => {
-      if (err) {
-        res.status(404).json({ error: "No existe el historial de este paciente"});
-      } else {
-        res.json({ downloadURL: pdfURL });
-      }
-    });
-
-});
-*/
 router.get('/obtenerPDF', (req, res) => {
 
   const dniPaciente = req.query.dniPaciente;
-  console.log(dniPaciente);
+  const nombrePaciente = req.query.nombrePaciente;
+  const apellidosPaciente = req.query.apellidosPaciente;
 
   const pdfURL = "/historiales/HM" + req.session.currentUser.dni + "-" + dniPaciente + ".pdf";
   const filePath = path.join(path.dirname(__dirname), 'private', pdfURL);
-  console.log("la ruta es: " + filePath)
 
   if (!fs.existsSync(filePath)) {
-    return res.status(404).send('Archivo no encontrado');
+    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Archivo no encontrado"});
   }
 
   res.sendFile(filePath);
@@ -135,31 +115,32 @@ router.get('/obtenerPDF', (req, res) => {
 router.delete('/eliminar', (req, res) => {
 
     const dniPaciente = req.body.dniPaciente;
+    const nombrePaciente = req.body.nombrePaciente;
+    const apellidosPaciente = req.body.apellidosPaciente;
+
     const pdfURL = path.join(path.dirname(__dirname), 'private', 'historiales', `HM${req.session.currentUser.dni}-${dniPaciente}.pdf`);
     const filePath =  path.join(path.dirname(__dirname), 'private', 'historiales', 'json', `HM${req.session.currentUser.dni}-${dniPaciente}.json`);
 
     if (!dniPaciente) {
-      res.status(400).send('DNI del paciente es necesario');
+      res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"DNI del paciente es necesario"});
     } else {
-        console.log("se intenta borrar el archivo en: "+pdfURL)
         fs.unlink(pdfURL, (err) => {
             if (err) {
               if (err.code === 'ENOENT') {
-                res.status(404).send('Archivo no encontrado');
+                res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Archivo no encontrado"});
               } else {
-                console.log("falla aqui")
-                res.status(500).send('Error al eliminar el archivo');
+                res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Error al eliminar el archivo"});
               }
             } else {
               fs.unlink(filePath, (err) => {
                 if (err) {
                   if (err.code === 'ENOENT') {
-                    res.status(404).send('Archivo no encontrado');
+                    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Archivo no encontrado"});
                   } else {
-                    res.status(500).send('Error al eliminar el archivo');
+                    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Error al eliminar el archivo"});
                   }
                 } else {
-                  res.status(200).send('Archivo eliminado con éxito');
+                  res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"Archivo eliminado con éxito", error:""});
                 }
               });
             }
@@ -261,9 +242,7 @@ router.delete('/eliminar', (req, res) => {
     });
 
     const enfermedades = Object.keys(data).filter(key => key !== "_csrf").slice(6);
-    console.log("enfermedades es: ", enfermedades)
     const enfermedadesMarcadas = enfermedades.slice(0,enfermedades.length-3);
-    console.log(enfermedadesMarcadas);
 
     let xPos = 80;
     let yPos = actual+ 210;
@@ -276,7 +255,6 @@ router.delete('/eliminar', (req, res) => {
 
     enfermedadesMarcadas.forEach((enfermedad, index) => {
 
-    console.log(enfermedad, " ")
     const enfermedadWidth = doc.widthOfString(enfermedad);
 
     if (xPos + enfermedadWidth > maxPosX) {
@@ -284,8 +262,6 @@ router.delete('/eliminar', (req, res) => {
         yPos += 20; 
     }
 
-
-    console.log("Escribo " + enfermedad + "en x, y: " + xPos + " " + yPos);
     if(index != 0)doc.text(enfermedad + ",", xPos, yPos);
     else{
         doc.text("   ", xPos, yPos);
@@ -327,10 +303,8 @@ router.delete('/eliminar', (req, res) => {
     });
 
     writeStream.on('error', (err) => {
-      console.log('Error al guardar el PDF.')
       throw(new Error('Error al guardar el PDF'))
     });
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 
     doc.pipe(writeStream); 
 

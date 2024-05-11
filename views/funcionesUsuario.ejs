@@ -286,6 +286,8 @@
   
     <script>
       var dni = "<%= dni %>";
+      var nombrePaciente = "<%= nombrePaciente %>";
+      var apellidosPaciente = "<%=apellidosPaciente%>";
         $("#crearHistorial").on('click', function(){
             window.location.href = '/doctor/historial/CrearHistorial?dni='+dni;
         });
@@ -314,7 +316,7 @@
           url: '/doctor/historial/obtenerPDF',
           type: 'GET',
           contentType: 'application/json',
-          data: { dniPaciente: dni },
+          data: { dniPaciente: dni, nombrePaciente:nombrePaciente, apellidosPaciente:apellidosPaciente },
           success: function(response) {
 
             const downloadLink = document.createElement('a');
@@ -338,7 +340,7 @@
             url: '/doctor/historial/eliminar', 
             type: 'DELETE',
             contentType: 'application/json',
-            data: JSON.stringify({ dniPaciente: dni }),
+            data: JSON.stringify({ dniPaciente: dni,nombrePaciente:nombrePaciente, apellidosPaciente:apellidosPaciente  }),
             success: function() {
               var exitoModal = $('#exitoModal');
               exitoModal.find('.modal-body').text('Historial médico eliminado con éxito');
