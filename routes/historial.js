@@ -58,42 +58,50 @@ router.post('/aniadirDetalles', (req, res) => {
     if (err) {
       res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Error al leer el historial"});
     }
-
-    let historial = JSON.parse(data);
-
-    if (typeof historial.detalles === 'undefined') {
-      historial.detalles = [];
-    } else if (!Array.isArray(historial.detalles)) {
-      historial.detalles = [historial.detalles];
-    }
-
-    historial.detalles.push(nuevoDetalle);
-
-    fs.writeFile(filePath, JSON.stringify(historial, null, 2), (err) => {
-      if (err) {
-        res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Error al escribir el historial"});
-      }
-      else{
-        fs.readFile(filePath, 'utf8', (err, data) => {
+    else{
+      if(typeof data != 'undefined'){
+        let historial
+        historial = JSON.parse(data);
+  
+  
+        if (typeof historial.detalles === 'undefined') {
+          historial.detalles = [];
+        } else if (!Array.isArray(historial.detalles)) {
+          historial.detalles = [historial.detalles];
+        }
+  
+        historial.detalles.push(nuevoDetalle);
+  
+        fs.writeFile(filePath, JSON.stringify(historial, null, 2), (err) => {
           if (err) {
             res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Error al escribir el historial"});
-          }else{
-            let historial = JSON.parse(data);
-            try{
-              crearPDF(req.session.currentUser.dni, historial);
-            }
-            catch(error){
-              res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"ha surgido un error al crear el historial"});
-            }
           }
+          else{
+            fs.readFile(filePath, 'utf8', (err, data) => {
+              if (err) {
+                res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Error al escribir el historial"});
+              }else{
+                let historial = JSON.parse(data);
+                try{
+                  crearPDF(req.session.currentUser.dni, historial);
+                }
+                catch(error){
+                  res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Ha surgido un error al crear el historial"});
+                }
+                res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"Detalle añadido correctamente", error:""});
+              }
+            });
+          }
+          
         });
+  
       }
-    });
+      else{
+        res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Historial no existe"});
+      }
+    }
+
   });
-  res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"Detalle añadido correctamente", error:""});
-
-
-
 });
 
 router.get('/obtenerPDF', (req, res) => {
