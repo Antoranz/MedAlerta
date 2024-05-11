@@ -628,7 +628,7 @@ class DAODoctor{
     
     aniadirEnfermedades(dniDoctor){
         return new Promise((resolve, reject) => {
-            fs.readFile("./public/data/enfermedades.json", "utf8", (err, data) => {
+            fs.readFile("./private/data/enfermedades.json", "utf8", (err, data) => {
                 if (err) {
                     console.error(`Error al leer el archivo JSON: ${err.message}`);
                     reject(err);

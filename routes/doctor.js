@@ -5,7 +5,7 @@ const DAOPaciente = require("../DAOPacientes")
 
 const mysql = require('mysql');
 
-// Configuración de la conexión a la base de datos MySQL en XAMPP
+//Configuración de la conexión a la base de datos MySQL en XAMPP
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
@@ -70,9 +70,10 @@ router.get('/gestion-citas', async function(req, res, next) {
     var notificaciones = await dao.obtenerNotificaciones(req.session.currentUser.dni);
 
     notificaciones.forEach(notificacion => {
+
       const fechaHora = new Date(notificacion.fecha_hora);
-            // Suponiendo que fechaHora es una instancia de Date
-      var fechaFormateada = fechaHora.toISOString().split('T')[0]; // Obtener la fecha en formato ISO y quitar la parte de la hora
+
+      var fechaFormateada = fechaHora.toISOString().split('T')[0]; //Obtener la fecha en formato ISO y quitar la parte de la hora
 
       notificacion.fecha = fechaFormateada;
 
@@ -81,8 +82,6 @@ router.get('/gestion-citas', async function(req, res, next) {
       notificacion.id = notificacion.id;
 
   });
-
-  console.log(notificaciones)
 
     res.render('gestionCitas', { nombre: req.session.currentUser.nombre, notificaciones:notificaciones });
   }
@@ -123,7 +122,6 @@ router.post("/aniadirUsuario", async function (req, res, next) {
           const paciente = await dao2.obtenerPaciente_email(usuarioP);
 
           if (paciente.length !== 0) {
-              console.log("Añadido paciente con DNI: " + paciente[0].dni + " al doctor con DNI: " + req.session.currentUser.dni);
               usuarioAniadido = await dao.aniadirUsuario(req.session.currentUser.dni, paciente[0].dni);
           } else {
               throw new Error("Paciente con email " + usuarioP + " no encontrado.");
@@ -131,7 +129,6 @@ router.post("/aniadirUsuario", async function (req, res, next) {
       } else {
           const paciente = await dao2.obtenerPaciente(usuarioP);
           if (paciente.length !== 0) {
-              console.log("Añadido paciente con DNI: " + paciente[0].dni + " al doctor con DNI: " + req.session.currentUser.dni);
               usuarioAniadido = await dao.aniadirUsuario(req.session.currentUser.dni, usuarioP);
           } else {
               throw new Error("Paciente con DNI " + usuarioP + " no encontrado.");
@@ -149,8 +146,6 @@ router.post("/aniadirUsuario", async function (req, res, next) {
 router.get('/deleteAccount', async function(req, res, next) {
 
   try {
-
-    console.log("DELETEEEACCROUNTTT___usuario")
 
       await dao.bajaDoctor_notificaciones(req.session.currentUser.dni);
       await dao.bajaDoctor_consultas(req.session.currentUser.dni);
@@ -170,19 +165,12 @@ router.get('/deleteAccount', async function(req, res, next) {
 
 router.post("/guardarTratamiento", async function(req, res, next) {
 
-  
   const dniPaciente = req.body.dniPaciente;
   const descripcion = req.body.descripcion;
-  
 
   const result = await dao.guardarTratamiento(req.session.currentUser.dni,dniPaciente,descripcion)
 
-  
-  console.log(dniPaciente);
-  console.log(result.insertId)
-
-
-   // varios meidcamentos en forma de array
+   //Varios medicamentos en forma de array
    if (Array.isArray(req.body['medicamento[]'])) {
     for (let i = 0; i < req.body['medicamento[]'].length; i++) {
         const medicamento = req.body['medicamento[]'][i];
@@ -191,13 +179,6 @@ router.post("/guardarTratamiento", async function(req, res, next) {
         const tomasAlDia = req.body['tomas_al_dia[]'][i];
         const fechaInicio = req.body['fecha_inicio[]'][i];
         const fechaFin = req.body['fecha_fin[]'][i];
-
-        console.log(medicamento);
-        console.log(dosis);
-        console.log(horaPrimeraToma);
-        console.log(tomasAlDia);
-        console.log(fechaInicio);
-        console.log(fechaFin);
 
         await dao.guardarAlarma(result.insertId, medicamento, dosis, horaPrimeraToma, tomasAlDia, fechaInicio, fechaFin);
     }
@@ -208,13 +189,6 @@ router.post("/guardarTratamiento", async function(req, res, next) {
     const tomasAlDia = req.body['tomas_al_dia[]'];
     const fechaInicio = req.body['fecha_inicio[]'];
     const fechaFin = req.body['fecha_fin[]'];
-
-    console.log(medicamento);
-    console.log(dosis);
-    console.log(horaPrimeraToma);
-    console.log(tomasAlDia);
-    console.log(fechaInicio);
-    console.log(fechaFin);
 
     await dao.guardarAlarma(result.insertId, medicamento, dosis, horaPrimeraToma, tomasAlDia, fechaInicio, fechaFin);
 }
@@ -247,17 +221,11 @@ router.get('/eliminarAsociacion/:dni', async function(req, res, next) {
   try {
 
     const dniUsuario = req.params.dni;
-  
-
-    console.log(dniUsuario)
-
 
     dao.eliminarAsociacion(req.session.currentUser.dni,dniUsuario)
 
 
     res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre, error:"", confirmacion:"Se ha eliminado al usuario"});
-
-
 
   } catch (error) {
     
