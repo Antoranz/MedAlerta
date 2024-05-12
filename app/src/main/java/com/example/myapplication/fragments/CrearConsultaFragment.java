@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -36,9 +35,7 @@ public class CrearConsultaFragment extends Fragment {
 
     SessionManager sessionManager;
     private Button crearConsulta;
-
     private EditText tituloConsulta;
-
     Spinner spinner;
 
     LinkedList<Doctor> listaDoctores;
@@ -68,24 +65,41 @@ public class CrearConsultaFragment extends Fragment {
 
         spinner.setAdapter(adapter);
 
-        crearConsulta.setOnClickListener(v -> {
-            String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-            String titulo = tituloConsulta.getText().toString();
 
-            Doctor doctorSeleccionado = (Doctor) spinner.getSelectedItem();
-            String dniDoctorSeleccionado = doctorSeleccionado.getDni();
-            if(titulo.isEmpty()){
-                Toast.makeText(getContext(),"El título no puede ser vacio",Toast.LENGTH_LONG).show();
-            }else{
-                Controller.getInstance().postCrearConsulta(getContext(),dniDoctorSeleccionado,sessionManager.getUserId().toString(),titulo,timeStamp);
-                NavigationManager.getInstance().navigateToDestination(requireContext(), MainActivity.class);
-            }
+            crearConsulta.setOnClickListener(v -> {
+                if(listaDoctores.isEmpty()){
 
-        });
+                    Toast.makeText(getContext(), "No hay doctores disponibles para crear consultas", Toast.LENGTH_LONG).show();
+
+                }else {
+
+                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                    String titulo = tituloConsulta.getText().toString();
+
+                    Doctor doctorSeleccionado = (Doctor) spinner.getSelectedItem();
+                    String dniDoctorSeleccionado = doctorSeleccionado.getDni();
+                    if(titulo.isEmpty()){
+                        Toast.makeText(getContext(),"El título no puede ser vacio",Toast.LENGTH_LONG).show();
+                    }else{
+                        Controller.getInstance().postCrearConsulta(getContext(),dniDoctorSeleccionado,sessionManager.getUserId().toString(),titulo,timeStamp);
+                        NavigationManager.getInstance().navigateToDestination(requireContext(), MainActivity.class);
+                    }
+                }
+
+
+
+
+
+            });
+
+
+
+        }
+
 
 
     }
 
 
 
-}
+

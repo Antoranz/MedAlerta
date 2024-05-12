@@ -62,7 +62,6 @@ public class RegistrarActivity extends AppCompatActivity  {
         dniText = findViewById(R.id.idDNI);
         registerButton = findViewById(R.id.idRegisterButton);
         registerButton.setOnClickListener(v -> {
-
            if(!passwordText.getText().toString().equals(repitPasswordText.getText().toString())){
                makeTextToast("Las contraseñas no coinciden");
            }else if(passwordText.getText().toString().isEmpty() || emailText.getText().toString().isEmpty()){

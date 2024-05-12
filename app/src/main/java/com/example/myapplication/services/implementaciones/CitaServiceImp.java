@@ -59,13 +59,15 @@ public class CitaServiceImp implements CitaService{
                         long id = jsonCita.getLong("id");
                         String dniDoctor = jsonCita.getString("doctor_dni");
                         String dniPaciente = jsonCita.getString("paciente_dni");
+                        String nombreDoctor = jsonCita.getString("nombre_doctor");
+                        String apellidosDoctor = jsonCita.getString("apellidos_doctor");
                         // Parsear la fecha del String al tipo Date
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                         Date fechaHora = dateFormat.parse(jsonCita.getString("fecha_hora"));
                         int duracion = jsonCita.getInt("duracion");
 
 
-                        Cita cita = new Cita(id, dniDoctor, dniPaciente, fechaHora, duracion);
+                        Cita cita = new Cita(id, dniDoctor, dniPaciente, fechaHora, duracion , nombreDoctor, apellidosDoctor);
                         listaCitas.add(cita);
                     }
 

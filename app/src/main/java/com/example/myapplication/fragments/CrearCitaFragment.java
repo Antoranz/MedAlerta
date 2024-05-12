@@ -62,7 +62,6 @@ public class CrearCitaFragment extends Fragment {
         editTextDate.setOnClickListener(v -> openDatePicker());
         editTextTime = rootView.findViewById(R.id.editTextTime);
         editTextTime.setOnClickListener(v -> openTimePicker());
-
         motivoConsulta = rootView.findViewById(R.id.motivoConsulta);
         tipo = rootView.findViewById(R.id.tipoCita);
 
@@ -78,12 +77,19 @@ public class CrearCitaFragment extends Fragment {
         spinner.setAdapter(adapter);
 
         confirmarCita.setOnClickListener(v -> {
-            Doctor doctorSeleccionado = (Doctor) spinner.getSelectedItem();
-            String dniDoctorSeleccionado = doctorSeleccionado.getDni();
-            if(dniDoctorSeleccionado.isEmpty() || tipo.getText().toString().isEmpty() || motivoConsulta.getText().toString().isEmpty() || editTextDate.getText().toString().isEmpty() || editTextTime.getText().toString().isEmpty()){
-                Toast.makeText(requireContext(), "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+
+            if(listaDoctores.isEmpty()){
+
+                Toast.makeText(getContext(), "No hay doctores disponibles para crear citas", Toast.LENGTH_LONG).show();
+
             }else {
-                Controller.getInstance().crearNotificacionCita(getContext(), dniDoctorSeleccionado, tipo.getText().toString(), motivoConsulta.getText().toString(), editTextDate.getText().toString(), editTextTime.getText().toString());
+                Doctor doctorSeleccionado = (Doctor) spinner.getSelectedItem();
+                String dniDoctorSeleccionado = doctorSeleccionado.getDni();
+                if (dniDoctorSeleccionado.isEmpty() || tipo.getText().toString().isEmpty() || motivoConsulta.getText().toString().isEmpty() || editTextDate.getText().toString().isEmpty() || editTextTime.getText().toString().isEmpty()) {
+                    Toast.makeText(requireContext(), "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+                } else {
+                    Controller.getInstance().crearNotificacionCita(getContext(), dniDoctorSeleccionado, tipo.getText().toString(), motivoConsulta.getText().toString(), editTextDate.getText().toString(), editTextTime.getText().toString());
+                }
             }
         });
     }
