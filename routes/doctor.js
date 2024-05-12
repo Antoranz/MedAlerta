@@ -163,38 +163,146 @@ router.get('/deleteAccount', async function(req, res, next) {
 });
 
 router.post("/guardarTratamiento", async function(req, res, next) {
+  try {
+      const dniPaciente = req.body.dniPaciente;
+      const nombrePaciente = req.body.nombrePaciente
+      const apellidosPaciente = req.body.apellidosPaciente
+      const descripcion = req.body.descripcion;
+      // Verificar que los campos no estén vacíos
+      if (!dniPaciente || !nombrePaciente || !apellidosPaciente || !descripcion) {
+        return res.render("funcionesUsuario", { 
+            nombre: req.session.currentUser.nombre, 
+            nombrePaciente: nombrePaciente, 
+            apellidosPaciente: apellidosPaciente, 
+            dni: dniPaciente, 
+            correct: "", 
+            error: "Por favor, complete todos los campos." 
+        });
+      }
+      //Varios medicamentos en forma de array
+      if (Array.isArray(req.body['medicamento[]'])) {
+        for (let i = 0; i < req.body['fecha_inicio[]'].length; i++) {
+          const dosis = req.body['dosis[]'][i];
+          const tomasAlDia = req.body['tomas_al_dia[]'][i];
+          const fechaInicio = new Date(req.body['fecha_inicio[]'][i]);
+          const fechaFin = new Date(req.body['fecha_fin[]'][i]);
+          if(dosis <= 0){
+            return res.render("funcionesUsuario", {
+              nombre: req.session.currentUser.nombre,
+              nombrePaciente: nombrePaciente,
+              apellidosPaciente: apellidosPaciente,
+              dni: dniPaciente,
+              correct: "",
+              error: "El medicamento debe tener una dosis >0"
+          });
+          }
+          if(tomasAlDia <= 0){
+            return res.render("funcionesUsuario", {
+              nombre: req.session.currentUser.nombre,
+              nombrePaciente: nombrePaciente,
+              apellidosPaciente: apellidosPaciente,
+              dni: dniPaciente,
+              correct: "",
+              error: "El medicamento debe tener al menos una toma al día"
+            });
+          }
+          // Verificar que la fecha inicial sea mayor o igual al día actual
+          if (fechaInicio < new Date().setHours(0,0,0,0)) {
+              return res.render("funcionesUsuario", {
+                  nombre: req.session.currentUser.nombre,
+                  nombrePaciente: nombrePaciente,
+                  apellidosPaciente: apellidosPaciente,
+                  dni: dniPaciente,
+                  correct: "",
+                  error: "La fecha de inicio del tratamiento debe ser igual o posterior al día actual."
+              });
+          }
 
-  const dniPaciente = req.body.dniPaciente;
-  const nombrePaciente = req.body.nombrePaciente
-  const apellidosPaciente = req.body.apellidosPaciente
-  const descripcion = req.body.descripcion;
+          // Verificar que la fecha final sea mayor que la fecha inicial
+          if (fechaFin < fechaInicio) {
+              return res.render("funcionesUsuario", {
+                  nombre: req.session.currentUser.nombre,
+                  nombrePaciente: nombrePaciente,
+                  apellidosPaciente: apellidosPaciente,
+                  dni: dniPaciente,
+                  correct: "",
+                  error: "La fecha de fin del tratamiento debe ser posterior a la fecha de inicio."
+              });
+          }
+        }
+        const result = await dao.guardarTratamiento(req.session.currentUser.dni,dniPaciente,descripcion);
+        for (let i = 0; i < req.body['medicamento[]'].length; i++) {
+            const medicamento = req.body['medicamento[]'][i];
+            const dosis = req.body['dosis[]'][i];
+            const horaPrimeraToma = req.body['hora_primera_toma[]'][i];
+            const tomasAlDia = req.body['tomas_al_dia[]'][i];
+            const fechaInicio = req.body['fecha_inicio[]'][i];
+            const fechaFin = req.body['fecha_fin[]'][i];
 
-  const result = await dao.guardarTratamiento(req.session.currentUser.dni,dniPaciente,descripcion)
-
-   //Varios medicamentos en forma de array
-   if (Array.isArray(req.body['medicamento[]'])) {
-    for (let i = 0; i < req.body['medicamento[]'].length; i++) {
-        const medicamento = req.body['medicamento[]'][i];
-        const dosis = req.body['dosis[]'][i];
-        const horaPrimeraToma = req.body['hora_primera_toma[]'][i];
-        const tomasAlDia = req.body['tomas_al_dia[]'][i];
-        const fechaInicio = req.body['fecha_inicio[]'][i];
-        const fechaFin = req.body['fecha_fin[]'][i];
-
+            await dao.guardarAlarma(result.insertId, medicamento, dosis, horaPrimeraToma, tomasAlDia, fechaInicio, fechaFin);
+        }
+      } else { //Sólo un medicamento
+        const medicamento = req.body['medicamento[]'];
+        const dosis = req.body['dosis[]'];
+        const horaPrimeraToma = req.body['hora_primera_toma[]'];
+        const tomasAlDia = req.body['tomas_al_dia[]'];
+        const fechaInicio = new Date(req.body['fecha_inicio[]']);
+        const fechaFin = new Date(req.body['fecha_fin[]']);
+        if(dosis <= 0){
+          return res.render("funcionesUsuario", {
+            nombre: req.session.currentUser.nombre,
+            nombrePaciente: nombrePaciente,
+            apellidosPaciente: apellidosPaciente,
+            dni: dniPaciente,
+            correct: "",
+            error: "El medicamento debe tener una dosis >0"
+        });
+        }
+        if(tomasAlDia <= 0){
+          return res.render("funcionesUsuario", {
+            nombre: req.session.currentUser.nombre,
+            nombrePaciente: nombrePaciente,
+            apellidosPaciente: apellidosPaciente,
+            dni: dniPaciente,
+            correct: "",
+            error: "El medicamento debe tener al menos una toma al día"
+          });
+        }
+        if (fechaInicio < new Date().setHours(0,0,0,0)) {
+          return res.render("funcionesUsuario", {
+              nombre: req.session.currentUser.nombre,
+              nombrePaciente: nombrePaciente,
+              apellidosPaciente: apellidosPaciente,
+              dni: dniPaciente,
+              correct: "",
+              error: "La fecha de inicio del tratamiento debe ser igual o posterior al día actual."
+          });
+        }
+        // Verificar que la fecha final sea mayor que la fecha inicial
+        if (fechaFin < fechaInicio) {
+            return res.render("funcionesUsuario", {
+                nombre: req.session.currentUser.nombre,
+                nombrePaciente: nombrePaciente,
+                apellidosPaciente: apellidosPaciente,
+                dni: dniPaciente,
+                correct: "",
+                error: "La fecha de fin del tratamiento debe ser posterior a la fecha de inicio."
+            });
+        }
+        const result = await dao.guardarTratamiento(req.session.currentUser.dni,dniPaciente,descripcion);
         await dao.guardarAlarma(result.insertId, medicamento, dosis, horaPrimeraToma, tomasAlDia, fechaInicio, fechaFin);
     }
-} else { //Sólo un medicamento
-    const medicamento = req.body['medicamento[]'];
-    const dosis = req.body['dosis[]'];
-    const horaPrimeraToma = req.body['hora_primera_toma[]'];
-    const tomasAlDia = req.body['tomas_al_dia[]'];
-    const fechaInicio = req.body['fecha_inicio[]'];
-    const fechaFin = req.body['fecha_fin[]'];
-
-    await dao.guardarAlarma(result.insertId, medicamento, dosis, horaPrimeraToma, tomasAlDia, fechaInicio, fechaFin);
-}
-res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"Se ha añadido la alarma", error:""});
-
+    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"Se ha añadido la alarma", error:""});
+  }catch(error){
+    return res.render("funcionesUsuario", {
+      nombre: req.session.currentUser.nombre,
+      nombrePaciente: nombrePaciente,
+      apellidosPaciente: apellidosPaciente,
+      dni: dniPaciente,
+      correct: "",
+      error: "Error interno al procesar los datos"
+  });
+  }
 });
 
 router.get('/getUsuarios/', async function(req, res, next) {
