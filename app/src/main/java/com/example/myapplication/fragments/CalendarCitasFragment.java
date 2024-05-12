@@ -61,9 +61,7 @@ public class CalendarCitasFragment extends Fragment {
                 citaEncontrada = true;
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                 builder.setTitle("Detalles de la Cita");
-                builder.setMessage("Doctor DNI: " + cita.getDoctor_dni() + "\n"
-                        + "Paciente DNI: " + cita.getPaciente_dni() + "\n"
-                        + "Duración: " + cita.getDuracion() + " minutos");
+                builder.setMessage("Duración de la cita: " + cita.getDuracion() + " minutos");
                 builder.setPositiveButton("Aceptar", null);
                 builder.show();
                 break;
