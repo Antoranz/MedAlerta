@@ -70,7 +70,6 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     }
 
-
     private Integer generarNumeroAleatorio() {
         // Crear un objeto Random
         Random random = new Random();

@@ -90,6 +90,68 @@ public class PacienteServiceImp implements PacienteService {
     }
 
     @Override
+    public String obtenerDniRepetido(String dni) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        String urlServidor = ConfigApi.BASE_URL + "pacientes/comprobarDniExistente/" + dni;
+        String[] dniUser = {""};
+        CountDownLatch latch = new CountDownLatch(1);
+        getDataAsync(urlServidor, executor, result -> {
+            if (result != null) {
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+                    if (jsonArray.length() > 0) {
+                        JSONObject firstObject = jsonArray.getJSONObject(0);
+
+                        dniUser[0] = firstObject.getString("dni");
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            latch.countDown();
+        });
+        try {
+            // Esperamos a que el CountDownLatch se reduzca a cero, lo que indica que getDataAsync() ha terminado
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return dniUser[0];
+    }
+
+    @Override
+    public String obtenerEmailRepetido(String email) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        String urlServidor = ConfigApi.BASE_URL + "pacientes/comprobarEmailExistente/" + email;
+        String[] dniUser = {""};
+        CountDownLatch latch = new CountDownLatch(1);
+        getDataAsync(urlServidor, executor, result -> {
+            if (result != null) {
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+                    if (jsonArray.length() > 0) {
+                        JSONObject firstObject = jsonArray.getJSONObject(0);
+
+                        dniUser[0] = firstObject.getString("dni");
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            latch.countDown();
+        });
+        try {
+            // Esperamos a que el CountDownLatch se reduzca a cero, lo que indica que getDataAsync() ha terminado
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return dniUser[0];
+    }
+
+    @Override
     public void updatePaciente(Paciente paciente,Context context) {
         Executor executor2 = Executors.newSingleThreadExecutor();
         String urlServidor2 = ConfigApi.BASE_URL + "pacientes/usuario/editarPaciente/" + paciente.getDni();
@@ -140,13 +202,11 @@ public class PacienteServiceImp implements PacienteService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         postDataAsync(urlServidor, executor, (PostDataAsync.OnTaskCompleted) result -> {
             ((Activity) context).runOnUiThread(() -> {
                 if (result != null) {
                     try {
                         JSONArray jsonArray = new JSONArray(result);
-
                         if (jsonArray.length() > 0) {
 
                             JSONObject firstObject = jsonArray.getJSONObject(0);
@@ -169,7 +229,6 @@ public class PacienteServiceImp implements PacienteService {
                     Toast.makeText(context, "Error interno en el servidor", Toast.LENGTH_LONG).show();
                 }
             });
-
         }, "POST", postData.toString());
     }
 

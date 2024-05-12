@@ -24,9 +24,7 @@ public class NotificacionesManager {
 
     private static final String NOTIFICATION_CHANNEL_ID = "nombrecanal2";
     private static final String CHANNEL_NAME = "idcanal2";
-
     public static MediaPlayer mp;
-
     private static final String NOMBRE_CANAL = "nombrecanal1";
     private static final String ID_CANAL = "idcanal1";
     private static NotificationChannel crearCanalNotificaciones(Context context,String nombre_canal, String id_canal){

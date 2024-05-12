@@ -25,7 +25,6 @@
             android:text="@string/informaci_n_de_login"
             android:textAlignment="center"
             android:textSize="16sp" />
-
         <EditText
             android:id="@+id/idEmail"
             android:layout_width="match_parent"
@@ -37,7 +36,6 @@
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
             tools:ignore="VisualLintTextFieldSize" />
-
         <EditText
             android:id="@+id/idPassword"
             android:layout_width="match_parent"
@@ -48,19 +46,16 @@
             android:inputType="textPassword"
             android:minHeight="48dp"
             tools:ignore="VisualLintTextFieldSize" />
-
         <EditText
             android:id="@+id/idRepitPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:autofillHints=""
-
             android:hint="@string/repetir_contrase_a"
             android:inputType="textPassword"
             android:minHeight="48dp"
             tools:ignore="VisualLintTextFieldSize" />
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,7 +101,7 @@
 
         <EditText
             android:id="@+id/editTextDate"
-            android:hint="Seleccionar fecha"
+            android:hint="@string/seleccionarFechaNacimiento"
             android:height="48dp"
             android:minHeight="48dp"
             android:textSize="16sp"

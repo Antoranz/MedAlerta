@@ -13,6 +13,7 @@
     <string name="c_digo_postal">Código Postal</string>
     <string name="duracionCita">Duracion(min)</string>
     <string name="registrar">Registrar</string>
+    <string name="seleccionarFechaNacimiento">Seleccionar fecha de nacimiento</string>
     <string name="apellidos">Apellidos</string>
     <string name="crear_una_cuenta"><u>Crear cuenta</u></string>
     <string name="change_password"><u>Cambiar contraseña</u></string>

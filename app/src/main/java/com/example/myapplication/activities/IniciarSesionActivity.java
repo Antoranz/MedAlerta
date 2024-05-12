@@ -1,6 +1,4 @@
 package com.example.myapplication.activities;
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +14,6 @@ import com.example.myapplication.R;
 import com.example.myapplication.utils.manager.NavigationManager;
 import com.example.myapplication.utils.manager.SessionManager;
 public class IniciarSesionActivity extends AppCompatActivity {
-
     TextView logIn, changePassword;
     EditText dni, password;
     Button inicio;
@@ -25,9 +22,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iniciar_sesion);
-
         sessionManager = new SessionManager(this);
-
         dni = findViewById(R.id.idDNI);
         password = findViewById(R.id.idPassword);
 
@@ -43,28 +38,19 @@ public class IniciarSesionActivity extends AppCompatActivity {
         logIn.setOnClickListener(v -> {
             NavigationManager.getInstance().navigateToDestination(this,RegistrarActivity.class);
         });
-
         changePassword = findViewById(R.id.changePasswordId);
         changePassword.setOnClickListener(v -> {
             if(!dni.getText().toString().isEmpty()){
                 Paciente paciente = Controller.getInstance().getPaciente(dni.getText().toString());
-
                 if(paciente != null){
-
                     Log.d("paciente en cambiar contraseña", "Paciente es: " + paciente.getDni());
-
                     NavigationManager.getInstance().navigateToDestinationWithData(this, ForgottenPasswordActivity.class,paciente);
-
-
                 }else{
                     makeTextToast("Credenciales incorrectas");
                 }
-
-
             }else{
                 makeTextToast("Añade un DNI en el campo DNI para enviarte un correo");
             }
-
         });
     }
     private void makeTextToast(String text){

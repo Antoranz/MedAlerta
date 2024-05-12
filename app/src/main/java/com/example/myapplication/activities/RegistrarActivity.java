@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -55,16 +56,12 @@ public class RegistrarActivity extends AppCompatActivity  {
         surnameText = findViewById(R.id.idSurname);
         editTextDate = findViewById(R.id.editTextDate);
         editTextDate.setOnClickListener(v -> openDatePicker());
-
         domicilioText = findViewById(R.id.idDomicilio);
         postalAddressText = findViewById(R.id.editTextTextPostalAddress);
         phoneText = findViewById(R.id.editTextPhone);
         dniText = findViewById(R.id.idDNI);
-
         registerButton = findViewById(R.id.idRegisterButton);
-
         registerButton.setOnClickListener(v -> {
-
 
            if(!passwordText.getText().toString().equals(repitPasswordText.getText().toString())){
                makeTextToast("Las contraseñas no coinciden");
@@ -72,14 +69,18 @@ public class RegistrarActivity extends AppCompatActivity  {
                makeTextToast("Ningún campo debe estar vacío");
            }else if(!emailText.getText().toString().contains("@")){
                makeTextToast("Email no válido");
-
-           } else if(!esDniValido(dniText.getText().toString())){
+           }else if(!Objects.equals(Controller.getInstance().obtenerEmailRepetido(emailText.getText().toString()), "")){
+               makeTextToast("Email ya registrado");
+           }else if(!esDniValido(dniText.getText().toString())){
                makeTextToast("DNI inválido");
+           } else if(!Objects.equals(Controller.getInstance().obtenerDniRepetido(dniText.getText().toString()), "")){
+               makeTextToast("Ese DNI ya está registrado");
            }
            else if(phoneText.getText().toString().length() != 9){
                makeTextToast("El teléfono debe tener 9 dígitos");
            }
-           else if(nameText.getText().toString().isEmpty() || surnameText.getText().toString().isEmpty() || domicilioText.getText().toString().isEmpty() || postalAddressText.getText().toString().isEmpty()){
+           else if(nameText.getText().toString().isEmpty() || surnameText.getText().toString().isEmpty() ||
+                   domicilioText.getText().toString().isEmpty() || postalAddressText.getText().toString().isEmpty()){
                makeTextToast("Todos los campos son obligatorios");
            }
            else{
@@ -96,16 +97,10 @@ public class RegistrarActivity extends AppCompatActivity  {
                } catch (ParseException e) {
                    throw new RuntimeException(e);
                }
-
                Paciente paciente = new Paciente(dniText.getText().toString(),
-                       emailText.getText().toString(),
-                       nameText.getText().toString(),
-                       surnameText.getText().toString(),
-                       postalAddressText.getText().toString(),
-                       fecha,
-                       domicilioText.getText().toString(),
-                       phoneText.getText().toString(),
-                       passwordText.getText().toString()
+                       emailText.getText().toString(),nameText.getText().toString(), surnameText.getText().toString(),
+                       postalAddressText.getText().toString(), fecha,
+                       domicilioText.getText().toString(), phoneText.getText().toString(), passwordText.getText().toString()
                );
                Controller.getInstance().registrarPaciente(paciente, this);
            }

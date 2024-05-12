@@ -7,6 +7,8 @@ import com.example.myapplication.data.Paciente;
 
 public interface PacienteService {
     public Paciente getPaciente(String dni);
+    public String obtenerDniRepetido(String dni);
+    public String obtenerEmailRepetido(String email);
     public void updatePaciente(Paciente paciente, Context context);
     public void checkPaciente(String dni, String pass,Context context);
     public <T> void editarPassword(String dni, String pass, Context context, Class<T> activity);

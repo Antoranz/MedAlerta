@@ -88,6 +88,20 @@ public class Controller {
         return service.obtenerMensajesNoLeidos(dni);
     }
 
+    public String obtenerDniRepetido(String dni) {
+
+        PacienteService service = PacienteServiceImp.getInstance();
+
+        return service.obtenerDniRepetido(dni);
+    }
+
+    public String obtenerEmailRepetido(String email) {
+
+        PacienteService service = PacienteServiceImp.getInstance();
+
+        return service.obtenerEmailRepetido(email);
+    }
+
     public void ponerMensajesComoLeidos(String userId, long id) {
 
         MensajeService service = MensajeServiceImp.getInstance();

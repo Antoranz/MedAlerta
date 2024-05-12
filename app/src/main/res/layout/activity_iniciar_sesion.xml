@@ -31,7 +31,6 @@
             android:textColor="@color/blue"
             android:textAlignment="center"
             android:textSize="16sp" />
-
         <EditText
             android:id="@+id/idDNI"
             android:layout_width="match_parent"
@@ -43,19 +42,16 @@
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
             tools:ignore="VisualLintTextFieldSize" />
-
         <EditText
             android:id="@+id/idPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:autofillHints=""
-
             android:hint="@string/contrase_a"
             android:inputType="textPassword"
             android:minHeight="48dp"
             tools:ignore="VisualLintTextFieldSize" />
-
         <TextView
             android:id="@+id/crearCuentaId"
             android:layout_width="match_parent"
@@ -74,7 +70,7 @@
             android:minHeight="48dp"
             android:text="@string/question_password"
             android:textAlignment="center"
-            android:textColor="@color/blue" />
+            android:textColor="@color/red" />
 
         <Button
             android:id="@+id/editButton"
