@@ -53,6 +53,54 @@ class DAOPaciente{
         }); 
     }
 
+    comprobarDniExistente(dni){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryComprobarDniExistente ="SELECT * FROM pacientes WHERE dni = ?"
+                    connection.query(queryComprobarDniExistente,[dni], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
+    comprobarEmailExistente(email){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryComprobarEmailExistente ="SELECT * FROM pacientes WHERE email = ?"
+                    connection.query(queryComprobarEmailExistente,[email], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
     obtenerMensajesNoLeidos(dni){
         
         return new Promise((resolve, reject) => {
@@ -439,7 +487,7 @@ class DAOPaciente{
             });
         }); 
     }
-    obtenerCitasPaciente(DNIPaciente){
+    obtenerCitasPaciente(paciente_dni){
         
         return new Promise((resolve, reject) => {
             this.pool.getConnection((err, connection) => {
@@ -448,8 +496,8 @@ class DAOPaciente{
                     reject(err);
                 }else{
                     console.log("Exito al conectar a la base de datos");
-                    var queryobtenerCitasPaciente ="SELECT * FROM citas WHERE paciente_dni = ?"
-                    connection.query(queryobtenerCitasPaciente,[DNIPaciente], (err, res) => {
+                    var queryobtenerCitasPaciente ="SELECT c.*, d.nombre AS nombre_doctor, d.apellidos AS apellidos_doctor FROM citas c JOIN doctores d ON c.doctor_dni = d.dni WHERE c.paciente_dni = ?"
+                    connection.query(queryobtenerCitasPaciente,[paciente_dni], (err, res) => {
                         connection.release();
                         if(err){
                             reject(err);
