@@ -163,7 +163,7 @@ router.post("/asignar-cita", async function(req, res, next) {
       res.render('calendario', { nombre: req.session.currentUser.nombre });
     } catch (error) {
       errorMessage= "Error al asignar cita: "+ errorMessage
-      res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:errorMessage});
+      res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dni, correct:"", error:errorMessage});
     }
   });
 
