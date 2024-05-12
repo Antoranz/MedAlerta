@@ -2,10 +2,9 @@
 <link rel="stylesheet" href="/stylesheets/style.css">
 <% include nav.ejs %>
 <body>
-    <div class="container">
-        <h1><%= message %></h1>
-        <h2><%= error.status %></h2>
-        <pre><%= error.stack %></pre>
+    <div class="container text-center pt-5">
+        <h1>Ha surgido un error</h1>
+        <h2>Error <%= error.status %>: <%= message %></h1>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
