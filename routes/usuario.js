@@ -62,7 +62,7 @@ function registrarUsuario(req, res, next) {
     })
     .catch((error) => {
         console.error("Error interno del servidor" + error);
-        res.render("register",{error:"Error Interno del Servidor", usuario: usuario,email:"",nombre: ""});
+        res.render("register",{error:"Las credenciales no son válidas", usuario: usuario,email:"",nombre: ""});
     });
   }
 
@@ -74,12 +74,8 @@ router.post('/signin' , async function(req,res,next){
   
       var dni=req.body.dni;
       var password=req.body.password;
-
-      console.log(password)
   
       var hashedPassword = cifrarContrasena(password,dni  + "caminar es bueno para la salud");
-  
-      console.log("Contraseña inicio de sesion: " + hashedPassword);
   
       var doctor = await dao.checkDoctor(dni,hashedPassword);
   
@@ -87,7 +83,6 @@ router.post('/signin' , async function(req,res,next){
         res.render('index', {error: 'Las credenciales son incorrectas', confirmacion: '',nombre:""});
   
       }else{
-        console.log(doctor);
         doctor[0].validado = true;
         req.session.currentUser = doctor[0]
         delete req.session.currentUser.password;
@@ -95,8 +90,6 @@ router.post('/signin' , async function(req,res,next){
         req.session.currentUser.fecha_nacimiento.setDate(req.session.currentUser.fecha_nacimiento.getDate() + 1);//por alguna razon se resta un día a lo que hay en la bbdd
         req.session.currentUser.fecha_nacimiento =obtenerFecha(req.session.currentUser.fecha_nacimiento);
           
-        console.log(doctor[0])
-        console.log(req.session.currentUser)
         res.redirect('/');
       }
       
@@ -112,7 +105,6 @@ router.post('/signin' , async function(req,res,next){
       res.render('index', { nombre:"" });
     }else{
       usuario = req.session.currentUser;
-      console.log(usuario);
       res.render("editarPerfil",{error:"", usuario: usuario,nombre: req.session.currentUser.nombre});
     }
   });
@@ -135,7 +127,6 @@ router.post('/signin' , async function(req,res,next){
       }
       await dao.updateDoctor(dni, email, nombre, apellidos, fecha_nacimiento, domicilio, codigo_postal, numero_telefono)
       .then((resultado) => {
-        console.log(resultado);
         req.session.currentUser.nombre=nombre;
         req.session.currentUser.apellidos=apellidos;
         req.session.currentUser.fecha_nacimiento=fecha_nacimiento;
@@ -179,22 +170,24 @@ router.post('/signin' , async function(req,res,next){
     res.render("register",{error:"", usuario: "",nombre: ""});
   });
 
-  function obtenerFecha(cadenaFechaHora) {
-    if (typeof cadenaFechaHora === 'string') {
-      var soloFecha = cadenaFechaHora.split("T")[0];
-      return soloFecha;
-    } else if (cadenaFechaHora instanceof Date) {
-      var soloFecha = cadenaFechaHora.toISOString().split("T")[0];
-      return soloFecha;
-    }else {
-        return ""; 
-    }
+function obtenerFecha(cadenaFechaHora) {
+  if (typeof cadenaFechaHora === 'string') {
+    var soloFecha = cadenaFechaHora.split("T")[0];
+    return soloFecha;
+  } else if (cadenaFechaHora instanceof Date) {
+    var soloFecha = cadenaFechaHora.toISOString().split("T")[0];
+    return soloFecha;
+  }else {
+      return ""; 
   }
+}
+
 function validateNif(nif){ 
   let long = /^[0-9]{8}[a-zA-Z]$/.test(nif)
   console.log(long)
   return long && nif[8]==calcularLetraDNI(nif.substr(0,8));
 }
+
 function calcularLetraDNI(numeros){
     console.log(numeros)
     var letras = "TRWAGMYFPDXBNJZSQVHLCKE";
@@ -202,16 +195,15 @@ function calcularLetraDNI(numeros){
     console.log(letras.charAt(indice))
     return letras.charAt(indice);
 }
-  function cifrarContrasena(contrasena, salt) {
-    // Crea un nuevo objeto Hash
-    const hash = crypto.createHash('sha256');
-  
-    // Actualiza el hash con la contraseña y el salt
-    hash.update(contrasena + salt);
-  
-    // Devuelve el hash en formato hexadecimal
-    return hash.digest('hex');
-  }
+
+function cifrarContrasena(contrasena, salt) {
+
+  const hash = crypto.createHash('sha256');
+
+  hash.update(contrasena + salt);
+
+  return hash.digest('hex');
+}
 
 
 module.exports = router;

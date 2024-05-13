@@ -1,11 +1,9 @@
-
 $(document).ready(function () {
     var usuarios = [];
     var usuariosFiltrados = [];
     var filtro = "Nombre";
     var buscador = $("#buscador");
     var drop = $("#drop");
-    var correo = $("#email");
     
     function cargarBuscador(){//carga el buscador para filtrar
         buscador.empty();
