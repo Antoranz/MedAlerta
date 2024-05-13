@@ -20,9 +20,6 @@ const pool = mysql.createPool({
 const dao = new DAOPaciente(pool);
 
 
-
-
-
 router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
 
     try {
@@ -75,16 +72,52 @@ router.get('/obtenerAlarmas/:dni', async function(req, res, next) {
    
 });
 
+router.get('/comprobarDniExistente/:dni', async function(req, res, next) {
+
+    try {
+        console.log("COMPROBAR DNI EXISTENTE")
+        var dni_paciente=req.params.dni;
+
+        var paciente = await dao.comprobarDniExistente(dni_paciente);
+
+        console.log(dni_paciente)
+        console.log(paciente)
+        res.json(paciente)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+      }
+   
+});
+
+router.get('/comprobarEmailExistente/:email', async function(req, res, next) {
+
+    try {
+        console.log("COMPROBAR DNI EXISTENTE")
+        var email_paciente=req.params.email;
+
+        var paciente = await dao.comprobarEmailExistente(email_paciente);
+
+        console.log(email_paciente)
+        console.log(paciente)
+        res.json(paciente)
+    } catch (error) {
+        console.error("Error durante la operación:", error);
+        res.json(null)
+      }
+   
+});
+
 router.get('/obtenerCitasPaciente/:dni', async function(req, res, next) {
 
     try {
         
         var dni_paciente=req.params.dni;
 
-        var paciente = await dao.obtenerCitasPaciente(dni_paciente);
+        var citas = await dao.obtenerCitasPaciente(dni_paciente);
 
-        console.log(paciente)
-        res.json(paciente)
+        console.log(citas)
+        res.json(citas)
     } catch (error) {
         console.error("Error durante la operación:", error);
         res.json(null)
