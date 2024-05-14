@@ -133,17 +133,17 @@ router.delete('/eliminar', (req, res) => {
         fs.unlink(pdfURL, (err) => {
             if (err) {
               if (err.code === 'ENOENT') {
-                res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Archivo no encontrado"});
+                res.status(404).send("Archivo no encontrado");
               } else {
-                res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Error al eliminar el archivo"});
+                res.status(400).send("Archivo no encontrado");
               }
             } else {
               fs.unlink(filePath, (err) => {
                 if (err) {
                   if (err.code === 'ENOENT') {
-                    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Archivo no encontrado"});
+                    res.status(404).send("Archivo no encontrado");
                   } else {
-                    res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"", error:"Error al eliminar el archivo"});
+                    res.status(404).send("Error al eliminar el archivo");
                   }
                 } else {
                   res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre,nombrePaciente:nombrePaciente,apellidosPaciente:apellidosPaciente,dni:dniPaciente, correct:"Archivo eliminado con éxito", error:""});

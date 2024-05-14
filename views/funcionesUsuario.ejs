@@ -349,7 +349,7 @@
             error: function(xhr, status, error) {
               var errorModal = $('#errorModal');
               if (xhr.status === 404) {
-                errorModal.find('.modal-body').text('Historial no Existe');
+                errorModal.find('.modal-body').text('Historial no existe');
               } else {
                 errorModal.find('.modal-body').text('Error al eliminar el historial médico');
                 console.log(error);
