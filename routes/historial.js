@@ -135,7 +135,7 @@ router.delete('/eliminar', (req, res) => {
               if (err.code === 'ENOENT') {
                 res.status(404).send("Archivo no encontrado");
               } else {
-                res.status(400).send("Archivo no encontrado");
+                res.status(400).send("Error al eliminar el archivo");
               }
             } else {
               fs.unlink(filePath, (err) => {
