@@ -133,7 +133,6 @@ public class Controller {
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, timestamp, pendingIntent);
 
-        // Convertir el timestamp a una fecha y hora legibles
         Date date = new Date(timestamp);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String formattedDateTime = sdf.format(date);

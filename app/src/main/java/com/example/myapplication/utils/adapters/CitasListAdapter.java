@@ -69,7 +69,7 @@ public class CitasListAdapter extends RecyclerView.Adapter<CitasListAdapter.View
 
         }
         public void bind(Cita c){
-            String t = "Cita Programadada  el doctor: "+c.getNombre_doctor() + " " + c.getApellidos_doctor();
+            String t = "Cita Programada  el doctor: "+c.getNombre_doctor() + " " + c.getApellidos_doctor();
             titulo.setText(t);
             fecha.setText(c.writeDate());
         }
