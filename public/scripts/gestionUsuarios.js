@@ -174,6 +174,6 @@ $(document).ready(function () {
         mostrarUsuarios();
     });
     //var $contenedor = $('#Contenedor');
-    //$contenedor.append($button); Boton para refrescar (No lo utilizamos en esta iteración del proyecto)
+    //$contenedor.append($button); //Boton para refrescar (No lo utilizamos en esta iteración del TFG)
     getUsuarios();    
 });

@@ -22,9 +22,8 @@ router.get('/CrearHistorial/', async function(req, res, next) {
       console.log(req.query.dni);
 
       var paciente = await dao.obtenerPaciente(req.query.dni);
-      console.log(paciente);
-      console.log(paciente[0].dni);
-      res.render('historialMedico', { title: 'Express' ,userData: paciente[0],nombre:req.session.currentUser.nombre, dni:req.session.currentUser.dni});
+
+      res.render('historialMedico', { title: 'Historial Médico' ,userData: paciente[0],nombre:req.session.currentUser.nombre, dni:req.session.currentUser.dni});
     }
 });
     
@@ -177,7 +176,6 @@ router.delete('/eliminar', (req, res) => {
     const tituloRectWidth = 500;
     const tituloRectHeight = 80;
     const tituloRectBorderWidth = 2;
-
 
     doc.rect(tituloRectX, tituloRectY, tituloRectWidth, tituloRectHeight)
         .lineWidth(tituloRectBorderWidth)

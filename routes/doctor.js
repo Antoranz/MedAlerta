@@ -13,12 +13,9 @@ const pool = mysql.createPool({
     database: 'medalerta'
 });
 
-
 const dao = new DAODoctor(pool);
 const dao2 = new DAOPaciente(pool);
 
-
-/* GET home page. */
 router.get('/', function(req, res, next) {
   if(req.session.currentUser == undefined || req.session.currentUser == null || req.session.currentUser == ""){
     res.render('index', { nombre:"" });
@@ -39,7 +36,6 @@ router.post("/eliminar-notificacion", async function(req, res, next) {
   const id_card = req.body.id;
  
   try{
-
     await dao.eliminarNotificacion(id_card); 
 
     var notificaciones = await dao.obtenerNotificaciones(req.session.currentUser.dni);
@@ -96,6 +92,7 @@ router.get('/funciones-paciente/:dni', async (req, res) => {
     res.render("funcionesUsuario",{ nombre:req.session.currentUser.nombre, nombrePaciente:paciente[0].Nombre, apellidosPaciente:paciente[0].Apellidos,dni:dniUsuario, correct:"", error:""});
   }
 });
+
 router.get('/obtener-doctores', (req, res) => {
   const sql = 'SELECT * FROM doctores';
 
@@ -108,11 +105,6 @@ router.get('/obtener-doctores', (req, res) => {
       }
   });
 });
-
-
-
-
-
 
 router.post("/aniadirUsuario", async function (req, res, next) {
   try {
@@ -168,7 +160,7 @@ router.post("/guardarTratamiento", async function(req, res, next) {
       const nombrePaciente = req.body.nombrePaciente
       const apellidosPaciente = req.body.apellidosPaciente
       const descripcion = req.body.descripcion;
-      // Verificar que los campos no estén vacíos
+
       if (!dniPaciente || !nombrePaciente || !apellidosPaciente || !descripcion) {
         return res.render("funcionesUsuario", { 
             nombre: req.session.currentUser.nombre, 
@@ -206,7 +198,6 @@ router.post("/guardarTratamiento", async function(req, res, next) {
               error: "El medicamento debe tener al menos una toma al día"
             });
           }
-          // Verificar que la fecha inicial sea mayor o igual al día actual
           if (fechaInicio < new Date().setHours(0,0,0,0)) {
               return res.render("funcionesUsuario", {
                   nombre: req.session.currentUser.nombre,
@@ -218,7 +209,6 @@ router.post("/guardarTratamiento", async function(req, res, next) {
               });
           }
 
-          // Verificar que la fecha final sea mayor que la fecha inicial
           if (fechaFin < fechaInicio) {
               return res.render("funcionesUsuario", {
                   nombre: req.session.currentUser.nombre,
@@ -278,7 +268,7 @@ router.post("/guardarTratamiento", async function(req, res, next) {
               error: "La fecha de inicio del tratamiento debe ser igual o posterior al día actual."
           });
         }
-        // Verificar que la fecha final sea mayor que la fecha inicial
+
         if (fechaFin < fechaInicio) {
             return res.render("funcionesUsuario", {
                 nombre: req.session.currentUser.nombre,
@@ -331,7 +321,6 @@ router.get('/eliminarAsociacion/:dni', async function(req, res, next) {
     const dniUsuario = req.params.dni;
 
     dao.eliminarAsociacion(req.session.currentUser.dni,dniUsuario)
-
 
     res.render('gestionUsuarios',{nombre : req.session.currentUser.nombre, error:"", confirmacion:"Se ha eliminado al usuario"});
 
