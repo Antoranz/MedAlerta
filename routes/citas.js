@@ -19,8 +19,8 @@ router.get("/obtener-citas",async function(req, res,next){
     var eventos=[];
     console.log(citas);
     citas.forEach(function(c){
-      const fechaHoraObj = new Date(c.fecha_hora); // Crear objeto Date directamente desde c.fecha_hora
-      const nuevaFechaHora = new Date(fechaHoraObj.getTime() + c.duracion * 60000); // Sumar duración en milisegundos
+      const fechaHoraObj = new Date(c.fecha_hora); //Crear objeto Date directamente desde c.fecha_hora
+      const nuevaFechaHora = new Date(fechaHoraObj.getTime() + c.duracion * 60000); //Sumar duración en milisegundos
       eventos.push({
         "id":c.id,
         "title": `Cita médica con ${c.nombre_paciente} ${c.apellidos_paciente}`,
@@ -34,33 +34,31 @@ router.get("/obtener-citas",async function(req, res,next){
 router.post("/eliminar-cita",async function(req, res,next){
 const citaId = req.body.id;
     try {
-        // Aquí realizas la lógica para eliminar la cita de la base de datos
+
         await dao.eliminarCita(citaId);
-        // Si la eliminación fue exitosa, envía una respuesta con el código de estado 200 (Éxito)
+
         res.status(200).json({ message: 'La cita se eliminó correctamente.' });
     } catch (error) {
-        // Si ocurrió algún error durante la eliminación, envía una respuesta con el código de estado 500 (Error del servidor)
+
         res.status(500).json({ error: 'Se produjo un error al intentar eliminar la cita.' });
     }
 });
 
 function formatearFecha(fechaString, horaString) {
-  // Separar la fecha en componentes
+  //Separamos la fecha en componentes
   var fechaComponentes = fechaString.split('/');
   var year = parseInt(fechaComponentes[2]);
   var month = parseInt(fechaComponentes[1]);
   var day = parseInt(fechaComponentes[0]);
 
-  // Separar la hora en componentes
+  //Separamos la hora en componentes
   var horaComponentes = horaString.split(':');
   var hours = parseInt(horaComponentes[0]);
   var minutes = parseInt(horaComponentes[1]);
   var seconds = parseInt(horaComponentes[2]);
 
-  // Crear un objeto Date con la fecha y la hora
   var fecha = new Date(year, month - 1, day, hours, minutes, seconds);
 
-  // Obtener los componentes de la fecha
   year = fecha.getFullYear();
   month = agregarCero(fecha.getMonth() + 1);
   day = agregarCero(fecha.getDate());
@@ -68,14 +66,13 @@ function formatearFecha(fechaString, horaString) {
   minutes = agregarCero(fecha.getMinutes());
   seconds = agregarCero(fecha.getSeconds());
 
-  // Formatear la fecha y la hora en el formato deseado
   var fechaFormateada = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
 
   return fechaFormateada;
 }
 
 function agregarCero(numero) {
-  // Agregar un cero delante si el número es menor que 10
+  //Agregar un cero delante si el número es menor que 10
   return numero < 10 ? '0' + numero : numero;
 }
 
@@ -86,49 +83,37 @@ router.post("/asignar-cita", async function(req, res, next) {
     const fecha = req.body.fecha;
     const hora = req.body.hora;
     const duracion = req.body.duracion;
-    const fechaHoraString = fecha + ' ' + hora; // Combinar fecha y hora en una sola cadena
+    const fechaHoraString = fecha + ' ' + hora;
     var nuevoDate = new Date(fechaHoraString);
     const fechaActual = new Date();
     var fecha_hora = "";
 
     var errorMessage;
-
-    console.log("11111111---------------"+fechaHoraString)
-    console.log("2222222---------------"+fecha)
-    console.log("3333333333---------------"+hora)
     
     if (nuevoDate == "Invalid Date") {
   
       var fechaFormateada = formatearFecha(fecha,hora);
-      console.log("44444444444---------------"+fechaFormateada)
+
       fecha_hora = fechaFormateada;
 
   
     }else{
       
-      // Construir la cadena de texto en el formato 'YYYY-MM-DD HH:MM:SS'
+      //Construir la cadena de texto en el formato 'YYYY-MM-DD HH:MM:SS'
       const year = nuevoDate.getFullYear();
-      const month = String(nuevoDate.getMonth() + 1).padStart(2, '0'); // Añade cero al principio si es necesario
-      const day = String(nuevoDate.getDate()).padStart(2, '0'); // Añade cero al principio si es necesario
-      const hour = String(nuevoDate.getHours()).padStart(2, '0'); // Añade cero al principio si es necesario
-      const minutes = String(nuevoDate.getMinutes()).padStart(2, '0'); // Añade cero al principio si es necesario
-      const seconds = String(nuevoDate.getSeconds()).padStart(2, '0'); // Añade cero al principio si es necesario
+      const month = String(nuevoDate.getMonth() + 1).padStart(2, '0'); 
+      const day = String(nuevoDate.getDate()).padStart(2, '0');
+      const hour = String(nuevoDate.getHours()).padStart(2, '0');
+      const minutes = String(nuevoDate.getMinutes()).padStart(2, '0');
+      const seconds = String(nuevoDate.getSeconds()).padStart(2, '0');
 
-      console.log("CAAAAAAARLOS"+day)
-      console.log("jaaaaaaaaaavi"+month)
-
-      console.log("SERGIOOOOOOOO",nuevoDate)
 
       const fechaParaBD = `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
-
-      console.log("fechaParaBD: " + fechaParaBD); // Esto mostrará la fecha en formato 'YYYY-MM-DD HH:MM:SS'
 
       fecha_hora = fechaParaBD;
     
   
     }
-
-    console.log("77777777---------------"+fecha_hora)
   
     try {
       if (!/^\d{8}[a-zA-Z]$/.test(dni)) {

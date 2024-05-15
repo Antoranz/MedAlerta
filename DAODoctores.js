@@ -170,14 +170,12 @@ class DAODoctor{
         }); 
     }
     checkearCitasCoincidentes(DNIDoctor, fecha_hora2, duracion) {
-        // Obtener los componentes de fecha y hora
-        const fecha = fecha_hora2.split(' ')[0]; // Extraer la parte de la fecha (YYYY-MM-DD)
-        const hora2 = fecha_hora2.split(' ')[1]; // Extraer la parte de la hora (HH:MM:SS)
-        console.log(DNIDoctor);
-        // Formatear la fecha y hora para la consulta SQL
+
+        const fecha = fecha_hora2.split(' ')[0]; //Extrae la parte de la fecha (YYYY-MM-DD)
+        const hora2 = fecha_hora2.split(' ')[1]; //Extrae la parte de la hora (HH:MM:SS)
+
         const fecha_hora_formateada = fecha + ' ' + hora2;
-        console.log("fecha de las citas coincidentes que he pasado:" + fecha_hora_formateada);
-        
+
         return new Promise((resolve, reject) => {
             this.pool.getConnection((err, connection) => {
                 if (err) {
@@ -191,7 +189,6 @@ class DAODoctor{
                             console.error('Error al llamar al procedimiento almacenado:', error);
                             reject(error);
                         } else {
-                            console.log('Citas coincidentes:', results[0]);
                             resolve(results[0]);
                         }
                     });
@@ -586,7 +583,7 @@ class DAODoctor{
 
                             var queryActualizar = "UPDATE consultas SET notificaciones_paciente = notificaciones_paciente + 1 WHERE id = ?";
                             connection.query(queryActualizar, [consultaId], (err, resUpdate) => {
-                                connection.release(); // Siempre libera la conexión después del último uso
+                                connection.release();
                                 if (err) {
                                     reject(err);
                                 } else {

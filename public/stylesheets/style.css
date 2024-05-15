@@ -6,8 +6,8 @@
 }
 
 .fc-day:hover {
-  background-color: rgb(189, 209, 211) !important; /* Cambiar el color de fondo al hacer hover */
-  cursor: pointer; /* Cambiar el cursor al hacer hover */
+  background-color: rgb(189, 209, 211) !important;
+  cursor: pointer;
 }
 .table td,
 .table th {
@@ -36,9 +36,8 @@ a {
 }
 
 .btn-standard {
-  width: 120px; /* ajusta el ancho según tus preferencias */
-  height: 90px; /* ajusta la altura según tus preferencias */
-  /* Puedes agregar otros estilos comunes aquí, como colores de fondo, bordes, etc. */
+  width: 120px;
+  height: 90px; 
 }
 
 .btn-secondary.custom-dropdown-toggle::after {
@@ -52,8 +51,8 @@ a {
 
 #olvidarContrasena {
   cursor: pointer;
-  text-decoration: underline; /* Esto es opcional, pero puede ser útil para indicar que es un enlace */
-  color: blue; /* Esto es opcional, pero puede ser útil para indicar que es un enlace */
+  text-decoration: underline;
+  color: blue;
 }
 
 .imagenIcono {
@@ -67,7 +66,6 @@ a {
   font-size: xx-large;
 }
 
-/*Gestion de usuarios*/
 .custom-dropdown-toggle::after {
   display: none; 
 }
@@ -91,9 +89,3 @@ a {
 .custom-table tr:hover {
   background-color: #dcdcdc;
 }
-
-/*NOTIFICACIONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES*/
-
-/* Archivo styles.css */
-
-/* Estilo para la lista de notificaciones */

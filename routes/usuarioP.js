@@ -18,8 +18,6 @@ const pool = mysql.createPool({
 const dao = new DAOPaciente(pool);
 
 router.post('/validarPaciente', async function(req, res, next) {
-    console.log(req.body.email);
-    console.log(req.body.codigo);
 
     sendVerificationEmail(req.body.email,req.body.codigo)
 
@@ -34,11 +32,6 @@ router.post('/registrarPaciente', async function(req, res, next) {
 
     try {
         var hashedPassword = cifrarContrasena(password,DNI + "caminar es bueno para la salud");
-
-        console.log("FECHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        console.log(hashedPassword)
-        console.log(DNI)
-        console.log(password)
 
         await dao.registrarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,email,DNI,hashedPassword);
 
@@ -58,15 +51,8 @@ router.post('/checkPaciente', async function(req, res, next) {
 
         var hashedPassword = cifrarContrasena(password,dni + "caminar es bueno para la salud");
 
-        console.log(hashedPassword)
-        console.log(dni)
-        console.log(password)
-
         var paciente = await dao.checkPaciente(dni,hashedPassword);
 
-        console.log(dni)
-        console.log(password)
-        console.log(paciente)
         res.json(paciente)
     } catch (error) {
         console.error("Error durante la operación:", error);
@@ -87,8 +73,6 @@ function cifrarContrasena(contrasena, salt) {
 router.post('/bajaPaciente', async function(req, res, next) {
 
     try {
-
-
         await dao.bajaPaciente_citas(req.body.dniPaciente);
         await dao.bajaPaciente_alarmas(req.body.dniPaciente)
         await dao.bajaPaciente_tratamientos(req.body.dniPaciente)
@@ -112,7 +96,6 @@ router.post('/editarPaciente/:dni', async function(req, res, next) {
 
         const {Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono} = req.body;
 
-
         await dao.editarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,dni);
 
         res.json(true)
@@ -129,11 +112,6 @@ router.post('/editarPassword', async function(req, res, next) {
     try {
 
         const {password,dni} = req.body;
-
-        console.log("EDITAAAAAAAAAAAAAAAAAAAAAAAAAAR")
-        console.log(password)
-        console.log(dni)
-        console.log("EDITAAAAAAAAAAAAAAAAAAAAAAAAAAR")
 
         var hashedPassword = cifrarContrasena(password,dni + "caminar es bueno para la salud");
 

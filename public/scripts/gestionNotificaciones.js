@@ -1,4 +1,3 @@
-// Función para mostrar el modal con el mensaje de confirmación
 function mostrarModal(id) {
     $('#modalConfirmarRechazar').modal('show');
     $('#modalConfirmarRechazar').find('.btn-primary').attr('data-id', id);
@@ -6,23 +5,22 @@ function mostrarModal(id) {
 }
 
 function confirmarCita(button) {
-    // Recopilar los valores del formulario utilizando los identificadores únicos
     var id = button.getAttribute('data-id');
     var dni = document.getElementById('dni_' + id).innerText.split(': ')[1];
     var fecha = document.getElementById('fecha_' + id).value;
     var hora = document.getElementById('hora_' + id).value;
     var duracion = document.getElementById('duracion').value;
 
-    // Enviar los datos al servidor utilizando AJAX
+
     $.ajax({
-        url: '/doctor/citas/asignar-cita', // Ruta en el servidor para asignar la cita
-        type: 'POST', // Método HTTP utilizado
+        url: '/doctor/citas/asignar-cita', 
+        type: 'POST',
         data: {
             dni: dni,
             fecha: fecha,
             hora: hora,
             duracion: duracion
-        }, // Datos a enviar al servidor
+        },
         success: function(response) {
             console.log('Cita asignada exitosamente:', response);
             alert("Cita confirmada");
@@ -32,7 +30,7 @@ function confirmarCita(button) {
                 type: 'POST', 
                 data: {
                     id: id
-                }, // Datos a enviar al servidor
+                },
                 success: function(response) {
                     console.log('Cita eliminada exitosamente:', response);
                     window.location.reload();
@@ -50,7 +48,6 @@ function confirmarCita(button) {
         }
     });
 
-    // Ocultar el modal después de asignar la cita
     $('#modalConfirmarRechazar').modal('hide');
 }
 
@@ -65,7 +62,7 @@ function rechazarCita(button) {
         type: 'POST', 
         data: {
             id: id
-        }, // Datos a enviar al servidor
+        }, 
         success: function(response) {
             console.log('Cita eliminada exitosamente:', response);
             window.location.reload();
@@ -77,7 +74,6 @@ function rechazarCita(button) {
         }
     });
 
-    // Ocultar el modal después de asignar la cita
     $('#modalConfirmarRechazar').modal('hide');
 }
 

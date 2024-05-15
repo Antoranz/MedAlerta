@@ -65,14 +65,10 @@ router.get('/saberSiHayMensajesNoLeidos/:id/:dni', async function(req, res, next
         var id_consulta = req.params.id;
         var dni_paciente = req.params.dni;
 
-        
         var mensajes = await dao.obtenerMensajesNoLeidos(dni_paciente);
-
-        
 
         var hayMensajesNoLeidos = false;
 
-        // Recorrer la lista de mensajes
         for (var i = 0; i < mensajes.length; i++) {
             console.log(mensajes[i].id_consulta)
             console.log(parseInt(id_consulta))

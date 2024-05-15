@@ -34,7 +34,7 @@ router.post('/crearNotificacionCita/:dni', async function(req, res, next) {
         console.log(hora);
         console.log(doctor_dni);
 
-        const fechaHoraString = fecha + ' ' + hora + ':00'; // Combinar fecha y hora en una sola cadena, en formato ISO 8601 y UTC
+        const fechaHoraString = fecha + ' ' + hora + ':00'; // ombinar fecha y hora en una sola cadena, en formato ISO 8601 y UTC
         
        
 
@@ -129,13 +129,10 @@ router.get('/obtenerCitasPaciente/:dni', async function(req, res, next) {
 router.get('/obtenerMensajesNoLeidos/:dni', async function(req, res, next) {
 
     try {
-        
         var dni_paciente=req.params.dni;
-        //console.log(dni_paciente)
 
         var mensajes = await dao.obtenerMensajesNoLeidos(dni_paciente);
 
-        //console.log(mensajes)
         res.json(mensajes)
     } catch (error) {
         console.error("Error durante la operación:", error);
@@ -160,7 +157,7 @@ router.get('/obtenerDoctoresDelPaciente/:dni', async function(req, res, next) {
         for (let i = 0; i < dniDoctores.length; i++) {
             let dniDoctor = dniDoctores[i].DNIDoctor;
             console.log(dniDoctor)
-            let nombreDoctor = await dao.obtenerInformacionDoctor(dniDoctor); // Supongamos que esta función existe en tu DAO
+            let nombreDoctor = await dao.obtenerInformacionDoctor(dniDoctor);
             doctores.push(nombreDoctor[0]);
         }
 
