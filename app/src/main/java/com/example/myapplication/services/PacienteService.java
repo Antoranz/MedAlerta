@@ -1,6 +1,5 @@
 package com.example.myapplication.services;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.example.myapplication.data.Paciente;

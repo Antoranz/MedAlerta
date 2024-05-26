@@ -41,8 +41,7 @@ public class CalendarCitasFragment extends Fragment {
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        // Crea un adaptador para el RecyclerView y asigna la lista de citas
-        CitasListAdapter adapter = new CitasListAdapter(new LinkedList<>(citas), requireContext()); // Suponiendo que "citas" es tu lista de citas
+        CitasListAdapter adapter = new CitasListAdapter(new LinkedList<>(citas), requireContext());
         recyclerView.setAdapter(adapter);
 
         CalendarView calendarView = rootView.findViewById(R.id.calendarView);

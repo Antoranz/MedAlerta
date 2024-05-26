@@ -60,11 +60,9 @@ public class CrearConsultaFragment extends Fragment {
 
         listaDoctores = Controller.getInstance().getDoctoresParaConsulta(requireContext(),sessionManager.getUserId());
 
-
         ArrayAdapter<Doctor> adapter = new ArrayAdapter<>(requireContext(), com.google.android.material.R.layout.support_simple_spinner_dropdown_item, listaDoctores);
 
         spinner.setAdapter(adapter);
-
 
             crearConsulta.setOnClickListener(v -> {
                 if(listaDoctores.isEmpty()){
@@ -85,18 +83,8 @@ public class CrearConsultaFragment extends Fragment {
                         NavigationManager.getInstance().navigateToDestination(requireContext(), MainActivity.class);
                     }
                 }
-
-
-
-
-
             });
-
-
-
         }
-
-
 
     }
 

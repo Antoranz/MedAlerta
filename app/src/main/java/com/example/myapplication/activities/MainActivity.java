@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
-import com.example.myapplication.fragments.AlarmFragment;
 import com.example.myapplication.fragments.CalendarCitasFragment;
 import com.example.myapplication.fragments.ConsultasFragment;
 import com.example.myapplication.fragments.CrearCitaFragment;
@@ -28,8 +27,6 @@ import com.example.myapplication.R;
 import com.example.myapplication.utils.manager.NavigationManager;
 import com.example.myapplication.utils.manager.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -83,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

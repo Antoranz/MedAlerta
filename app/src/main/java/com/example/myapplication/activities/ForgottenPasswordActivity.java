@@ -8,7 +8,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
-import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Paciente;
 import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.manager.SessionManager;
@@ -70,7 +69,7 @@ public class ForgottenPasswordActivity extends AppCompatActivity {
 
 
     private Integer generarNumeroAleatorio() {
-        // Crear un objeto Random
+
         Random random = new Random();
 
         Integer numeroAleatorio = random.nextInt(90000) + 10000;

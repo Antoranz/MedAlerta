@@ -95,7 +95,6 @@ public class ConsultasListAdapter extends RecyclerView.Adapter<ConsultasListAdap
             boolean flag = Controller.getInstance().getSaberSiHayMensajesNoLeidos(b.getId(),dni);
             Log.d("FlagValue_final", "El valor de flag es: " + flag);
 
-
             if (flag){
                 image_notificacion.setVisibility(View.VISIBLE);
 

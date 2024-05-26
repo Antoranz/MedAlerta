@@ -6,7 +6,7 @@ import static com.example.myapplication.utils.async.PostDataAsync.postDataAsync;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,7 +16,7 @@ import com.example.myapplication.activities.MainActivity;
 import com.example.myapplication.data.Paciente;
 import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.services.PacienteService;
-import com.example.myapplication.utils.async.GetDataAsync;
+
 import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.utils.manager.NavigationManager;
 import com.example.myapplication.utils.manager.SessionManager;
@@ -81,7 +81,7 @@ public class PacienteServiceImp implements PacienteService {
             latch.countDown();
         });
         try {
-            // Esperamos a que el CountDownLatch se reduzca a cero, lo que indica que getDataAsync() ha terminado
+
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -112,7 +112,7 @@ public class PacienteServiceImp implements PacienteService {
             latch.countDown();
         });
         try {
-            // Esperamos a que el CountDownLatch se reduzca a cero, lo que indica que getDataAsync() ha terminado
+
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -143,7 +143,7 @@ public class PacienteServiceImp implements PacienteService {
             latch.countDown();
         });
         try {
-            // Esperamos a que el CountDownLatch se reduzca a cero, lo que indica que getDataAsync() ha terminado
+
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -231,7 +231,6 @@ public class PacienteServiceImp implements PacienteService {
             });
         }, "POST", postData.toString());
     }
-
     @Override
 
     public <T> void editarPassword(String dni, String pass, Context context, Class<T> activity) {
@@ -246,7 +245,6 @@ public class PacienteServiceImp implements PacienteService {
             e.printStackTrace();
         }
 
-        // Realizar la solicitud POST para validar el email del paciente
         postDataAsync(urlServidor, executor, result -> {
             ((Activity) context).runOnUiThread(() -> {
                 if (result != null) {

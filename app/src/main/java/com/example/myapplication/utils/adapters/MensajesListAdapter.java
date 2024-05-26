@@ -44,7 +44,6 @@ public class MensajesListAdapter extends RecyclerView.Adapter<MensajesListAdapte
         return new ViewHolder(view,context,viewType);
     }
 
-
     public void setMensajesList(List<Mensaje> data) {
         mensajesList.clear();
         mensajesList.addAll(data);
@@ -57,13 +56,11 @@ public class MensajesListAdapter extends RecyclerView.Adapter<MensajesListAdapte
         return propietario;
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.bind(mensajesList.get(position));
     }
-
 
     @Override
     public int getItemCount() {

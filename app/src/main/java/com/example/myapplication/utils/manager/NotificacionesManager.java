@@ -22,8 +22,6 @@ import com.example.myapplication.utils.receiver.NotificationButtonReceiver;
 
 public class NotificacionesManager {
 
-    private static final String NOTIFICATION_CHANNEL_ID = "nombrecanal2";
-    private static final String CHANNEL_NAME = "idcanal2";
     public static MediaPlayer mp;
     private static final String NOMBRE_CANAL = "nombrecanal1";
     private static final String ID_CANAL = "idcanal1";
@@ -95,7 +93,7 @@ public class NotificacionesManager {
 
         nb.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher_round));
 
-        nb.setContentTitle("MENSAJES NO LEIDOS");
+        nb.setContentTitle("Hay mensajes sin leer!");
 
         Intent actividad_destino = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,actividad_destino,PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
@@ -129,18 +127,16 @@ public class NotificacionesManager {
         nb.setSubText("configurando alarmas inicio movil");
         nb.setAutoCancel(true);
 
-
         Notification notification = nb.build();
 
         notificationManager.notify(56,notification);
 
-        // Cancelar la notificación después de 5 segundos
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 notificationManager.cancel(56);
             }
-        }, 5000); // 5000 milisegundos equivalen a 5 segundos
+        }, 5000);
 
     }
 }

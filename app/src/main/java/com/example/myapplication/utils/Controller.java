@@ -2,16 +2,12 @@ package com.example.myapplication.utils;
 
 import static android.content.Context.ALARM_SERVICE;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.myapplication.activities.IniciarSesionActivity;
-import com.example.myapplication.activities.RegistrarActivity;
-import com.example.myapplication.fragments.CrearCitaFragment;
 import com.example.myapplication.utils.receiver.AlarmReceiver;
 import com.example.myapplication.data.Cita;
 import com.example.myapplication.data.Consulta;

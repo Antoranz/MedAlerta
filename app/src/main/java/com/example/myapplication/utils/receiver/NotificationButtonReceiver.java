@@ -11,7 +11,7 @@ public class NotificationButtonReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if ("ACTION_STOP_MEDIA_PLAYER".equals(action)) {
-            // Detener el MediaPlayer
+
             if (NotificacionesManager.mp != null && NotificacionesManager.mp.isPlaying()) {
                 NotificacionesManager.mp.stop();
                 NotificacionesManager.mp.release();

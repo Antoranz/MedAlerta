@@ -1,10 +1,9 @@
 package com.example.myapplication.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
+
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,9 +19,9 @@ import com.example.myapplication.data.Doctor;
 import com.example.myapplication.utils.async.ActualizarMensajesAsync;
 import com.example.myapplication.utils.Controller;
 import com.example.myapplication.utils.adapters.MensajesListAdapter;
-import com.example.myapplication.utils.manager.NavigationManager;
+
 import com.example.myapplication.utils.manager.SessionManager;
-import com.google.android.material.textfield.TextInputEditText;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -72,31 +71,21 @@ public class ChatViewActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
 
-
-
         buttonEnviar.setOnClickListener(v -> {
-
             if(!textoAenviar.getText().toString().isEmpty()){
                 Controller.getInstance().crearMensaje(consulta.getId(),textoAenviar.getText().toString(),1,timeStamp);
                 textoAenviar.setText("");
-
                 adapter.setMensajesList(Controller.getInstance().getAllMensajes(this, consulta.getId()));
                 adapter.notifyDataSetChanged();
                 rv.postDelayed(() -> rv.smoothScrollToPosition(adapter.getItemCount() - 1), 500);
             }
-
         });
-
-
         rv.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             if (bottom < oldBottom) {
                 rv.postDelayed(() -> rv.smoothScrollToPosition(adapter.getItemCount() - 1), 500);
             }
         });
-
         Controller.getInstance().ponerMensajesComoLeidos(sessionManager.getUserId(),consulta.getId());
-
-
         adapter = new MensajesListAdapter(new LinkedList<>(),this);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(layoutManager);
@@ -106,8 +95,6 @@ public class ChatViewActivity extends AppCompatActivity {
             rv.scrollToPosition(adapter.getItemCount() - 1);
         });
 
-
-        //Poner nombre del doctor en cada chat
         String dniDoctor = consulta.getDni_doctor();
 
         listaDoctores = Controller.getInstance().getDoctoresParaConsulta(this,sessionManager.getUserId());
@@ -117,10 +104,7 @@ public class ChatViewActivity extends AppCompatActivity {
                 break;
             }
         }
-
         nombreDoctorchat.setText(nombreDoctor);
-
-
         adapter.setMensajesList(Controller.getInstance().getAllMensajes(this,consulta.getId()));
         adapter.notifyDataSetChanged();
 

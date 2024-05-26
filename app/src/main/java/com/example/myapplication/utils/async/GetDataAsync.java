@@ -12,7 +12,6 @@ import java.util.concurrent.Executor;
 
 public class GetDataAsync {
 
-
     public static void getDataAsync(String url, Executor executor, OnTaskCompleted listener) {
         executor.execute(() -> {
             String result = doInBackground(url);

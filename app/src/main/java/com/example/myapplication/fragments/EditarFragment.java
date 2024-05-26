@@ -1,7 +1,6 @@
 package com.example.myapplication.fragments;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,26 +16,19 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.ChangePasswordActivity;
-import com.example.myapplication.activities.MainActivity;
 import com.example.myapplication.data.Paciente;
-import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.Controller;
-import com.example.myapplication.utils.async.PostDataAsync;
 import com.example.myapplication.utils.manager.NavigationManager;
 import com.example.myapplication.utils.manager.SessionManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+
 
 public class EditarFragment extends Fragment {
 
@@ -90,7 +82,7 @@ public class EditarFragment extends Fragment {
                 makeTextToast("El teléfono debe tener 9 dígitos");
             }else {
                 String fechaString = editTextDate.getText().toString();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // Define el formato de fecha esperado
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 Date fecha;
                 Date fechaActual = new Date();
 

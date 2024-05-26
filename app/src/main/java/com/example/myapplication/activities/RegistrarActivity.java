@@ -1,29 +1,14 @@
 package com.example.myapplication.activities;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
-import static com.example.myapplication.utils.async.PostDataAsync.postDataAsync;
-
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import com.example.myapplication.R;
 import com.example.myapplication.data.Paciente;
-import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.Controller;
-import com.example.myapplication.utils.async.PostDataAsync;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,8 +16,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class RegistrarActivity extends AppCompatActivity  {
 
@@ -129,25 +112,23 @@ public class RegistrarActivity extends AppCompatActivity  {
     }
 
     private void openDatePicker() {
-        // Obtener la fecha actual
+
         Calendar calendar = Calendar.getInstance();
 
-        // Crear un DatePickerDialog y mostrarlo
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
-                    // Crear un objeto Calendar con la fecha seleccionada
+
                     Calendar selectedDateCalendar = Calendar.getInstance();
                     selectedDateCalendar.set(selectedYear, selectedMonth, selectedDay);
 
-                    // Formatear la fecha seleccionada en el formato deseado
+
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                     String selectedDateFormatted = sdf.format(selectedDateCalendar.getTime());
 
-                    // Actualizar el campo de texto con la fecha seleccionada en el formato deseado
+
                     editTextDate.setText(selectedDateFormatted);
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-        // Mostrar el DatePickerDialog
         datePickerDialog.show();
     }
 

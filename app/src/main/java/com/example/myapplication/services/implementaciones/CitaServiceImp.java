@@ -4,12 +4,10 @@ import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
 import com.example.myapplication.activities.MainActivity;
 import com.example.myapplication.data.Cita;
-import com.example.myapplication.data.Consulta;
 import com.example.myapplication.services.CitaService;
 import com.example.myapplication.services.ConfigApi;
 import com.example.myapplication.utils.async.GetDataAsync;
@@ -61,7 +59,7 @@ public class CitaServiceImp implements CitaService{
                         String dniPaciente = jsonCita.getString("paciente_dni");
                         String nombreDoctor = jsonCita.getString("nombre_doctor");
                         String apellidosDoctor = jsonCita.getString("apellidos_doctor");
-                        // Parsear la fecha del String al tipo Date
+
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                         Date fechaHora = dateFormat.parse(jsonCita.getString("fecha_hora"));
                         int duracion = jsonCita.getInt("duracion");

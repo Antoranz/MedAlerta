@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.services.ConfigApi;
-import com.example.myapplication.utils.async.ActualizarMensajesAsync;
+
 import com.example.myapplication.utils.async.GetDataAsync;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.Controller;
@@ -71,12 +71,12 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
 
-        // Creamos un hilo para simular la carga
+
         new Thread(() -> {
             while (progressStatus < 100) {
                 progressStatus += 1;
 
-                // Actualizamos el progreso de la barra en el hilo principal
+
                 handler.post(new Runnable() {
                     public void run() {
 
@@ -87,7 +87,7 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
                 });
 
                 try {
-                    // Simulamos un tiempo de espera
+
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -120,21 +120,21 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
                             String fechaInicio = jsonObject.getString("fecha_inicio");
                             String fechaFin = jsonObject.getString("fecha_fin");
 
-                            // Parsea la fecha y la hora
+
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
                             Date dateInicio = sdf.parse(fechaInicio);
                             Date dateFin = sdf.parse(fechaFin);
 
-                            // Crea una instancia de Calendar y establece la hora de la primera toma
+
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(dateInicio);
-                            calendar.add(Calendar.DAY_OF_MONTH, 1); // Suma un día al día que has recogido de la base de datos
+                            calendar.add(Calendar.DAY_OF_MONTH, 1);
                             String[] horaArray = horaPrimeraToma.split(":");
                             calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(horaArray[0]));
                             calendar.set(Calendar.MINUTE, Integer.parseInt(horaArray[1]));
                             calendar.set(Calendar.SECOND, Integer.parseInt(horaArray[2]));
 
-                            // Obtén el timestamp
+
 
                             long timestamp = calendar.getTimeInMillis();
                             int intervaloHoras = 24 / tomasAlDia;
@@ -158,7 +158,6 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
                                     for (int j = 0; j < tomasAlDia; j++) {
 
                                         if(idAlarmaActual <= idAlarma){
-                                            // Crea la alarma
 
                                             if (timestamp > currentTimeMillis) {
                                                 Controller.getInstance().creacionAlarma(idAlarma, timestamp, medicamento,dosis, this);
@@ -172,14 +171,14 @@ public class CargandoConfiguracionActivity extends AppCompatActivity {
                                             idAlarma++;
                                             idAlarmaActual = idAlarma;
                                         }else{
-                                            // Crea la alarma
+
                                             if (timestamp > currentTimeMillis) {
                                                 Controller.getInstance().creacionAlarma(idAlarmaActual, timestamp,medicamento,dosis, this);
                                             }else {
                                                 Log.i("TIEMPO_PASADO", "La alarma "+ idAlarmaActual+ " ha pasado el tiempo actual");
                                             }
 
-                                            // Avanza al siguiente horario de la toma
+
                                             calendar.add(Calendar.HOUR_OF_DAY, intervaloHoras);
                                             timestamp = calendar.getTimeInMillis();
                                             idAlarmaActual++;

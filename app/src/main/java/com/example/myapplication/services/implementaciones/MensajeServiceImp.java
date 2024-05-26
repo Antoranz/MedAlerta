@@ -3,9 +3,7 @@ package com.example.myapplication.services.implementaciones;
 import static com.example.myapplication.utils.async.GetDataAsync.getDataAsync;
 import static com.example.myapplication.utils.async.PostDataAsync.postDataAsync;
 
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.data.Consulta;
 import com.example.myapplication.data.Mensaje;
 
 import com.example.myapplication.services.ConfigApi;
@@ -79,7 +77,7 @@ public class MensajeServiceImp implements MensajeService {
         });
 
         try {
-            // Esperamos a que el CountDownLatch se reduzca a cero, lo que indica que getDataAsync() ha terminado
+
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -133,8 +131,6 @@ public class MensajeServiceImp implements MensajeService {
                         String fecha = jsonConsulta.getString("fecha_ultimo_mensaje");
 
                         String id_mensaje = dni_doctor+dni_paciente+fecha;
-
-
 
                         listaMensajes.add(id_mensaje);
 

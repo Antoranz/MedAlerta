@@ -18,7 +18,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/myspinner"/>
 
-    <!-- Spinner (este es tu spinner existente) -->
     <Spinner
         android:id="@+id/myspinner"
         android:layout_width="292dp"

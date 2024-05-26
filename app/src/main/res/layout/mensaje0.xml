@@ -25,7 +25,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="Mensaje de ejemplo"
-        android:layout_gravity="end" /> <!-- Alinea el TextView a la derecha -->
+        android:layout_gravity="end" />
 
 </LinearLayout>
 

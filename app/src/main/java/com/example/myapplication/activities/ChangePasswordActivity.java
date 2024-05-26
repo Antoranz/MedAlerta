@@ -1,6 +1,5 @@
 package com.example.myapplication.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,7 +59,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
 
     private Integer generarNumeroAleatorio() {
-        // Crear un objeto Random
+
         Random random = new Random();
 
         Integer numeroAleatorio = random.nextInt(90000) + 10000;

@@ -26,7 +26,6 @@ public class Doctor implements Serializable {
         return dni;
     }
 
-    // Override toString() para que el ArrayAdapter pueda mostrar el nombre en el Spinner
     @Override
     public String toString() {
         return nombre +" "+apellidos;

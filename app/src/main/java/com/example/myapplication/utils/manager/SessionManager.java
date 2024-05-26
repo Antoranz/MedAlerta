@@ -8,7 +8,6 @@ public class SessionManager {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_NAME = "name";
     private static final String KEY_IS_LOGGED_IN = "is_logged_in";
-
     private static final String KEY_VERIFICATED = "is_verificated";
 
     private SharedPreferences sharedPreferences;

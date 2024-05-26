@@ -10,8 +10,6 @@ import com.example.myapplication.utils.async.PostDataAsync;
 
 import android.app.Activity;
 import android.content.Context;
-import android.service.credentials.Action;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +29,7 @@ import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class ConsultaServiceImp extends AppCompatActivity implements ConsultaService {
 
@@ -67,7 +65,7 @@ public class ConsultaServiceImp extends AppCompatActivity implements ConsultaSer
                         String dniDoctor = jsonConsulta.getString("dni_doctor");
                         String dniPaciente = jsonConsulta.getString("dni_paciente");
                         String titulo = jsonConsulta.getString("titulo");
-                        // Parsear la fecha del String al tipo Date
+
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                         Date ultimaFecha = dateFormat.parse(jsonConsulta.getString("ultima_fecha"));
                         int mensajesTotales = jsonConsulta.getInt("mensajes_totales");

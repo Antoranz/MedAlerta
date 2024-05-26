@@ -13,7 +13,6 @@ import java.util.concurrent.Executor;
 
 public class PostDataAsync {
 
-
     public static void postDataAsync(String url, Executor executor, OnTaskCompleted callback, String method, String postData) {
         executor.execute(() -> {
             try {
@@ -23,7 +22,7 @@ public class PostDataAsync {
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setDoOutput(true);
 
-                // Enviar datos en el cuerpo de la solicitud para POST
+
                 if (postData != null) {
                     try (OutputStream os = connection.getOutputStream()) {
                         byte[] input = postData.getBytes(StandardCharsets.UTF_8);
@@ -33,7 +32,7 @@ public class PostDataAsync {
 
                 int responseCode = connection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    // Leer la respuesta del servidor
+
                     try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                         StringBuilder response = new StringBuilder();
                         String line;
@@ -44,8 +43,8 @@ public class PostDataAsync {
 
                             callback.onTaskCompleted(response.toString());
                         } else {
-                            // La respuesta está vacía o es null, manejar según sea necesario
-                            callback.onTaskCompleted(null); // Puedes ajustar esto según tus necesidades
+
+                            callback.onTaskCompleted(null);
                         }
 
                     } catch (JSONException e) {
