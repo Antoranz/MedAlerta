@@ -197,6 +197,30 @@ class DAOPaciente{
         }); 
     }
 
+    updateNotificacionDoctor(consultaId){
+        
+        return new Promise((resolve, reject) => {
+            this.pool.getConnection((err, connection) => {
+                if(err){
+                    console.error(`Error al realizar la conexión: ${err.message}`);
+                    reject(err);
+                }else{
+                    console.log("Exito al conectar a la base de datos");
+                    var queryObtenerPaciente ="UPDATE consultas SET notificaciones_doctor = notificaciones_doctor + 1 WHERE id = ?"
+                    connection.query(queryObtenerPaciente,[consultaId], (err, res) => {
+                        connection.release();
+                        if(err){
+                            reject(err);
+                        }
+                        else{
+                            resolve(res);
+                        }
+                    });
+                }
+            });
+        }); 
+    }
+
     editarPaciente(Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,DNI){
         
         return new Promise((resolve, reject) => {
@@ -206,7 +230,7 @@ class DAOPaciente{
                     reject(err);
                 }else{
                     console.log("Exito al conectar a la base de datos");
-                    var queryObtenerPaciente ="UPDATE pacientes SET Nombre = ?, Apellidos = ?,FechaDeNacimiento = ?,Direccion = ?, CodigoPostal = ?, telefono = ? WHERE DNI = ?"
+                    var queryObtenerPaciente ="UPDATE pacientes SET Nombre =?, Apellidos =?,FechaDeNacimiento =?,Direccion =?, CodigoPostal =?,telefono =?WHERE DNI = ?"
                     connection.query(queryObtenerPaciente,[Nombre,Apellidos,FechaDeNacimiento,Direccion,CodigoPostal,telefono,DNI], (err, res) => {
                         connection.release();
                         if(err){

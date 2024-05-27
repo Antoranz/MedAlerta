@@ -47,10 +47,10 @@ router.post('/crearMensaje', async function(req, res, next) {
 
         const fechaDate = new Date(fecha);
 
-
-        await dao.registrarMensaje(id_consulta,mensaje,propietario,fechaDate);
-
         
+        await dao.registrarMensaje(id_consulta,mensaje,propietario,fechaDate);
+        await dao.updateNotificacionDoctor(id_consulta);
+
 
 
         res.json(true)
