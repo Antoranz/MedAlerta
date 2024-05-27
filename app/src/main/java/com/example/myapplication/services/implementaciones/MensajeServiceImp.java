@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -91,13 +92,14 @@ public class MensajeServiceImp implements MensajeService {
         Executor executor = Executors.newSingleThreadExecutor();
         String urlServidor = ConfigApi.BASE_URL+"pacientes/consulta/crearMensaje";
 
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
         JSONObject postData = new JSONObject();
         try {
-
             postData.put("id_consulta", id);
             postData.put("mensaje", mensaje);
             postData.put("propietario", propietario);
-            postData.put("fecha", fecha);
+            postData.put("fecha", timeStamp);
 
         } catch (JSONException e) {
             e.printStackTrace();
